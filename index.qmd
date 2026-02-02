@@ -1,0 +1,42 @@
+---
+title: "Books"
+page-layout: full
+title-block-banner: false
+listing:
+  - id: listing-ja
+    contents: "collections-ja/*/index.qmd"
+    sort: "date desc"
+    type: default
+    categories: false
+    sort-ui: false
+    filter-ui: true
+    fields: [image, date, title, description, author]
+    page-size: 25
+  - id: listing-en
+    contents: "collections-en/*/index.qmd"
+    sort: "date desc"
+    type: default
+    categories: false
+    sort-ui: false
+    filter-ui: true
+    fields: [image, date, title, description, author]
+    page-size: 25
+---
+
+::: {.grid}
+
+::: {.g-col-6}
+## 日本語 (Japanese)
+
+::: {#listing-ja}
+:::
+:::
+
+::: {.g-col-6}
+## English
+
+::: {#listing-en}
+:::
+:::
+
+:::

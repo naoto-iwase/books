@@ -1,0 +1,24 @@
+---
+title: "Olmo 3"
+description: "Olmo 3 論文をまとめた本"
+date: "2026-02-02"
+author: "Naoto Iwase"
+categories: [Machine Learning, LLM, Transformer]
+image: "images/olmo-3.png"
+---
+
+Olmo 3 は Allen Institute for AI が開発したオープンソースの大規模言語モデルです。
+
+本書では論文の全体像を見たあと、技術的な詳細を深掘りします。
+
+**論文**: [arXiv:2512.13961](https://arxiv.org/abs/2512.13961)
+
+## 目次
+
+- [全体像](00-overview.md)
+- [Sliding Window Attention](01-sliding-window-attention.md)
+- [重複除去](02-deduplication.md)
+- [データミックス最適化](03-data-mixing.md)
+- [Midtraining と合成データ](04-midtraining.md)
+- [長文脈拡張](05-long-context.md)
+- [GRPO と OlmoRL](06-grpo-olmorl.md)

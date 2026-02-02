@@ -1,0 +1,58 @@
+project:
+  type: website
+  output-dir: _site
+
+execute:
+  freeze: auto
+
+website:
+  title: "Naoto's Books"
+  site-url: https://naoto-iwase.github.io/books
+  repo-url: https://github.com/naoto-iwase/books
+  navbar:
+    background: light
+    right:
+      - icon: arrow-left-circle
+        href: https://naoto-iwase.github.io
+        text: Naoto Iwase
+      - icon: twitter-x
+        href: https://x.com/naoto_iwase
+      - icon: linkedin
+        href: https://www.linkedin.com/in/naoto-iwase-993430395/
+      - icon: mortarboard
+        href: https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ
+      - icon: github
+        href: https://github.com/naoto-iwase
+  sidebar:
+    - id: olmo-3
+      title: "Olmo 3"
+      style: "docked"
+      contents:
+        - section: "Olmo 3"
+          contents:
+            - text: "全体像"
+              href: collections-ja/olmo-3/00-overview.md
+            - text: "Sliding Window Attention"
+              href: collections-ja/olmo-3/01-sliding-window-attention.md
+            - text: "重複除去"
+              href: collections-ja/olmo-3/02-deduplication.md
+            - text: "データミックス最適化"
+              href: collections-ja/olmo-3/03-data-mixing.md
+            - text: "Midtraining と合成データ"
+              href: collections-ja/olmo-3/04-midtraining.md
+            - text: "長文脈拡張"
+              href: collections-ja/olmo-3/05-long-context.md
+            - text: "GRPO と OlmoRL"
+              href: collections-ja/olmo-3/06-grpo-olmorl.md
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: cyborg
+    css: styles.css
+    highlight-style: github
+    toc: true
+    toc-depth: 3
+    code-fold: false
+    code-copy: true
