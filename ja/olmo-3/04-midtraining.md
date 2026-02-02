@@ -10,29 +10,29 @@ Olmo 3の学習は以下の3段階で構成される。
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  Stage 1: Pretraining                                                        │
-│  - Data: Dolma 3 Mix (6T tokens)                                             │
-│  - Goal: General language understanding & generation                         │
-│  - Features: Web text, academic PDFs, code, diverse sources                  │
+│  Stage 1: Pretraining                                                       │
+│  - Data: Dolma 3 Mix (6T tokens)                                            │
+│  - Goal: General language understanding & generation                        │
+│  - Features: Web text, academic PDFs, code, diverse sources                 │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       ↓
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  Stage 2: Midtraining                                                        │
-│  - Data: Dolma 3 Dolmino Mix (100B tokens)                                   │
+│  Stage 2: Midtraining                                                       │
+│  - Data: Dolma 3 Dolmino Mix (100B tokens)                                  │
 │  - Goal: Enhance Math, Code, QA, Reasoning capabilities                     │
-│  - Features: High-quality synthetic data + Post-training preparation         │
+│  - Features: High-quality synthetic data + Post-training preparation        │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       ↓
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  Stage 3: Long-context Extension                                             │
-│  - Data: Dolma 3 Longmino Mix (50B-100B tokens)                              │
-│  - Goal: Extend context length from 8K to 65K                                │
-│  - Features: olmOCR science PDFs + synthetic long-form data                  │
+│  Stage 3: Long-context Extension                                            │
+│  - Data: Dolma 3 Longmino Mix (50B-100B tokens)                             │
+│  - Goal: Extend context length from 8K to 65K                               │
+│  - Features: olmOCR science PDFs + synthetic long-form data                 │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       ↓
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  Post-training (SFT/DPO/RL)                                                  │
-│  - Think / Instruct / RL-Zero variants                                       │
+│  Post-training (SFT/DPO/RL)                                                 │
+│  - Think / Instruct / RL-Zero variants                                      │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
