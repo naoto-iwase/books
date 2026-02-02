@@ -36,28 +36,28 @@ Olmo 3 チームは、これらの観察から以下の戦略を採用した。
 Olmo 3 では、3段階のパイプラインで段階的により精緻な重複を除去する。
 
 ```
-[入力: 38.7B ドキュメント]
+[Input: 38.7B documents]
         |
         v
 +-------------------+
-| 1. Exact Dedup    |  ← ハッシュベース完全一致
-|    -67% 削減      |
+| 1. Exact Dedup    |  <- Hash-based exact match
+|    -67% reduction |
 +-------------------+
         |
         v (12.7B docs)
 +-------------------+
-| 2. Fuzzy Dedup    |  ← MinHash 類似度
-|    -24% 削減      |
+| 2. Fuzzy Dedup    |  <- MinHash similarity
+|    -24% reduction |
 +-------------------+
         |
         v (9.8B docs)
 +-------------------+
-| 3. Substring Dedup|  ← Suffix Array ボイラープレート
+| 3. Substring Dedup|  <- Suffix Array boilerplate removal
 |    -14% bytes     |
 +-------------------+
         |
         v
-[出力: 9.7B ドキュメント（75%削減）]
+[Output: 9.7B documents (75% reduction)]
 ```
 
 ---

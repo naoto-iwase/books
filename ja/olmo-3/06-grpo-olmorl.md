@@ -56,7 +56,7 @@ LLMにおける強化学習の手法は急速に進化してきた。
 InstructGPT (2022)
     │
     ├─→ PPO variants
-    │      └─→ RLOO (Williams, 1992復活)
+    │      └─→ RLOO (Williams, 1992 revival)
     │
     └─→ RL-free
            ├─→ DPO (2023) → IPO, KTO, SimPO
