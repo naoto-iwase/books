@@ -9,6 +9,10 @@ website:
   title: "Naoto's Books"
   site-url: https://naoto-iwase.github.io/books
   repo-url: https://github.com/naoto-iwase/books
+  favicon: assets/favicon.png
+  image: assets/myicon.png
+  open-graph: true
+  twitter-card: true
   page-footer:
     left: "© 2026 <a href=\"https://naoto-iwase.github.io\">Naoto Iwase</a>"
     center: "<a href=\"https://naoto-iwase.github.io/books\">Books Home</a>"
@@ -35,22 +39,22 @@ website:
       style: "docked"
       contents:
         - section: "Olmo 3"
-          href: collections-ja/olmo-3/index.qmd
+          href: ja/olmo-3/index.qmd
           contents:
             - text: "全体像"
-              href: collections-ja/olmo-3/00-overview.md
+              href: ja/olmo-3/00-overview.md
             - text: "Sliding Window Attention"
-              href: collections-ja/olmo-3/01-sliding-window-attention.md
+              href: ja/olmo-3/01-sliding-window-attention.md
             - text: "重複除去"
-              href: collections-ja/olmo-3/02-deduplication.md
+              href: ja/olmo-3/02-deduplication.md
             - text: "データミックス最適化"
-              href: collections-ja/olmo-3/03-data-mixing.md
+              href: ja/olmo-3/03-data-mixing.md
             - text: "Midtraining と合成データ"
-              href: collections-ja/olmo-3/04-midtraining.md
+              href: ja/olmo-3/04-midtraining.md
             - text: "長文脈拡張"
-              href: collections-ja/olmo-3/05-long-context.md
+              href: ja/olmo-3/05-long-context.md
             - text: "GRPO と OlmoRL"
-              href: collections-ja/olmo-3/06-grpo-olmorl.md
+              href: ja/olmo-3/06-grpo-olmorl.md
 
 format:
   html:

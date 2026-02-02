@@ -4,7 +4,7 @@ page-layout: full
 title-block-banner: false
 listing:
   - id: listing-ja
-    contents: "collections-ja/*/index.qmd"
+    contents: "ja/*/index.qmd"
     sort: "date desc"
     type: default
     categories: false
@@ -13,7 +13,7 @@ listing:
     fields: [image, date, title, description, author]
     page-size: 25
   - id: listing-en
-    contents: "collections-en/*/index.qmd"
+    contents: "en/*/index.qmd"
     sort: "date desc"
     type: default
     categories: false
