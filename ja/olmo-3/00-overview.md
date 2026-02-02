@@ -1,12 +1,12 @@
 # Olmo 3 全体像
 
 > - **論文**: Olmo 3 (arXiv:2512.13961v1, December 2025)
-> - **著者**: Allen Institute for AI (AI2) OLMo Team
+> - **著者**: Allen Institute for AI (AI2) Olmo Team
 > - **主要モデル**: Olmo 3 Base/Think/Instruct (7B, 32B)
 
 ---
 
-## 1. OLMoプロジェクトの概要
+## 1. Olmoプロジェクトの概要
 
 ### なぜ「真のオープンソース」なのか
 
@@ -53,7 +53,7 @@ LLMの「オープン」には段階があり、混同されやすい。
 
 </details>
 
-OLMoは他のopen-weight（重みのみ公開）モデルと異なり、**Model Flow全体**を公開している：
+Olmoは他のopen-weight（重みのみ公開）モデルと異なり、**Model Flow全体**を公開している：
 
 | 公開物 | 説明 |
 |--------|------|

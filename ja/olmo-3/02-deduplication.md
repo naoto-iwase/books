@@ -270,7 +270,7 @@ Olmo 3 チームが開発した大規模重複除去ツール。
 |------------|------|------|
 | **Olmo 3** | Exact + MinHash + Suffix Array | 3段階パイプライン、75%削減 |
 | **Llama 3** | MinHash (ccNet) | URL + 行単位正規化、5-gram |
-| **Qwen 2.5** | MinHash + Suffix Array | OLMoに類似、詳細非公開 |
+| **Qwen 2.5** | MinHash + Suffix Array | Olmoに類似、詳細非公開 |
 | **DeepSeek** | MinHash | 基本的なfuzzy dedup |
 | **Gemma 2** | 非公開 | "extensive deduplication" |
 

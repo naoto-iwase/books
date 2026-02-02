@@ -395,4 +395,4 @@ Olmo 3 では YaRN を Full Attention 層のみに適用し、SWA 層には適�
 
 - Beltagy, I., Peters, M. E., & Cohan, A. (2020). Longformer: The Long-Document Transformer. arXiv:2004.05150
 - Peng, B., Quesnelle, J., Fan, H., & Shippole, E. (2023). YaRN: Efficient Context Window Extension of Large Language Models. arXiv:2309.00071
-- OLMo Team (2025). Olmo 3. arXiv:2512.13961
+- Olmo Team (2025). Olmo 3. arXiv:2512.13961
