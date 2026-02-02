@@ -35,6 +35,7 @@ website:
       style: "docked"
       contents:
         - section: "Olmo 3"
+          href: collections-ja/olmo-3/index.qmd
           contents:
             - text: "全体像"
               href: collections-ja/olmo-3/00-overview.md

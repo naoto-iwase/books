@@ -7,7 +7,7 @@ categories: [Machine Learning, LLM, Transformer]
 image: "images/olmo-3.png"
 ---
 
-Olmo 3 は Allen Institute for AI が開発したオープンソースの大規模言語モデルです。
+Olmo 3 は Allen Institute for AI (AI2) が2025年11月20日に公開したオープンソースの大規模言語モデルです。
 
 本書では論文の全体像を見たあと、技術的な詳細を深掘りします。
 
