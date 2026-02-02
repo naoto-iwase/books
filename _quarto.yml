@@ -9,6 +9,12 @@ website:
   title: "Naoto's Books"
   site-url: https://naoto-iwase.github.io/books
   repo-url: https://github.com/naoto-iwase/books
+  page-footer:
+    left: "© 2026 <a href=\"https://naoto-iwase.github.io\">Naoto Iwase</a>"
+    center: "<a href=\"https://naoto-iwase.github.io/books\">Books Home</a>"
+    right: |
+      <a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a>
+      <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a>
   navbar:
     background: light
     right:
@@ -56,3 +62,4 @@ format:
     toc-depth: 3
     code-fold: false
     code-copy: true
+    page-navigation: true
