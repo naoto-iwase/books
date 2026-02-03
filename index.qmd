@@ -10,7 +10,7 @@ listing:
     categories: false
     sort-ui: false
     filter-ui: true
-    fields: [image, date, title, description, author]
+    fields: [image, date, title, description]
     page-size: 25
   - id: listing-en
     contents: "en/*/index.qmd"
@@ -19,7 +19,7 @@ listing:
     categories: false
     sort-ui: false
     filter-ui: true
-    fields: [image, date, title, description, author]
+    fields: [image, date, title, description]
     page-size: 25
 ---
 

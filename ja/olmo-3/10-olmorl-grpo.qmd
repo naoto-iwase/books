@@ -1,0 +1,288 @@
+# OlmoRL / GRPO: 効率的な強化学習
+
+OlmoRL は、思考型モデル（reasoning model）の強化学習訓練を効率化するために開発されたシステムです。Group Relative Policy Optimization（GRPO）をベースとし、Reinforcement Learning with Verifiable Rewards（RLVR）の手法を採用しています。
+
+::: {.callout-note icon="false" collapse="false"}
+## 01. OlmoRL の概要
+
+┌──────────────────────────────────────────────────────────────┐
+│                       OlmoRL System                          │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Base: GRPO (Group Relative Policy Optimization)            │
+│        + RLVR (Reinforcement Learning w/ Verifiable Rewards) │
+│                                                              │
+│  Key Features:                                               │
+│  - 4x speedup over previous implementations                  │
+│  - Stable long RL runs (2300+ steps)                         │
+│  - Multi-domain generalization (Math, Code, Chat)           │
+│                                                              │
+│  Infrastructure:                                             │
+│  - Distributed training on hundreds of GPUs                  │
+│  - Efficient checkpoint management                           │
+│  - Comprehensive evaluation pipeline                         │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+OlmoRL は従来の RLHF（Reinforcement Learning from Human Feedback）とは異なり、**検証可能な報酬**（verifiable rewards）を活用します。数学問題の正誤判定やコードの実行結果など、客観的に評価できる指標を用いることで、より効率的な学習が可能になります。
+
+**主な改善点**:
+
+- **効率性の向上**: 従来実装に対して 4 倍の高速化を達成
+- **安定性**: 長時間の RL 訓練（2300 ステップ以上）でも安定動作
+- **汎用性**: Math、Code、General chat の複数ドメインに対応
+
+:::
+
+::: {.callout-note icon="false" collapse="false"}
+## 02. GRPO の基礎理論
+
+┌──────────────────────────────────────────────────────────────┐
+│                 GRPO Algorithm Components                    │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  1. Group-based Reward Normalization:                        │
+│     r_normalized = (r - mean(r_group)) / std(r_group)        │
+│                                                              │
+│  2. Policy Gradient Objective:                               │
+│     L_PG = E[min(ratio * A, clip(ratio, 1-eps, 1+eps) * A)] │
+│                                                              │
+│  3. KL Divergence Constraint:                                │
+│     L_KL = E[KL(pi_new || pi_old)]                           │
+│                                                              │
+│  4. Total Objective:                                         │
+│     L_total = L_PG - beta * L_KL                             │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+GRPO は PPO（Proximal Policy Optimization）の変種で、**グループベースの報酬正規化**を特徴とします。同じプロンプトから生成された複数の応答をグループ化し、グループ内で報酬を正規化することで、学習の安定性を高めます。
+
+**アルゴリズムの要素**:
+
+- **Advantage 推定**: グループ平均との差分を利用して、相対的な品質を評価
+- **Clipping**: PPO と同様に、ポリシー更新幅を制限して急激な変化を防止
+- **KL 制約**: 元のポリシーからの逸脱を制限し、破局的忘却を防止
+
+:::
+
+::: {.callout-note icon="false" collapse="false"}
+## 03. Reward Model と Policy Optimization
+
+┌──────────────────────────────────────────────────────────────┐
+│              Reward Model Architecture (4.4.1)               │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Verifiable Rewards:                                         │
+│  - Math: Correctness check (exact match or equivalent)       │
+│  - Code: Execution success + test case pass rate            │
+│  - Chat: Format compliance + instruction following          │
+│                                                              │
+│  Reward Computation:                                         │
+│  1. Generate multiple outputs per prompt (K=4-8)             │
+│  2. Evaluate each output with verifiable metrics             │
+│  3. Normalize rewards within group                           │
+│  4. Compute advantages for policy update                     │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+OlmoRL の報酬モデルは、ドメインごとに**検証可能な指標**を使用します。
+
+**Math ドメイン**:
+
+- 正解との完全一致または数学的等価性をチェック
+- 中間ステップの正当性検証（オプション）
+
+**Code ドメイン**:
+
+- コードの実行成功/失敗
+- テストケースの通過率
+- 実行時エラーの有無
+
+**General chat ドメイン**:
+
+- 指示に従った応答形式
+- 安全性制約の遵守
+- レスポンスの完全性
+
+:::
+
+::: {.callout-note icon="false" collapse="false"}
+## 04. 分散訓練インフラストラクチャ（4.4.3）
+
+┌──────────────────────────────────────────────────────────────┐
+│           OlmoRL Distributed Training Setup                  │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Compute Resources:                                          │
+│  - 256-512 GPUs (H100/A100)                                  │
+│  - 3D parallelism: Data + Pipeline + Tensor                  │
+│                                                              │
+│  Workflow:                                                   │
+│  1. Sample generation (inference phase)                      │
+│     - Batch prompts across GPUs                              │
+│     - Generate K outputs per prompt                          │
+│  2. Reward computation (evaluation phase)                    │
+│     - Parallel verification                                  │
+│  3. Policy update (training phase)                           │
+│     - Compute gradients with GRPO objective                  │
+│     - Apply optimizer step                                   │
+│                                                              │
+│  Checkpoint Management:                                      │
+│  - Save every N steps (N=50-100)                             │
+│  - Evaluation checkpoints for benchmark testing             │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+OlmoRL は数百台の GPU を活用した**大規模分散訓練**を実現しています。
+
+**3 段階のワークフロー**:
+
+1. **サンプル生成**: プロンプトをバッチ処理し、各プロンプトから複数の応答を生成
+2. **報酬計算**: 生成された応答を並列に評価し、報酬を算出
+3. **ポリシー更新**: GRPO アルゴリズムでモデルパラメータを更新
+
+**並列化戦略**:
+
+- **Data parallelism**: バッチをデバイス間で分割
+- **Pipeline parallelism**: レイヤーをデバイス間で分割
+- **Tensor parallelism**: 大規模レイヤーを分割
+
+:::
+
+::: {.callout-note icon="false" collapse="false"}
+## 05. 複数ドメインへの拡張
+
+┌──────────────────────────────────────────────────────────────┐
+│              Multi-Domain RL Training                        │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Domain Coverage:                                            │
+│                                                              │
+│  1. Math (Traditional)                                       │
+│     - AIME, AMC, MATH-500                                    │
+│     - Chain-of-thought reasoning                             │
+│                                                              │
+│  2. Code (New)                                               │
+│     - HumanEval, MBPP, LiveCodeBench                         │
+│     - Execution-based verification                           │
+│                                                              │
+│  3. General Chat (New)                                       │
+│     - IFBench, WildBench                                     │
+│     - Instruction following + safety                         │
+│                                                              │
+│  Training Strategy:                                          │
+│  - Domain mixing ratios optimized empirically                │
+│  - Curriculum learning: Math -> Code -> Chat                 │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+OlmoRL は従来の Math 特化から、**Code と General chat** への拡張を実現しました。
+
+**ドメインミキシング**:
+
+- 各ドメインからサンプリングする比率を動的に調整
+- Math 40%, Code 30%, Chat 30% などの配分を実験的に決定
+
+**カリキュラム学習**:
+
+1. **Phase 1**: Math のみで基礎的な推論能力を構築
+2. **Phase 2**: Code を追加し、構造化された問題解決を学習
+3. **Phase 3**: General chat で幅広い指示に対応
+
+:::
+
+::: {.callout-note icon="false" collapse="false"}
+## 06. Olmo 3.1 Think 32B の拡張訓練
+
+┌──────────────────────────────────────────────────────────────┐
+│          Olmo 3.1 Think 32B Extended RL Training             │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Training Extension:                                         │
+│  - Original: 750 RL steps                                    │
+│  - Extended: 2300 RL steps                                   │
+│                                                              │
+│  Performance Gains:                                          │
+│  - AIME 2024: +4 points                                      │
+│  - IFBench: +20 points                                       │
+│  - Maintained performance on other benchmarks                │
+│                                                              │
+│  Key Insights:                                               │
+│  - Longer RL training improves generalization                │
+│  - Stable training without catastrophic forgetting           │
+│  - Multi-domain benefits from extended training              │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+Olmo 3.1 Think 32B は、**750 ステップから 2300 ステップへ**の拡張訓練により、大幅な性能向上を達成しました。
+
+**性能向上の詳細**:
+
+- **AIME 2024**: 750 ステップ時の性能から +4 ポイント向上
+- **IFBench**: +20 ポイントの大幅改善（指示追従能力の向上）
+- **他ベンチマーク**: 性能低下なし（破局的忘却の回避）
+
+**長時間訓練の成功要因**:
+
+- KL 制約による安定性
+- グループベースの報酬正規化
+- 効率的な分散訓練インフラ
+
+:::
+
+::: {.callout-note icon="false" collapse="false"}
+## 07. 完全オープンな RL ベンチマーク: Dolci RL-Zero
+
+┌──────────────────────────────────────────────────────────────┐
+│                   Dolci RL-Zero Benchmark                    │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  Purpose:                                                    │
+│  - Decontaminated RL evaluation benchmark                    │
+│  - Enable reproducible RL research                           │
+│  - Track model improvement over RL training                  │
+│                                                              │
+│  Key Features:                                               │
+│  - Fully open and accessible                                 │
+│  - Zero contamination guarantee                              │
+│  - Multi-domain coverage (Math, Code, Chat)                  │
+│                                                              │
+│  Use Cases:                                                  │
+│  - Evaluate RL checkpoints during training                   │
+│  - Compare different RL algorithms                           │
+│  - Study generalization from RL training domains             │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+OlmoRL プロジェクトの一環として、**Dolci RL-Zero** ベンチマークが公開されました。
+
+**主な特徴**:
+
+- **Decontamination**: 訓練データとの重複を完全に排除
+- **完全オープン**: 問題、評価スクリプト、ベースライン結果をすべて公開
+- **再現可能性**: RL 研究の標準化されたベンチマーク環境を提供
+
+**ベンチマークの構成**:
+
+- Math: 数学的推論の評価問題セット
+- Code: プログラミング問題（新規作成）
+- Chat: 指示追従とマルチターン対話
+
+**研究への貢献**:
+
+- RL アルゴリズムの公平な比較
+- 訓練ステップごとの性能追跡
+- 汎化能力の定量評価
+
+:::
+
+---
+
+**まとめ**: OlmoRL は GRPO をベースとした効率的な強化学習システムで、思考型モデルの訓練を大幅に高速化（4 倍）しました。Math、Code、General chat の複数ドメインに対応し、Olmo 3.1 Think 32B の拡張訓練（2300 ステップ）で顕著な性能向上を実現。完全オープンな Dolci RL-Zero ベンチマークにより、再現可能な RL 研究環境を提供しています。
