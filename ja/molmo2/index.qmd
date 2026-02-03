@@ -1,0 +1,42 @@
+---
+title: "Molmo2"
+description: "完全オープンな Vision-Language Model で、ビデオグラウンディング（pointing & tracking）を実現"
+date: "2026-02-03"
+author: "Naoto Iwase"
+categories: [Machine Learning, VLM, Video Language Model, Multimodal, Grounding]
+image: "images/molmo2.png"
+---
+
+Molmo2 (Multimodal Open Language Model 2) は、Allen Institute for AI (AI2) とワシントン大学が開発した完全オープンな Vision-Language Model (VLM) ファミリーです。最大の特徴は、**ビデオグラウンディング（video grounding）** 機能を備え、動画内の「いつ、どこで」特定のイベントや物体が発生したかを正確に指し示すことができる点です。
+
+9つの新規データセット（完全にプロプライエタリモデルに依存せず構築）を使用し、オープンソースモデルの中で最高水準の性能を達成しています。特に、ビデオポインティングとトラッキングでは、Gemini 3 Pro などのプロプライエタリモデルを上回る性能を示しています。
+
+**論文**: [arXiv:2601.10611](https://arxiv.org/abs/2601.10611)
+
+**コード**: [github.com/allenai/molmo2](https://github.com/allenai/molmo2)
+
+**Demo**: [playground.allenai.org](https://playground.allenai.org)
+
+## 主な貢献
+
+- **9つの新規データセット**: プロプライエタリモデルからの蒸留を一切使用せず構築
+- **ビデオグラウンディング**: 時空間的なポインティングとトラッキングを実現
+- **超詳細なビデオキャプション**: 平均924語/動画（既存データセットの約2-12倍）
+- **完全オープン**: モデル、データ、コードを全て公開
+
+## モデルサイズ
+
+- **Molmo2-4B**: Qwen3 LLM ベース
+- **Molmo2-8B**: Qwen3 LLM ベース
+- **Molmo2-O-7B**: OLMo LLM ベース（完全オープン）
+
+## 目次
+
+- [全体像](00-overview.qmd)
+- [Dense Video Captioning](01-dense-video-captioning.qmd)
+- [Video Grounding: Pointing & Tracking](02-video-grounding.qmd)
+- [Multi-Image Understanding](03-multi-image-understanding.qmd)
+- [Vision-Language Connector](04-vision-language-connector.qmd)
+- [Long-Context Training](05-long-context-training.qmd)
+- [Token Weighting](06-token-weighting.qmd)
+- [Packing & Message Trees](07-packing-message-trees.qmd)

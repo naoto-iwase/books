@@ -1,0 +1,288 @@
+# Vision-Language Connector
+
+## 概要
+
+Vision-Language Connector は、Vision Transformer (ViT) が抽出した視覚特徴を、Large Language Model (LLM) が処理できる形式に変換する重要なモジュールです。Molmo2 では、標準的な VLM アーキテクチャ [@Clark2024Molmo] に従い、画像とビデオの両方を統一的に処理できる設計を採用しています。
+
+```{mermaid}
+%%| label: fig-connector-flow
+%%| fig-cap: "Vision-Language Connector のデータフロー"
+
+flowchart TD
+    A[Visual Input<br/>Image or Video] --> B[ViT Encoding<br/>Patch-level Features]
+    B --> C[Multi-layer Feature<br/>Extraction]
+    C --> D{Input Type}
+    D -->|Image| E[2×2 Attention<br/>Pooling]
+    D -->|Video Frame| F[3×3 Attention<br/>Pooling]
+    E --> G[Shared MLP<br/>Projection]
+    F --> G
+    G --> H[Visual Tokens<br/>for LLM]
+
+    style C fill:#e6f0ff
+    style E fill:#ffe6f0
+    style F fill:#ffe6f0
+    style G fill:#f0ffe6
+```
+
+## アーキテクチャの詳細
+
+### 多層特徴の使用
+
+Molmo2 の Vision-Language Connector は、ViT の単一層ではなく、**複数の層から特徴を抽出** します。
+
+- **Third-to-last layer（最終層から3番目）**: 高レベルのセマンティック特徴
+- **Ninth-from-last layer（最終層から9番目）**: 中レベルの特徴
+
+この設計は、先行研究の Molmo [@Clark2024Molmo] に従っており、異なる抽象度の視覚情報を組み合わせることで、より豊かな表現を実現しています。
+
+```
+ViT Layer Structure:
+┌─────────────────────────────────┐
+│  Layer 0 (Input)                │
+│  Layer 1                        │
+│  ...                            │
+│  Layer N-9  ◄── 9th-from-last  │ ─┐
+│  ...                            │  │
+│  Layer N-3  ◄── 3rd-to-last    │ ─┤ Features used
+│  Layer N-2                      │  │ by Connector
+│  Layer N-1                      │  │
+│  Layer N (Output)               │ ─┘
+└─────────────────────────────────┘
+```
+
+### Attention Pooling
+
+パッチレベルの特徴を削減するために、**Attention Pooling** を使用します。パッチの平均をクエリとし、各パッチ窓を単一のベクトルに集約します。
+
+#### 画像の場合: 2×2 Pooling
+
+```
+Input Patches (4×4 example):
+┌─────┬─────┬─────┬─────┐
+│ P₁  │ P₂  │ P₃  │ P₄  │
+├─────┼─────┼─────┼─────┤
+│ P₅  │ P₆  │ P₇  │ P₈  │
+├─────┼─────┼─────┼─────┤
+│ P₉  │ P₁₀ │ P₁₁ │ P₁₂ │
+├─────┼─────┼─────┼─────┤
+│ P₁₃ │ P₁₄ │ P₁₅ │ P₁₆ │
+└─────┴─────┴─────┴─────┘
+
+After 2×2 Attention Pooling:
+┌───────────┬───────────┐
+│ T₁        │ T₂        │
+│ (P₁~P₆)   │ (P₃~P₈)   │
+├───────────┼───────────┤
+│ T₃        │ T₄        │
+│ (P₉~P₁₄)  │ (P₁₁~P₁₆) │
+└───────────┴───────────┘
+
+Token count: 16 → 4 (1/4 reduction)
+```
+
+#### ビデオフレームの場合: 3×3 Pooling
+
+ビデオではフレーム数が多いため、**3×3 の窓** を使用してトークン数をさらに削減します。
+
+```
+Input Patches (9×9 example):
+┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
+│P₁ │P₂ │P₃ │P₄ │P₅ │P₆ │P₇ │P₈ │P₉ │
+├───┼───┼───┼───┼───┼───┼───┼───┼───┤
+│...│...│...│...│...│...│...│...│...│
+└───┴───┴───┴───┴───┴───┴───┴───┴───┘
+        ↓ 3×3 Attention Pooling
+┌─────────┬─────────┬─────────┐
+│   T₁    │   T₂    │   T₃    │
+│ (9 P's) │ (9 P's) │ (9 P's) │
+├─────────┼─────────┼─────────┤
+│   ...   │   ...   │   ...   │
+└─────────┴─────────┴─────────┘
+
+Token count: 81 → 9 (1/9 reduction)
+```
+
+### Shared MLP Projection
+
+最後に、プールされた特徴は **Shared MLP** によって投影されます。この MLP は画像とビデオフレームで **パラメータを共有** しており、統一的な視覚表現を学習します。
+
+```{mermaid}
+%%| label: fig-connector-architecture
+%%| fig-cap: "Vision-Language Connector のアーキテクチャ"
+
+flowchart LR
+    A[ViT Layer N-9] --> C[Concat]
+    B[ViT Layer N-3] --> C
+    C --> D{Pooling Window}
+    D -->|Image| E[2×2 Attention]
+    D -->|Video| F[3×3 Attention]
+    E --> G[Shared MLP]
+    F --> G
+    G --> H[Visual Tokens]
+
+    style C fill:#e6f0ff
+    style G fill:#f0ffe6
+```
+
+## Cropping 戦略
+
+### 画像の Cropping
+
+Molmo2 は、**Multi-crop** 戦略を採用しています。
+
+- **1つのダウンスケール済み全体クロップ** + **最大 K 個のオーバーラップタイルクロップ**
+- トレーニング時: **K = 8**
+- 推論時: **K = 24**（高解像度処理）
+
+K 個のクロップでタイル化できない画像は、ダウンスケールされます。
+
+```
+Original Image:
+┌─────────────────────────────────┐
+│                                 │
+│                                 │
+│        High-res Image           │
+│                                 │
+│                                 │
+└─────────────────────────────────┘
+         ↓
+Downscaled Crop + K Overlapping Crops:
+┌───────┐  ┌─────┬─────┬─────┐
+│ Full  │  │ C₁  │ C₂  │ C₃  │
+│ (DS)  │  ├─────┼─────┼─────┤
+└───────┘  │ C₄  │ C₅  │ C₆  │
+           ├─────┼─────┼─────┤
+           │ C₇  │ C₈  │ ... │
+           └─────┴─────┴─────┘
+```
+
+::: {.callout-note}
+
+## Column Tokens
+
+Multi-crop 画像の場合、**Column tokens** を LLM への入力に含めます。これにより、画像のアスペクト比情報を LLM に伝達できます。
+
+単一クロップ画像（常に正方形）には Column tokens を含めません。
+
+:::
+
+### ビデオの Cropping
+
+ビデオの場合、計算コストを削減するために以下の戦略を取ります。
+
+- **サンプリングレート: S = 2 fps**（2秒ごとに1フレーム）
+- 各フレームは単一クロップとして処理（必要に応じてダウンスケール）
+- 最大フレーム数: **F = 128**（標準トレーニング）または **F = 384**（長尺コンテキストトレーニング）
+
+```
+Video Timeline:
+0s    1s    2s    3s    4s    5s    ...
+│─────│─────│─────│─────│─────│─────│
+      ↓     ↓     ↓     ↓     ↓
+    Frame₁ Frame₂ Frame₃ ... (@ 2 fps)
+
+If video length > F/S seconds:
+→ Uniformly sample F frames
+→ Always include LAST frame
+```
+
+::: {.callout-tip}
+
+## 最終フレームの特別な扱い
+
+ビデオの **最終フレーム** は常に含まれます。これは、多くのビデオプレイヤーが再生終了後に最終フレームを表示するため、ユーザーにとって特別な重要性を持つ可能性があるためです。
+
+:::
+
+## Bi-directional Attention
+
+Molmo2 では、LLM が視覚トークンを処理する際に、**画像トークン同士が相互に attend できる** ように設計されています [@Miao2024LongVU; @Wu2024DoubleLLaVA]。
+
+通常の LLM では、因果的マスク（causal mask）により、各トークンは自分より前のトークンにしか注意を向けられません。しかし、Molmo2 では、視覚トークンに対して **bi-directional attention** を許可しています。
+
+```
+Standard Causal Attention:
+  T₁  T₂  T₃  T₄
+T₁ ●   ×   ×   ×
+T₂ ●   ●   ×   ×
+T₃ ●   ●   ●   ×
+T₄ ●   ●   ●   ●
+
+Bi-directional Attention on Vision Tokens:
+  V₁  V₂  V₃  T₁  T₂
+V₁ ●   ●   ●   ×   ×
+V₂ ●   ●   ●   ×   ×
+V₃ ●   ●   ●   ×   ×
+T₁ ●   ●   ●   ●   ×
+T₂ ●   ●   ●   ●   ●
+
+V: Vision tokens, T: Text tokens
+```
+
+これにより、異なるフレームや異なる画像からの視覚トークンが相互に情報を交換でき、時空間的な関係を学習できます。
+
+::: {.callout-important}
+
+## Bi-directional Attention の効果
+
+アブレーション研究により、視覚トークンへの Bi-directional attention が **性能を向上させる** ことが確認されています。
+
+特に、ビデオトラッキングやマルチイメージ理解など、複数のフレーム/画像間の関係を捉える必要があるタスクで有効です。
+
+:::
+
+## LLM への入力フォーマット
+
+Vision-Language Connector によって生成された視覚トークンは、以下の形式で LLM に入力されます。
+
+### ビデオの場合
+
+```
+<image_start> [Visual Tokens for Frame₁] <timestamp>0.5s</timestamp>
+<image_start> [Visual Tokens for Frame₂] <timestamp>1.0s</timestamp>
+...
+[Subtitle text] <timestamp>0.5s-2.0s</timestamp>
+```
+
+- 各フレームの視覚トークンに **タイムスタンプ** を付加
+- 字幕が利用可能な場合は、タイムスタンプ付きテキストとして追加
+
+### マルチイメージの場合
+
+```
+<image_start> [Visual Tokens for Image₁] <image>1</image>
+<image_start> [Visual Tokens for Image₂] <image>2</image>
+...
+```
+
+- 各画像に **画像インデックス** を付加
+
+### Multi-crop 画像の場合
+
+```
+<image_start> [Column Tokens] [Visual Tokens for Full Crop]
+[Visual Tokens for Crop₁] [Visual Tokens for Crop₂] ...
+```
+
+- **Column tokens** でアスペクト比を伝達
+- 全体クロップ + 部分クロップのトークンを結合
+
+## まとめ
+
+Molmo2 の Vision-Language Connector は、以下の特徴を持ちます。
+
+1. **Multi-layer features**: ViT の複数層（3rd-to-last, 9th-from-last）から特徴を抽出
+2. **Adaptive pooling**: 画像には 2×2、ビデオフレームには 3×3 の Attention Pooling
+3. **Shared parameters**: 画像とビデオで統一的な MLP projection
+4. **Multi-crop strategy**: 高解像度処理のため、最大24個のクロップを使用
+5. **Efficient video processing**: 2 fps サンプリング + 最終フレームの保持
+6. **Bi-directional attention**: 視覚トークン間の相互作用を許可（性能向上）
+7. **Column tokens**: Multi-crop 画像のアスペクト比情報を伝達
+
+この設計により、Molmo2 は画像とビデオを統一的に処理しながら、計算効率と表現力のバランスを実現しています。
+
+## 参考文献
+
+- Clark, C., et al. (2024). Molmo and PixMo: Open Weights and Open Data for State-of-the-Art Multimodal Models. arXiv:2409.17146.
+- Miao, X., et al. (2024). LongVU: Spatiotemporal Adaptive Compression for Long Video-Language Understanding. arXiv:2410.17434.
+- Wu, H., et al. (2024). DoubleLLaVA: Efficient Long Video Understanding with Grouped Frame Tokens. arXiv:2410.00907.

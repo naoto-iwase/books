@@ -1,0 +1,361 @@
+# Molmo2 Technical Report まとめ
+
+## 概要
+
+Molmo2 (Multimodal Open Language Model 2) は、Allen Institute for AI (AI2) とワシントン大学が開発した完全オープンな Vision-Language Model (VLM) ファミリーです。最大の特徴は、**ビデオグラウンディング（video grounding）** 機能を備えたことです。
+
+従来の VLM は画像や動画の内容を理解して説明することはできましたが、「いつ、どこで」特定のイベントや物体が発生したかを正確に指し示す（grounding）能力が不足していました。Molmo2 は、ビデオ内の時空間的なポインティングとトラッキングを実現し、オープンソースモデルの中で最高水準の性能を達成しています。
+
+**論文**: [arXiv:2601.10611](https://arxiv.org/abs/2601.10611)
+
+**主な貢献**:
+
+- 9つの新規データセット（完全にプロプライエタリモデルに依存せず構築）
+- ビデオグラウンディング（pointing & tracking）の実現
+- 超詳細なビデオキャプション（平均924語/動画）
+- 完全オープン（モデル、データ、コード）
+
+**モデルサイズ**:
+
+- Molmo2-4B（Qwen3 LLM ベース）
+- Molmo2-8B（Qwen3 LLM ベース）
+- Molmo2-O-7B（OLMo LLM ベース、完全オープン）
+
+## モチベーション: Video Grounding の重要性
+
+現在、最も強力な Video-Language Model (VLM) はプロプライエタリであり、ウェイト、データ、トレーニングレシピが公開されていません。また、オープンウェイトモデルの多くは、プロプライエタリモデルから合成データを生成する「蒸留」に依存しており、完全に独立したオープンな基盤が不足していました。
+
+さらに、既存の VLM には **グラウンディング（grounding）** 能力が欠けています。グラウンディングとは、モデルが「ロボットが赤いブロックを何回掴んだか？」という質問に対して、各掴みイベントの時空間座標を出力したり、「カップがいつテーブルから落ちたか？」に対してカップの軌跡（track）を返したりする能力です。
+
+画像グラウンディングは既に標準的な機能ですが、ビデオグラウンディングは一部のプロプライエタリシステムでのみ限定的にサポートされており、オープンソースでは未開拓の領域でした。
+
+Molmo2 は、この gap を埋めるために開発されました。
+
+## データセット: 9つの新規データセット
+
+Molmo2 の核心は、**9つの新規データセット** です。すべてプロプライエタリモデルからの蒸留を一切使用せず、人手アノテーションと LLM ベースの合成パイプラインで構築されています。
+
+::: {.callout-important}
+## プロプライエタリモデル非依存の重要性
+
+多くのオープンモデル（LLaVA-Video, PLM, ShareGPT4Video など）は、GPT-4V や Gemini などのプロプライエタリモデルから合成データを生成する「蒸留」アプローチを採用しています。
+
+この手法には以下の問題があります：
+- **透明性の欠如**: プロプライエタリモデルの能力に依存するため、データの品質が不透明
+- **バイアスの継承**: プロプライエタリモデルのバイアスや誤りがそのまま継承される
+- **改善の限界**: 元モデルを超える性能を達成することが困難
+
+Molmo2 は、人手アノテーションと自前モデル（Molmo, Claude Sonnet 4.5）のみを使用することで、完全に独立したデータセット構築を実現しています。これにより、オープンソースコミュニティが SOTA を超える基盤を得られます。
+:::
+
+### 1. Molmo2-Cap（人手アノテーション）
+
+- **内容**: 104k のビデオレベルキャプション + 431k のクリップレベルキャプション
+- **特徴**: 平均 **924 語/動画** という超詳細なキャプション
+  - 既存データセットとの比較: Video Localized Narratives (75語), ShareGPT4-Video (280語), LLaVA-Video (547語)
+- **パイプライン**:
+  1. アノテーターが短いクリップを音声で説明（タイピングより詳細に記述可能）
+  2. Whisper-1 で文字起こし
+  3. LLM で文章を整形
+  4. Molmo でフレームレベルのキャプションを生成し、統合
+
+> 詳細: [Dense Video Captioning](01-dense-video-captioning.qmd)
+
+### 2. Molmo2-AskModelAnything（人手アノテーション）
+
+- **内容**: 140k のビデオ QA ペア
+- **特徴**: 人手による詳細な質問と回答
+- **パイプライン**:
+  1. ビデオを31カテゴリにクラスタリングして多様性を確保
+  2. アノテーターが詳細な質問を作成
+  3. Claude Sonnet 4.5 が初期回答を生成
+  4. アノテーターが反復的に回答を改善
+
+### 3. Molmo2-CapQA & Molmo2-SubtitleQA（合成）
+
+- **CapQA**: 1M QA ペア（200k 動画、5 QA/動画）
+  - ビデオをシーンに分割し、各シーンをキャプション化
+  - LLM がキャプションから QA を生成
+- **SubtitleQA**: 300k QA ペア（100k 動画、3 QA/動画）
+  - Whisper-1 で字幕を抽出
+  - 視覚情報と字幕の両方を使う推論問題を生成
+
+### 4. Molmo2-VideoPoint（人手アノテーション）
+
+- **内容**: 650k のビデオポインティングクエリ（280k 動画、平均6ポイント/動画）
+- **カテゴリ**: 8種類
+  - Objects, Animals, Actions/Events
+  - Referring expressions, Indirect references
+  - Spatial references, Comparative references
+  - Visual artifacts/anomalies（生成動画用）
+- **パイプライン**:
+  1. LLM がキャプションからクエリを生成
+  2. アノテーターがフレーム（2 fps）と正確な位置をクリック
+
+> 詳細: [Video Grounding: Pointing & Tracking](02-video-grounding.qmd)
+
+### 5. Molmo2-VideoTrack（人手アノテーション）
+
+- **内容**: 3.6k ビデオクリップ、15k の複雑な自然言語クエリ（平均2.28オブジェクト/クエリ）
+- **特徴**: 既存のトラッキングアノテーションに対して、複雑なテキストクエリを作成
+- **パイプライン**:
+  1. セグメンテーションまたはバウンディングボックスのトラックを表示
+  2. アノテーターがオブジェクトのサブセットに適用される非自明なクエリを作成
+  3. 別ラウンドで検証
+
+> 詳細: [Video Grounding: Pointing & Tracking](02-video-grounding.qmd)
+
+### 6 & 7. AcademicVideoPoint & AcademicVideoTrack（キュレーション）
+
+- **VideoPoint**: 6つのデータセットから49k のポインティング・カウンティング QA に変換
+- **VideoTrack**: 7つの Ref-VOS データセット + 11のバウンディングボックストラッキングデータセットを変換（SAM-2 でセグメンテーションマスク生成）
+
+### 8. Molmo2-MultiImageQA（人手アノテーション）
+
+- **内容**: 45k 画像セット（96k ユニーク画像）、72k QA ペア
+- **特徴**: 意味的に関連する画像セット（2-5枚、平均2.73枚）に対する QA
+- **パイプライン**:
+  1. キャプションの類似度で画像をグルーピング
+  2. アノテーターが質問を作成
+  3. LLM との反復ループで回答を改善
+
+> 詳細: [Multi-Image Understanding](03-multi-image-understanding.qmd)
+
+### 9. Molmo2-MultiImagePoint & Molmo2-SynMultiImageQA（合成）
+
+- **MultiImagePoint**: 470k のポインティング・カウンティング例（PixMo-Points からクラスタリングで生成）
+- **SynMultiImageQA**: 188k の合成マルチイメージ例（CoSyn を拡張、チャート・表・文書など）
+
+## アーキテクチャ
+
+Molmo2 は、標準的な VLM アーキテクチャを採用しています。
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Video Input (max 128 frames @ 2fps, or 384 for long ctx)  │
+│  or Image Input (1 crop + up to K=8 overlapping crops)     │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Vision Transformer (ViT)                                   │
+│  - Extracts patch-level features                            │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Vision-Language Connector                                  │
+│  - Uses features from 3rd-to-last & 9th-from-last ViT layer │
+│  - Attention pooling: 2x2 for images, 3x3 for video frames  │
+│  - Shared MLP projection                                    │
+└─────────────────────────────────────────────────────────────┘
+                            ↓
+┌─────────────────────────────────────────────────────────────┐
+│  LLM (Qwen3 or OLMo)                                        │
+│  - Visual tokens + text timestamps (video) or image indices │
+│  - Bi-directional attention between vision tokens           │
+│  - Output: text + <points> (for grounding)                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**主要な設計選択**:
+- **Cropping**: 画像は最大24クロップ（推論時）、動画は2 fpsサンプリング
+- **Bi-directional attention**: 画像トークン同士が相互に attend 可能（性能向上）
+- **Pointing フォーマット**: 正規化された (x, y, timestamp/image_index, object_id) をプレーンテキストで出力
+
+> 詳細: [Vision-Language Connector](04-vision-language-connector.qmd)
+
+## トレーニング
+
+### 3段階トレーニングパイプライン
+
+Molmo2 は **3段階** でトレーニングされます。
+
+#### Stage 1: Pre-training（画像のみ）
+
+- **データ**: PixMo-Cap（キャプション）、PixMo-Points（ポインティング）、Tulu（NLP）
+- **ミキシング比率**: 60% キャプション、30% ポインティング、10% NLP
+- **ステップ数**: 32k ステップ、バッチサイズ128（約4エポック）
+- **学習率**: ViT、Connector、LLM で個別に設定
+
+#### Stage 2: Supervised Fine-Tuning (SFT)
+
+- **データ**: PixMo + Molmo2 データセット + オープンソースビデオ/画像データセット
+- **カテゴリ別サンプリング**: 手動で調整したサンプリングレート（Table 1参照）
+- **ステップ数**: 30k ステップ、バッチサイズ128、最大シーケンス長16,384
+
+| カテゴリ | サンプリング率 | データセット数 | 例数 |
+|---------|--------------|--------------|------|
+| Captions/Long QA | 13.6% | 6 | 1.2M |
+| Image QA | 22.7% | 32 | 2.4M |
+| Video QA | 18.2% | 32 | 2.4M |
+| Image Pointing | 9.1% | 4 | 1.1M |
+| Video Pointing | 13.6% | 7 | 0.37M |
+| Video Tracking | 13.6% | 22 | 0.80M |
+| NLP | 9.1% | 1 | 0.99M |
+
+#### Stage 3: Long-Context SFT
+
+- **コンテキスト長**: 36,864（Stage 2の2.25倍）
+- **フレーム数**: F = 384（Stage 2 の3倍）
+- **ステップ数**: 2k ステップ
+- **並列化**: Context Parallelism (CP) を使用、8 GPU で処理
+- **注意**: オーバーヘッドが大きいため短期間のみ実施
+
+> 詳細: [Long-Context Training](05-long-context-training.qmd)
+
+### 主要なトレーニング技術
+
+#### Token Weighting
+
+データには、単一トークン出力の多肢選択問題から、4000+トークンの長いビデオキャプションまで含まれます。長い出力が損失の大部分を占めてしまうと、短い回答タスクの性能が低下します。
+
+**解決策**: タスクごとに重み付けを調整
+- ビデオキャプション: 重み 0.1
+- ポインティング: 重み 0.2
+- その他: $\frac{4}{\sqrt{n}}$（$n$ = 回答トークン数）
+
+> 詳細: [Token Weighting](06-token-weighting.qmd)
+
+#### Packing
+
+例によってトークン数が大きく異なる（数百～16k+）ため、padding を避けるために **packing** を使用します。Vision-language モデルでは、ViT 用のクロップと LLM 用のトークンの両方を効率的にパックする必要があります。
+
+Molmo2 は、オンザフライでパッキングするアルゴリズムを開発し、**15倍** のトレーニング効率を達成しています。
+
+> 詳細: [Packing & Message Trees](07-packing-message-trees.qmd)
+
+#### Message Trees
+
+1つの画像/動画に複数のアノテーションがある場合、**メッセージツリー** としてエンコードします。視覚入力が最初のメッセージとなり、各アノテーションが異なるブランチになります。ツリーは単一シーケンスに線形化され、カスタムアテンションマスクによってブランチ間のクロスアテンションを防ぎます。
+
+平均して、データ内の例には4つのアノテーションがあり、packing により16,348トークンのシーケンスに平均3.8例を詰め込むことができています。
+
+> 詳細: [Packing & Message Trees](07-packing-message-trees.qmd)
+
+## 評価
+
+### Overall Results（短尺ビデオ、キャプション、カウンティング）
+
+Molmo2 は、標準的なビデオベンチマークと新規のキャプション・カウンティングベンチマークで評価されています。
+
+**主要な結果**:
+- **短尺ビデオ理解**: オープンウェイトモデル中で SOTA
+  - NextQA: 86.2（Molmo2-8B）
+  - PerceptionTest: 82.1
+  - MVBench: 75.9
+  - MotionBench: 62.2
+- **キャプション**: Molmo2-CapTest で F1 Score 43.2（Molmo2-8B）
+  - GPT-5 (50.1)、Gemini 2.5 Pro (42.1) に次ぐ性能
+- **カウンティング**: Molmo2-VideoCount で 35.5% accuracy（Molmo2-8B）
+  - Qwen3-VL-8B (29.6%) を大きく上回る
+- **長尺ビデオ**: 最良のオープンウェイトモデル（Eagle2.5-8B など）には及ばない
+  - 原因: オープンソースの長尺（10+分）トレーニングデータ不足
+
+::: {.callout-note collapse="true"}
+## 長尺ビデオでの課題
+
+Molmo2 は、以下の長尺ビデオベンチマークで課題を抱えています：
+
+- **LongVideoBench**: 67.5（Eagle2.5-8B: 66.4、PLM-8B: 56.9）
+- **MLVU**: 60.2（Eagle2.5-8B: 60.4、PLM-8B: 52.6）
+- **LVBench**: 52.8（Eagle2.5-8B: 50.9、PLM-8B: 44.5）
+
+**原因**:
+1. **オープンデータ不足**: 10分以上の動画に対する高品質なアノテーションが不足
+2. **計算制約**: Long-Context Training（Stage 3）は 2,000 ステップのみ実施（オーバーヘッドが大きい）
+3. **トレードオフ**: キャプション品質を優先したため、長尺ビデオタスクの性能がやや低下
+
+ただし、Molmo2 の長尺ビデオ性能は依然として多くのオープンモデルを上回っており、完全オープンデータのみを使用していることを考慮すれば十分な成果です。
+
+> 詳細: [Long-Context Training](05-long-context-training.qmd)
+:::
+
+**Human Preference Study**:
+- Elo スコア: 1057（Molmo2-8B）
+- Gemini 3 Pro (1082)、Gemini 2.5 Flash (1084) に次ぐ5位
+- 完全オープンモデルとしては最高性能
+
+### Grounding Results（ビデオポインティング & トラッキング）
+
+Molmo2 の最大の強みは **ビデオグラウンディング** です。
+
+**Video Pointing**:
+- Molmo2-VP ベンチマーク（新規）で F1 Score **38.4**
+  - Gemini 3 Pro (20.0) を大きく上回る
+  - プロプライエタリモデルを含めて最高性能
+
+**Video Tracking**:
+- BURST（test）で accuracy **56.2**
+- Molmo2-VC（新規ベンチマーク）で J&F **41.1**
+  - Gemini 3 Pro を上回る（詳細はベンチマークによる）
+
+既存のオープンウェイトモデル（Qwen3-VL など）は、ビデオトラッキング機能を提供していないため、Molmo2 が新たな capability を開拓したと言えます。
+
+> 詳細: [Video Grounding: Pointing & Tracking](02-video-grounding.qmd)
+
+### Image Results
+
+Molmo2 は画像タスクでも強力な性能を維持しています。
+
+- **MMMU**: 47.9（Molmo2-8B）
+- **MathVista**: 63.1
+- **ChartQA**: 79.5
+- **AI2D**: 84.5
+
+ビデオ能力を追加しても、画像タスクの性能を損なっていないことが確認されています。
+
+### Ablations（アブレーション）
+
+論文では、以下の要素の影響を検証しています。
+
+- **Bi-directional attention on vision tokens**: 有効（性能向上）
+- **Token weighting**: 有効（長短出力のバランス改善）
+- **Packing**: 15倍の効率向上
+- **Message trees**: 複数アノテーションの効率的な学習
+
+> 詳細: [Token Weighting](06-token-weighting.qmd), [Packing & Message Trees](07-packing-message-trees.qmd)
+
+## 関連研究
+
+Molmo2 は、以下の研究の流れを統合しています。
+
+- **Vision-Language Models**: GPT-4V, Gemini, LLaVA, InternVL
+- **Video Understanding**: VideoChat, LLaVA-Video, PLM, Eagle
+- **Grounding**: KOSMOS-2, Ferret, GPT-4V with set-of-mark
+- **Video Grounding**: Grounding-DINO, SAM-2, Ref-VOS
+- **Open Data**: PixMo, CoSyn, ShareGPT4Video
+
+Molmo2 の独自性は、**完全オープン** かつ **ビデオグラウンディング** を実現した点にあります。
+
+::: {.callout-note collapse="true"}
+## 他モデルとの比較
+
+**プロプライエタリモデル**:
+- **GPT-4V / GPT-5**: 画像グラウンディングは可能だが、ビデオトラッキングは非サポート
+- **Gemini 2.5 Pro / 3 Pro**: 限定的なビデオグラウンディング機能を持つが、Molmo2 の pointing/tracking 性能に及ばない
+- **Claude Sonnet 4.5**: ビデオグラウンディング機能なし
+
+**オープンウェイトモデル**:
+- **Qwen3-VL（4B/8B）**: ビデオ理解は強力だが、ビデオグラウンディング機能なし。Molmo2 が counting で上回る
+- **InternVL3.5（4B/8B）**: 画像タスクに特化、ビデオグラウンディングなし
+- **LLaVA-Video-7B**: プロプライエタリモデルから蒸留されたデータを使用。グラウンディング機能なし
+- **PLM（3B/8B）**: 詳細なキャプションデータを持つが、Molmo2 より平均語数が少ない（Molmo2: 924語 vs PLM: 不明）
+
+**完全オープンモデル**:
+- **Molmo2-O-7B**: OLMo LLM を使用した唯一の完全オープンモデル（ViT は依然としてプロプライエタリ）
+
+Molmo2 は、**ビデオグラウンディング** という新しい capability を開拓し、プロプライエタリモデルを含めて最高性能を達成した点で、他モデルと一線を画しています。
+:::
+
+## 結論
+
+Molmo2 は、完全オープンな VLM として、以下を達成しました。
+
+1. **9つの新規データセット** を構築（プロプライエタリモデルへの依存ゼロ）
+2. **ビデオグラウンディング**（pointing & tracking）を実現
+3. **短尺ビデオ理解** でオープンモデル中 SOTA
+4. **キャプション・カウンティング** でプロプライエタリモデルに迫る性能
+5. **完全オープン**（モデル、データ、コード）
+
+課題として、長尺ビデオ（10+分）でのパフォーマンスは最良のオープンウェイトモデルに及びませんが、これはオープンソースの長尺データ不足が原因です。
+
+Molmo2 は、オープンソースコミュニティが SOTA の VLM を構築するための強固な基盤を提供します。

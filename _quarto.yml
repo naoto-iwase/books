@@ -1,6 +1,10 @@
 project:
   type: website
   output-dir: _site
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "!skills/"
 
 execute:
   freeze: auto
@@ -55,6 +59,30 @@ website:
               href: ja/olmo-3/05-long-context.md
             - text: "GRPO と OlmoRL"
               href: ja/olmo-3/06-grpo-olmorl.md
+
+    - id: molmo2
+      title: "Molmo2"
+      style: "docked"
+      contents:
+        - section: "Molmo2"
+          href: ja/molmo2/index.qmd
+          contents:
+            - text: "全体像"
+              href: ja/molmo2/00-overview.qmd
+            - text: "Dense Video Captioning"
+              href: ja/molmo2/01-dense-video-captioning.qmd
+            - text: "Video Grounding: Pointing & Tracking"
+              href: ja/molmo2/02-video-grounding.qmd
+            - text: "Multi-Image Understanding"
+              href: ja/molmo2/03-multi-image-understanding.qmd
+            - text: "Vision-Language Connector"
+              href: ja/molmo2/04-vision-language-connector.qmd
+            - text: "Long-Context Training"
+              href: ja/molmo2/05-long-context-training.qmd
+            - text: "Token Weighting"
+              href: ja/molmo2/06-token-weighting.qmd
+            - text: "Packing & Message Trees"
+              href: ja/molmo2/07-packing-message-trees.qmd
 
 format:
   html:
