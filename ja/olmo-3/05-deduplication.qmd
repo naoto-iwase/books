@@ -143,34 +143,34 @@ Dolma 3 の重複排除を実現するために、**Duplodocus** という新し
 ### Duplodocus のワークフロー
 
 ```
-┌──────────────────────────────────────────────────────────────┐
-│                   Duplodocus Workflow                        │
-├──────────────────────────────────────────────────────────────┤
-│  Input: 38.7B documents                                      │
+┌───────────────────────────────────────────────────────────────┐
+│                   Duplodocus Workflow                         │
+├───────────────────────────────────────────────────────────────┤
+│  Input: 38.7B documents                                       │
 │    |                                                          │
 │    v                                                          │
-│  Stage 1: Hash-based exact deduplication                     │
-│    | - Compute SHA-256 hash for each document                │
-│    | - Remove duplicates                                     │
-│    | - Output: 12.8B documents (67% reduction)               │
+│  Stage 1: Hash-based exact deduplication                      │
+│    | - Compute SHA-256 hash for each document                 │
+│    | - Remove duplicates                                      │
+│    | - Output: 12.8B documents (67% reduction)                │
 │    |                                                          │
 │    v                                                          │
-│  Stage 2: MinHash fuzzy deduplication                        │
-│    | - Generate MinHash signatures                           │
-│    | - LSH for candidate pairs                               │
-│    | - Cluster similar documents                             │
-│    | - Output: 9.8B documents (23% reduction)                │
+│  Stage 2: MinHash fuzzy deduplication                         │
+│    | - Generate MinHash signatures                            │
+│    | - LSH for candidate pairs                                │
+│    | - Cluster similar documents                              │
+│    | - Output: 9.8B documents (23% reduction)                 │
 │    |                                                          │
 │    v                                                          │
-│  Stage 3: Suffix array substring deduplication               │
-│    | - Build suffix arrays                                   │
-│    | - Detect repeated substrings (>=500 bytes)              │
-│    | - Mark and remove                                       │
-│    | - Output: 9.7B documents (14% byte reduction)           │
+│  Stage 3: Suffix array substring deduplication                │
+│    | - Build suffix arrays                                    │
+│    | - Detect repeated substrings (>=500 bytes)               │
+│    | - Mark and remove                                        │
+│    | - Output: 9.7B documents (14% byte reduction)            │
 │    |                                                          │
 │    v                                                          │
-│  Output: 9.7B documents, 36.5T bytes                         │
-└──────────────────────────────────────────────────────────────┘
+│  Output: 9.7B documents, 36.5T bytes                          │
+└───────────────────────────────────────────────────────────────┘
 ```
 
 ## 最終結果
