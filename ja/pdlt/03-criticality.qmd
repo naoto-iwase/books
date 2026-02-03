@@ -1,0 +1,392 @@
+# Criticality: 臨界性
+
+## 概要
+
+Criticality（臨界性）は、深層ニューラルネットワークの初期化において最も重要な概念の一つである。適切な初期化ハイパーパラメータの選択により、信号が層を通じて指数的に増大（exploding）または減衰（vanishing）することなく、臨界点（critical point）に保たれる。この criticality の概念は、統計物理学における相転移（phase transition）の理論から着想を得ており、深層学習の訓練可能性（trainability）と汎化性能（generalization）の両方に深く関わっている。
+
+## Exploding と Vanishing の問題
+
+深層ニューラルネットワークにおいて、信号が層を通過する際の振る舞いは、初期化ハイパーパラメータに強く依存する。適切でない初期化は、以下の二つの問題のいずれかを引き起こす。
+
+### Exploding Problem（爆発問題）
+
+重みの分散 $C_W > 1$ の場合、preactivation の共分散（covariance）$G^{(\ell)}_{\alpha\beta}$ は層を通じて指数的に増大する:
+
+$$
+G^{(\ell)}_{\alpha\beta} = (C_W)^\ell G^{(0)}_{\alpha\beta} \to \infty \quad \text{as } \ell \to \infty
+$$
+
+この状況では:
+
+- **ネットワーク出力の発散**: 出力値が exponentially large となり、数値的不安定性を引き起こす
+- **勾配の爆発**: バックプロパゲーション時の勾配が exponentially large となり、パラメータ更新が不安定になる
+- **訓練の失敗**: 損失関数の値が発散し、学習が進まない
+
+### Vanishing Problem（消失問題）
+
+逆に、重みの分散 $C_W < 1$ の場合、共分散は層を通じて指数的に減衰する:
+
+$$
+G^{(\ell)}_{\alpha\beta} = (C_W)^\ell G^{(0)}_{\alpha\beta} \to 0 \quad \text{as } \ell \to \infty
+$$
+
+この状況では:
+
+- **情報の損失**: 入力データの構造が深層で消失し、全ての入力が同じ出力に写像される
+- **勾配の消失**: バックプロパゲーション時の勾配が exponentially small となり、浅い層のパラメータが更新されない
+- **表現学習の不能**: ネットワークが有用な内部表現を学習できない
+
+::: {.callout-important}
+## Exploding と Vanishing は双対問題
+
+Exploding problem と vanishing problem は、同じ数学的構造の両端に位置する双対的な問題である。Forward pass における kernel の exploding/vanishing は、backward pass における gradient の exploding/vanishing に対応する（Chapter 9.4 参照）。
+:::
+
+## Critical Initialization（臨界初期化）
+
+### Critical Point（臨界点）
+
+Exploding と vanishing の二つの regime の境界に、特別な点が存在する。この点では、重みの分散が $C_W = 1$ に調整されており、共分散が層を通じて保存される:
+
+$$
+G^{(\ell)}_{\alpha\beta} = G^{(0)}_{\alpha\beta} \quad \text{for all } \ell
+$$
+
+この点を **critical point**（臨界点）と呼び、このような初期化を **critical initialization**（臨界初期化）と呼ぶ。Critical point は以下の特徴を持つ:
+
+- **Self-similarity（自己相似性）**: 共分散の統計的性質が層を通じて不変
+- **Nontrivial fixed point（非自明固定点）**: 入力データの構造を保持する固定点（$G^* \neq 0, \infty$）
+- **Stable information flow（安定的情報伝播）**: 信号が exponential behavior なしに伝播
+
+::: {.callout-note}
+## 統計物理学との類似
+
+Critical point の概念は、統計物理学における臨界温度（critical temperature）の類推である。例えば、磁石は高温では常磁性（paramagnetic）相、低温では強磁性（ferromagnetic）相を示すが、臨界温度では自己相似性を示す特別な状態になる。深層ニューラルネットワークにおいても、$C_W$ が臨界値から外れると、vanishing 相（$C_W < 1$）または exploding 相（$C_W > 1$）に遷移する。
+:::
+
+## Criticality の数学的定式化
+
+### Deep Linear Networks の場合
+
+最も単純なケースとして、活性化関数が恒等写像である deep linear networks を考える。この場合、共分散の recursion は以下の形をとる:
+
+$$
+G^{(\ell+1)}_{\alpha\beta} = C_W G^{(\ell)}_{\alpha\beta}
+$$
+
+初期条件 $G^{(0)}_{\alpha\beta} = \frac{1}{n_0} \sum_{i=1}^{n_0} x_{i;\alpha} x_{i;\beta}$ の下で、この recursion の解は:
+
+$$
+G^{(\ell)}_{\alpha\beta} = (C_W)^\ell G^{(0)}_{\alpha\beta}
+$$
+
+Criticality condition は:
+
+$$
+C_W = 1
+$$
+
+この条件下で、共分散は層を通じて完全に保存される。
+
+### 非線形活性化関数の場合（Chapter 5.1）
+
+一般の活性化関数 $\sigma(z)$ を持つ MLP の場合、kernel $K^{(\ell)}_{\alpha\beta}$ の recursion は以下の形をとる:
+
+$$
+K^{(\ell+1)}_{\alpha\beta} = C_b + C_W \langle \sigma_\alpha \sigma_\beta \rangle_{K^{(\ell)}}
+$$
+
+ここで、$\langle \cdot \rangle_{K^{(\ell)}}$ は kernel $K^{(\ell)}$ に関する Gaussian expectation である。
+
+#### Single Input の場合
+
+単一入力 $\alpha = 0$ の場合、diagonal component $K^{(\ell)}_{00}$ は self-consistent に解ける:
+
+$$
+K^{(\ell+1)}_{00} = C_b + C_W g(K^{(\ell)}_{00})
+$$
+
+ここで、helper function $g(K)$ は:
+
+$$
+g(K) \equiv \langle \sigma(z) \sigma(z) \rangle_K = \frac{1}{\sqrt{2\pi K}} \int_{-\infty}^{\infty} dz \, e^{-\frac{z^2}{2K}} \sigma(z) \sigma(z)
+$$
+
+Fixed point $K^*_{00}$ の周りで線形化すると:
+
+$$
+\Delta K^{(\ell+1)}_{00} = \chi_\parallel(K^*_{00}) \Delta K^{(\ell)}_{00} + O(\Delta^2)
+$$
+
+ここで、**parallel susceptibility**（平行感受率）は:
+
+$$
+\chi_\parallel(K) \equiv C_W g'(K) = \frac{C_W}{2K^2} \left\langle \sigma(z) \sigma(z) (z^2 - K) \right\rangle_K
+$$
+
+**第一の criticality condition** は:
+
+$$
+\chi_\parallel(K^*_{00}) = 1
+$$
+
+この条件により、kernel が exponentially explode または vanish することを防ぐ。
+
+#### Two Inputs の場合（Chapter 5.1）
+
+二つの異なる入力 $\alpha = \pm$ の場合、off-diagonal component $K^{(\ell)}_{+-}$ の evolution を考える必要がある。Coincident limit $x_{i;+}, x_{i;-} \to x_{i;0}$ の周りで線形化すると、**perpendicular susceptibility**（垂直感受率）が現れる:
+
+$$
+\chi_\perp(K) \equiv C_W \langle \sigma'(z) \sigma'(z) \rangle_K
+$$
+
+**第二の criticality condition** は:
+
+$$
+\chi_\perp(K^*) = 1
+$$
+
+この条件により、異なる入力間の correlation が適切に保存される。
+
+::: {.callout-tip}
+## Parallel と Perpendicular の意味
+
+- **Parallel susceptibility** $\chi_\parallel$: Kernel matrix の diagonal direction に沿った perturbation の増幅率
+- **Perpendicular susceptibility** $\chi_\perp$: Kernel matrix の off-diagonal direction に沿った perturbation の増幅率
+
+両方の susceptibility が 1 に調整されることで、kernel matrix の全ての component が安定的に伝播する。
+:::
+
+## Universality Classes（普遍性クラス）
+
+異なる活性化関数は、criticality の振る舞いに基づいて **universality classes**（普遍性クラス）に分類される（Chapter 5.2-5.3 参照）。
+
+### Scale-Invariant Universality Class
+
+**代表的な活性化関数**: ReLU, leaky ReLU, absolute value
+
+**特徴**:
+
+- Perfect self-similarity: $K^{(\ell)}_{00} = K^{(1)}_{00}$ for all $\ell$
+- Fixed point が入力依存: $K^*_{00} = C_b + C_W \sum_i x_{i;0} x_{i;0} / n_0$
+- Higher-order corrections が消失: $O(\Delta^{p>1}) = 0$
+
+**Critical initialization**:
+
+$$
+C_W = 1, \quad C_b = 0
+$$
+
+### K* = 0 Universality Class
+
+**代表的な活性化関数**: tanh, sin, erf
+
+**特徴**:
+
+- Fixed point が zero: $K^*_{00} = 0$
+- Power-law decay: $K^{(\ell)}_{00} \sim 1/\ell^q$ with $0 < q \leq 1$
+- Higher-order corrections が重要
+
+**Critical initialization**: Activation function に依存した調整が必要
+
+### Half-Stable Universality Classes
+
+**代表的な活性化関数**: SWISH, GELU
+
+**特徴**:
+
+- Power-law decay towards nonzero fixed point: $K^*_{00} \neq 0$
+- 部分的な stability
+
+これらの universality class の理解により、異なる活性化関数が深層ネットワークでどう振る舞うかを予測できる。
+
+## Gradient Exploding/Vanishing との関連（Chapter 9.1, 9.4）
+
+Criticality の概念は、もともと **exploding and vanishing gradient problem** を解決するために導入された。
+
+### Traditional View: Gradient の Exploding/Vanishing
+
+Backpropagation において、損失関数の勾配は chain rule により以下の形をとる:
+
+$$
+\frac{dL_A}{d\theta^{(\ell)}_\mu} = \sum_{\alpha \in D} \sum_{i_L} \sum_{i_\ell} \epsilon_{i_L;\alpha} \frac{dz^{(L)}_{i_L;\alpha}}{dz^{(\ell)}_{i_\ell;\alpha}} \frac{dz^{(\ell)}_{i_\ell;\alpha}}{d\theta^{(\ell)}_\mu}
+$$
+
+ここで、中間の chain-rule factor は:
+
+$$
+\frac{dz^{(L)}_{i_L;\alpha}}{dz^{(\ell)}_{i_\ell;\alpha}} = \sum_{i_{\ell+1}, \ldots, i_{L-1}} \prod_{\ell'=\ell}^{L-1} \left[ W^{(\ell'+1)}_{i_{\ell'+1} i_{\ell'}} \sigma'^{(\ell')}_{i_{\ell'};\alpha} \right]
+$$
+
+この product of matrices が、層 $\ell$ から層 $L$ にかけて exponential behavior を示すことが、gradient exploding/vanishing problem の本質である。
+
+### Critical View: Criticality による解決
+
+Criticality は、この問題を以下の三つの観点から解決する:
+
+**1. Error Factor の制御**:
+
+Mean Squared Error (MSE) loss の場合、error factor は:
+
+$$
+\epsilon_{i;\alpha} = z^{(L)}_{i;\alpha} - y_{i;\alpha}
+$$
+
+Kernel が explode すると、出力 $z^{(L)}_{i;\alpha}$ も explode し、error factor が発散する。Criticality condition $\chi_\parallel(K^*) \leq 1$ により、これを防ぐ。
+
+**2. Trivial Factor の制御**:
+
+重みに関する trivial factor は:
+
+$$
+\frac{dz^{(\ell)}_{i;\alpha}}{dW^{(\ell)}_{jk}} = \delta_{ij} \sigma^{(\ell-1)}_{k;\alpha}
+$$
+
+Kernel が vanish すると、activation $\sigma^{(\ell-1)}_{k;\alpha}$ も vanish し、深い層の重みが訓練されない。Criticality condition $\chi_\parallel(K^*) \geq 1$ により、これを防ぐ。
+
+**3. Chain-rule Factor の制御**:
+
+Chain-rule factor は、Neural Tangent Kernel (NTK) の中に $\prod_{\ell'=\ell}^{\ell-1} \chi_\perp^{(\ell')}$ の形で encode されている。Criticality condition $\chi_\perp(K^*) = 1$ により、この積が exponentially grow/decay しないことが保証される。
+
+**結論**: 二つの criticality condition
+
+$$
+\chi_\parallel(K^*) = 1, \quad \chi_\perp(K^*) = 1
+$$
+
+は、kernel の exploding/vanishing と gradient の exploding/vanishing の両方を同時に解決する。
+
+::: {.callout-important}
+## Criticality の普遍性
+
+Criticality は、forward pass における kernel の安定性だけでなく、backward pass における gradient の安定性も同時に保証する。この意味で、criticality は深層学習における**普遍的な原理**である。
+:::
+
+## 実践的な初期化手法との比較
+
+Criticality の理論は、実践的に用いられている初期化手法の理論的基盤を提供する。
+
+### Xavier Initialization (Glorot Initialization)
+
+**提案**: Glorot & Bengio (2010)
+
+**初期化規則**:
+
+$$
+W^{(\ell)}_{ij} \sim \mathcal{N}\left(0, \frac{2}{n_{\ell-1} + n_\ell}\right)
+$$
+
+**動機**: Forward pass と backward pass の両方で variance を保存
+
+**Criticality との関連**: Scale-invariant universality class において、$C_W = 1$ を満たす
+
+### He Initialization (Kaiming Initialization)
+
+**提案**: He et al. (2015)
+
+**初期化規則**:
+
+$$
+W^{(\ell)}_{ij} \sim \mathcal{N}\left(0, \frac{2}{n_{\ell-1}}\right)
+$$
+
+**動機**: ReLU などの非対称な活性化関数に対して variance を保存
+
+**Criticality との関連**: ReLU (scale-invariant class) において、$C_W = 1$ を正確に満たす
+
+::: {.callout-tip}
+## 理論と実践の一致
+
+He initialization と Xavier initialization は、経験的に良い性能を示すことが知られていたが、PDLT の criticality 理論により、これらが **数学的に最適な初期化** であることが証明された。Criticality 理論は、既存の実践的手法を統一的に理解し、新しい活性化関数やアーキテクチャに対する初期化手法を systematic に導出する枠組みを提供する。
+:::
+
+## Criticality の可視化
+
+Criticality の効果を視覚的に理解するため、以下の diagram を用いる。
+
+### Kernel Evolution の Phase Diagram
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│           Kernel Evolution Phase Diagram                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  K^(l)                                                       │
+│   ^                                                          │
+│   |    Exploding Phase (C_W > 1)                             │
+│   |   /                                                      │
+│   |  /                                                       │
+│   | /                                                        │
+│   |/  Critical Point (C_W = 1)                               │
+│   +─────────────────────────────────────> Layer l            │
+│   |\                                                         │
+│   | \                                                        │
+│   |  \                                                       │
+│   |   \ Vanishing Phase (C_W < 1)                            │
+│   |    v                                                     │
+│   |     0                                                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+```
+
+- **Exploding phase** ($C_W > 1$): Kernel が exponentially grow し、$K^* = \infty$ に到達
+- **Critical point** ($C_W = 1$): Kernel が一定値に保たれる（nontrivial fixed point）
+- **Vanishing phase** ($C_W < 1$): Kernel が exponentially decay し、$K^* = 0$ に到達
+
+### Universality Classes の比較
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│      Kernel Evolution across Universality Classes                                           │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                             │
+│  K^(l)                                                                                      │
+│   ^                                                                                         │
+│   |  Scale-Invariant Class (ReLU)                                                           │
+│   |  ════════════════════════════════ (constant)                                            │
+│   |                                                                                         │
+│   |  Half-Stable Class (GELU)                                                               │
+│   |  ─────────────.                   (power-law decay)                                     │
+│   |                \                                                                        │
+│   |                 `─────────────────                                                      │
+│   |                                                                                         │
+│   |  K* = 0 Class (tanh)                                                                    │
+│   |  ───────                          (power-law to zero)                                   │
+│   |         `──                                                                             │
+│   |            `─────                                                                       │
+│   |                  `────────────────                                                      │
+│   +─────────────────────────────────────> Layer l                                           │
+│                                                                                             │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘
+```
+
+異なる universality class は、critical initialization 下でも異なる kernel evolution を示す:
+
+- **Scale-Invariant**: Perfect preservation (constant)
+- **Half-Stable**: Power-law decay to nonzero fixed point
+- **K* = 0**: Power-law decay to zero
+
+## まとめ
+
+Criticality は、深層ニューラルネットワークの初期化における最重要原理である。
+
+**主要な概念**:
+
+- **Exploding/Vanishing Problem**: 不適切な初期化により、信号が exponentially grow または decay する問題
+- **Critical Point**: Exploding と vanishing の境界にある特別な点（$C_W = 1$）
+- **Criticality Conditions**: $\chi_\parallel(K^*) = 1$ と $\chi_\perp(K^*) = 1$ の二つの条件
+- **Universality Classes**: 活性化関数の criticality 挙動による分類
+
+**実践的意義**:
+
+- **He/Xavier Initialization の理論的基盤**: 既存の実践的手法が数学的に最適であることの証明
+- **新しい活性化関数への適用**: Criticality 理論により、任意の活性化関数に対する最適初期化を systematic に導出可能
+- **Forward と Backward の統一**: Kernel の安定性と gradient の安定性が同じ条件で達成される
+
+**理論的意義**:
+
+- **統計物理学との接続**: Phase transition の理論を深層学習に応用
+- **有効理論の枠組み**: Criticality は有効理論アプローチの中心的概念
+- **深層極限の理解**: 深層ニューラルネットワークの asymptotic behavior の理解
+
+Criticality は、深層学習を「なぜ動くのか」から「どう設計すべきか」へと導く、理論と実践の橋渡しとなる概念である。

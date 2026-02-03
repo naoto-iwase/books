@@ -1,0 +1,80 @@
+---
+title: "Olmo 3"
+description: "完全オープンな言語・思考型モデル（7B/32B）"
+date: "2026-02-02"
+author: "Naoto Iwase"
+categories: [LLM, Reasoning]
+image: "images/olmo-3.png"
+---
+
+Olmo 3 は、Allen Institute for AI (AI2) が開発した 7B および 32B パラメータスケールの完全オープンな言語モデルファミリーである。このリリースは、モデルの全ライフサイクル（すべてのステージ、チェックポイント、データポイント、依存関係）を含む「モデルフロー (Model Flow)」全体を公開している。
+
+**主な特徴**:
+
+- **完全オープン**: 学習データ、コード、中間チェックポイントをすべて公開
+- **多様な能力**: 長文脈推論、関数呼び出し、コーディング、指示追従、一般的なチャット、知識リコール
+- **フラッグシップモデル**: Olmo 3.1 Think 32B は、これまでに公開された最強の完全オープン思考型モデル
+
+**論文**: [arXiv:2512.13961](https://arxiv.org/abs/2512.13961)
+
+## 目次
+
+- [全体像](00-overview.qmd)
+
+### Base Model Training
+
+- [Dolma 3 データセット](01-dolma3-dataset.qmd)
+- [OlmoBaseEval: 評価スイート](02-olmobaseeval.qmd)
+- [Midtraining: 中間訓練](03-midtraining.qmd)
+- [Long-context Extension: 長文脈拡張](04-long-context-extension.qmd)
+- [Deduplication: 重複排除](05-deduplication.qmd)
+- [olmOCR science PDFs](06-olmocr-science-pdfs.qmd)
+- [Data Mixing: データミキシング手法](07-data-mixing.qmd)
+
+### Post-training
+
+- [Dolci: Post-training データスイート](08-dolci-dataset.qmd)
+- [Delta Learning: 選好調整の新手法](09-delta-learning.qmd)
+- [OlmoRL / GRPO: 効率的な強化学習](10-olmorl-grpo.qmd)
+
+## モデルバリエーション
+
+**Olmo 3 Base**: 基盤モデル（7B, 32B）- 最強の完全オープン Base モデル
+
+**Olmo 3 Think**: 段階的推論を行う思考型モデル - Qwen 2.5、Gemma 2/3、DeepSeek R1 を上回る
+
+**Olmo 3 Instruct**: 簡潔で直接的な応答を生成するモデル - 関数呼び出しに最適化
+
+**Olmo 3 RL-Zero**: Base モデルから直接 RL で訓練 - 完全オープンな RL ベンチマーク
+
+## 主な成果
+
+**Olmo 3.1 Think 32B** の主要ベンチマーク結果:
+
+| カテゴリ | ベンチマーク | スコア |
+|---------|------------|--------|
+| Math | MATH | 96.2 |
+| Math | AIME 2024 | 80.6 |
+| Reasoning | BigBenchHard | 88.6 |
+| Reasoning | ZebraLogic | 80.1 |
+| Coding | HumanEvalPlus | 91.5 |
+| Coding | LiveCodeBench v3 | 83.3 |
+| IF | IFEval | 93.8 |
+| Knowledge | MMLU | 86.4 |
+
+## 訓練コスト
+
+1024 台の H100 GPU を使用して約 **56 日**（推定コスト: **$2.75M**）
+
+- **Pretraining**: 約 47 日
+- **Post-training**: 約 9 日
+
+## オープンアーティファクト
+
+すべての中間チェックポイント、学習データ、コード、評価ツールを公開:
+
+- **モデル**: Base, Think, Instruct, RL-Zero のすべてのチェックポイント
+- **データ**: Dolma 3（事前学習）、Dolci（後訓練）
+- **コード**: OLMo-core、Open Instruct、duplodocus、OLMES
+
+**コア理念**: 真にオープンソース AI を推進するには、最終的なモデルだけでなく、そこに至る「道筋」全体を透明かつアクセス可能にする必要がある。

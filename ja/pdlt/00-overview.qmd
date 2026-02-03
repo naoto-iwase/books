@@ -1,0 +1,296 @@
+# The Principles of Deep Learning Theory まとめ
+
+## 概要
+
+本まとめは、Daniel A. Roberts と Sho Yaida による "The Principles of Deep Learning Theory" (PDLT) の主要な概念と理論的枠組みを解説するものである。
+
+原著 PDLT は、物理学の**有効理論（Effective Theory）**のアプローチを深層学習に適用し、深層ニューラルネットワークの動作原理を理論的に解明することを目指した画期的な教科書である。著者らは、統計力学や場の理論で用いられる手法（繰り込み群、臨界性解析、ガウス過程など）を駆使して、深層学習の「なぜ動くのか」を first principles から説明している。
+
+**原著論文**: [arXiv:2106.10165](https://arxiv.org/abs/2106.10165)
+
+**原著 Web サイト**: [deeplearningtheory.com](https://deeplearningtheory.com)
+
+## 原著の特徴
+
+### 物理学からのアプローチ
+
+原著は、深層学習を理解するために、物理学の effective theory framework を採用している。これは、多数の素子（ニューロン）から構成される系の**巨視的な振る舞い**を、統計的性質から理解するアプローチである。
+
+
+> 詳細: [Effective Theory Approach](01-effective-theory.qmd)
+
+熱力学が蒸気機関の macroscopic な性質を記述し、統計力学がその microscopic な起源を説明したように、原著は深層ニューラルネットワークの macroscopic な計算能力を、microscopic なパラメータの統計的性質から導出する。
+
+### 対象読者と前提知識
+
+原著は以下の知識を持つ読者を対象としている：
+
+- 線形代数
+- 多変量微積分
+- 確率論の基礎
+
+物理学のバックグラウンドは必須ではなく、必要な数学的道具は原著 Chapter 1 "Pretraining" で丁寧に説明されている。
+
+### 実践的なモデルへのフォーカス
+
+原著の重要な特徴は、理論研究でよく扱われる理想化されたモデル（single-hidden-layer networks や完全な無限幅極限）を出発点としつつも、最終的には**実際に使われる深層ニューラルネットワーク**の理論的理解を目指している点である。
+
+特に、deep multilayer perceptrons（深層多層パーセプトロン）を中心に、有限幅（finite width）のネットワークの挙動を解析する。
+
+::: {.callout-note collapse="true"}
+## 他の深層学習理論書との違い
+
+従来の深層学習理論書は、以下のいずれかに偏る傾向がある：
+
+- **実践書**: アルゴリズムと実装に焦点を当てるが、理論的根拠は限定的
+- **数学的厳密性重視**: 厳密な証明を重視するが、単純化された設定（single-hidden-layer など）に限定
+- **漸近解析**: 無限幅極限など数学的に扱いやすい極限に焦点
+
+**原著の独自性**:
+
+- 実際に使われる深層ネットワーク（finite depth, finite width）の理論
+- 物理学の有効理論による直感的かつ定量的な理解
+- 計算の詳細を省略せず、読者が自ら拡張できる枠組みを提供
+:::
+
+## 原著の主要な概念
+
+本まとめでは、原著で展開される以下の主要な概念を解説する。
+
+### 1. Effective Theory と RG Flow
+
+原著では、深層ニューラルネットワークの各層を通る信号の変化を、**繰り込み群フロー（Renormalization Group Flow, RG Flow）**として捉える。
+
+
+> 詳細: [RG Flow](02-rg-flow.qmd)
+
+入力層から出力層に向かって、preactivation の分布がどのように変化していくかを追跡し、その effective theory を構築する。
+
+### 2. Criticality（臨界性）
+
+ニューラルネットワークの初期化における**臨界性（Criticality）**は、訓練の成功に重要な役割を果たす。
+
+
+> 詳細: [Criticality](03-criticality.qmd)
+
+適切な初期化により、信号が層を通じて指数的に増大（exploding）または減衰（vanishing）することなく、臨界点（critical point）に保たれる。
+
+::: {.callout-tip collapse="true"}
+## 実践への応用: 初期化戦略
+
+原著の臨界性理論は、以下の実践的初期化手法の理論的基盤を提供する：
+
+- **He initialization** (Kaiming He, 2015): ReLU 系活性化関数に最適（Scale-Invariant Class）
+- **Xavier initialization** (Glorot & Bengio, 2010): tanh 系活性化関数に適合（K* = 0 Class）
+- **活性化関数の選択**: 普遍性クラスに応じた初期化パラメータの調整
+
+これらの経験則が「なぜ動くのか」を、原著は臨界性の観点から理論的に説明している。
+:::
+
+### 3. Neural Tangent Kernel (NTK)
+
+無限幅極限において、ニューラルネットワークの訓練はカーネル法と等価になる。このカーネルを **Neural Tangent Kernel (NTK)** と呼ぶ。
+
+
+> 詳細: [Neural Tangent Kernel](04-neural-tangent-kernel.qmd)
+
+NTK は訓練中に固定され、ネットワークは線形モデルとして振る舞う。しかし、有限幅では NTK が変化し、**表現学習（Representation Learning）**が可能になる。
+
+### 4. Infinite Width vs Finite Width
+
+原著における重要な区別：
+
+- **無限幅（Infinite Width）**: ニューロン数 $n \to \infty$ の極限
+  - ガウス過程に収束
+  - NTK が固定され、線形モデルに帰着
+  - 表現学習が起こらない
+
+- **有限幅（Finite Width）**: 実際のニューラルネットワーク
+  - NTK が訓練中に変化
+  - 非線形性が残り、表現学習が可能
+  - Hebbian learning により、層間の相関が形成される
+
+
+> 詳細: [Infinite Width Limit](05-infinite-width-limit.qmd)
+
+### 5. Representation Learning
+
+有限幅のニューラルネットワークでは、訓練によって内部表現が変化する。これが**表現学習（Representation Learning）**であり、深層学習の本質的な能力である。
+
+
+> 詳細: [Representation Learning](06-representation-learning.qmd)
+
+無限幅極限では表現学習が消失するため、実際の深層学習を理解するには有限幅の解析が不可欠である。
+
+### 6. Universality Classes
+
+異なる活性化関数（ReLU, tanh, GELU など）は、臨界性の解析において**普遍性クラス（Universality Classes）**に分類される。
+
+
+> 詳細: [Universality Classes](07-universality-classes.qmd)
+
+主要な普遍性クラス：
+
+- **Scale-Invariant Universality Class**: ReLU, leaky ReLU など
+- **K* = 0 Universality Class**: tanh, sin など
+- **Half-Stable Universality Classes**: SWISH, GELU など
+
+同じ普遍性クラスに属する活性化関数は、深層極限において同様の統計的性質を示す。
+
+## 原著の構成
+
+原著は以下のように構成されている。本まとめでは、これらの章から主要な概念を抽出して解説する。
+
+### Part 1: 初期化時の理論 (Chapters 0-5)
+
+**Chapter 0: Initialization**
+
+- Effective Theory Approach の導入
+- 深層学習における理論の必要性
+
+**Chapter 1: Pretraining**
+
+- Gaussian integrals
+- 確率論と統計の数学的基礎
+- Nearly-Gaussian distributions
+
+**Chapter 2: Neural Networks**
+
+- 関数近似としてのニューラルネットワーク
+- 活性化関数
+- アンサンブル
+
+**Chapter 3: Effective Theory of Deep Linear Networks at Initialization**
+
+- Deep linear networks の解析
+- Criticality の導入
+- Fluctuations と Chaos
+
+**Chapter 4: RG Flow of Preactivations**
+
+- 第1層: Gaussian 分布
+- 第2層: Non-Gaussianity の発生
+- 深層: Non-Gaussianity の蓄積
+- Marginalization rules
+
+**Chapter 5: Effective Theory of Preactivations at Initialization**
+
+- Kernel の criticality 解析
+- 普遍性クラスの分類
+- Fluctuations の解析
+
+### Part 2: 学習の理論 (Chapters 6-11)
+
+**Chapter 6: Bayesian Learning**
+
+- ベイズ推論とニューラルネットワーク
+- 無限幅での推論（表現学習なし）
+- 有限幅での推論（Hebbian learning、表現学習あり）
+
+**Chapter 7: Gradient-Based Learning**
+
+- 教師あり学習
+- 勾配降下法と関数近似
+
+**Chapter 8: RG Flow of the Neural Tangent Kernel**
+
+- NTK の forward equation
+- 層ごとの NTK の発展
+- NTK の平均と分散
+
+**Chapter 9: Effective Theory of the NTK at Initialization**
+
+- NTK の criticality 解析
+- 普遍性クラスごとの NTK の性質
+
+**Chapter 10: Kernel Learning**
+
+- 無限幅ネットワークの線形モデルとしての性質
+- Generalization と bias-variance tradeoff
+- Kernel methods との関連
+
+**Chapter 11: Representation Learning**
+
+- NTK の微分 (dNTK)
+- 有限幅ネットワークの非線形性
+- Nearly-kernel methods
+
+**Chapter ∞: The End of Training**
+
+- 有限幅での訓練
+- 多数ステップの勾配降下
+- 有限幅での予測
+
+### Appendices
+
+**Appendix A: Information in Deep Learning**
+
+- Entropy と mutual information
+- 無限幅での情報理論的解析
+- 有限幅での最適アスペクト比
+
+**Appendix B: Residual Learning**
+
+- Residual networks (ResNets) への拡張
+- Residual MLP の criticality 解析
+
+## 原著の主要な結果
+
+原著が導出した主要な理論的結果を以下にまとめる。
+
+### 1. 臨界性と初期化
+
+原著は、適切な初期化（例: He initialization, Xavier initialization）がネットワークを臨界点に保ち、gradient の exploding/vanishing を防ぐことを理論的に証明した。これにより、経験的に知られていた初期化手法の理論的根拠が明らかになった。
+
+### 2. 無限幅極限の限界
+
+原著は、無限幅極限においてニューラルネットワークが Gaussian process に収束し、NTK が訓練中に固定されることを示した。これは線形モデルに帰着し、表現学習が起こらない。
+
+この結果は、深層学習の本質を理解するには**有限幅の理論**が不可欠であることを示す重要な洞察である。
+
+### 3. 有限幅での表現学習
+
+原著は、有限幅では NTK が訓練中に変化し（dNTK $\neq 0$）、これが表現学習を可能にすることを明らかにした。この変化は $1/n$ のオーダーで起こり（$n$ はニューロン数）、深さとともに蓄積される。
+
+この理論により、深層学習が単なるカーネル法を超える能力を持つ理由が説明される。
+
+### 4. アーキテクチャの選択
+
+原著の普遍性クラスの解析により、異なる活性化関数がどのように振る舞うかを予測できるようになった。例えば：
+
+- ReLU (Scale-Invariant Class): 深層ネットワークでも安定
+- tanh (K* = 0 Class): 深層で情報が減衰しやすい
+
+この知見は、アーキテクチャ設計の理論的指針を提供する。
+
+## 原著の意義
+
+原著 PDLT は、深層学習を「経験的に動くがなぜかわからない」状態から、「物理学的に理解できる」状態へと引き上げることを目指した画期的な著作である。
+
+原著が採用する物理学の effective theory アプローチは、以下の利点をもたらす：
+
+- **予測可能性**: 初期化やアーキテクチャの選択が訓練にどう影響するかを理論的に予測
+- **普遍性**: 特定のモデルに依存しない、一般的な原理の発見
+- **拡張性**: MLPs 以外のアーキテクチャ（ResNets, Transformers など）への拡張可能性
+
+原著は、深層学習の理論研究における新しいパラダイムを提示し、今後の理論的・実践的進展の基盤となることが期待される。
+
+::: {.callout-important collapse="true"}
+## 深層学習理論の現状と課題
+
+**原著が解決した問題**:
+
+- 深層ニューラルネットワークの初期化時の統計的性質の完全な特徴づけ
+- 無限幅と有限幅の理論的区別の明確化
+- 表現学習の理論的基盤の提供
+
+**残された課題**:
+
+- **アーキテクチャの拡張**: Transformers, Diffusion Models などへの理論的拡張
+- **訓練ダイナミクスの完全な理解**: 有限ステップでの収束性、学習率の最適化
+- **汎化の理論**: なぜ過剰パラメータ化されたネットワークが汎化するのか
+- **実データへの適用**: 理論と実験の定量的比較の更なる精緻化
+
+原著 PDLT はこれらの課題に取り組むための理論的枠組みを提供している。
+:::
+

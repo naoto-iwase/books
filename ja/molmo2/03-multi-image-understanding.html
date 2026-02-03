@@ -75,6 +75,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  // Load chat panel assets
+  (function() {
+    const base = location.pathname.split('/')[1] === 'books' ? '/books' : '';
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = base + '/chat/chat-panel.css';
+    document.head.appendChild(css);
+  })();
+</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
@@ -1038,6 +1051,15 @@ ul.task-list li input[type="checkbox"] {
 </div>
   </div>
 </footer>
+<script>
+  // Load chat panel script
+  (function() {
+    const base = location.pathname.split('/')[1] === 'books' ? '/books' : '';
+    const script = document.createElement('script');
+    script.src = base + '/chat/chat-panel.js';
+    document.head.appendChild(script);
+  })();
+</script>
 
 
 

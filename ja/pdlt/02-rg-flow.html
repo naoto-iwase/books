@@ -75,6 +75,19 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  // Load chat panel assets
+  (function() {
+    const base = location.pathname.split('/')[1] === 'books' ? '/books' : '';
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = base + '/chat/chat-panel.css';
+    document.head.appendChild(css);
+  })();
+</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -1085,6 +1098,15 @@ p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(
 </div>
   </div>
 </footer>
+<script>
+  // Load chat panel script
+  (function() {
+    const base = location.pathname.split('/')[1] === 'books' ? '/books' : '';
+    const script = document.createElement('script');
+    script.src = base + '/chat/chat-panel.js';
+    document.head.appendChild(script);
+  })();
+</script>
 
 
 

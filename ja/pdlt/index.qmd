@@ -1,0 +1,36 @@
+---
+title: "The Principles of Deep Learning Theory"
+description: "物理学の有効理論アプローチによる深層学習の理論的理解"
+date: "2026-02-01"
+author: "Naoto Iwase"
+categories: [Deep Learning, Statistical Physics]
+image: "images/pdlt.png"
+---
+
+**The Principles of Deep Learning Theory** (PDLT) は、物理学の有効理論（Effective Theory）のアプローチを深層学習に適用し、深層ニューラルネットワークの動作原理を理論的に解明する教科書である。
+
+著者の Daniel A. Roberts と Sho Yaida は、統計力学や場の理論で用いられる手法（繰り込み群、臨界性解析、ガウス過程など）を駆使して、深層学習の「なぜ動くのか」を first principles から説明している。
+
+**論文**: [arXiv:2106.10165](https://arxiv.org/abs/2106.10165)
+
+**Web サイト**: [deeplearningtheory.com](https://deeplearningtheory.com)
+
+## 主要なトピック
+
+- **有効理論アプローチ**: 物理学の手法を深層学習に適用
+- **繰り込み群フロー (RG Flow)**: 層を通る信号の変化を理論的に追跡
+- **臨界性 (Criticality)**: 適切な初期化の理論的基盤
+- **Neural Tangent Kernel**: 無限幅極限と有限幅の理論的区別
+- **表現学習**: 深層学習の本質的能力の理論的説明
+- **普遍性クラス**: 活性化関数の分類と選択の指針
+
+## 目次
+
+- [全体像](00-overview.qmd)
+- [Effective Theory Approach](01-effective-theory.qmd)
+- [RG Flow](02-rg-flow.qmd)
+- [Criticality](03-criticality.qmd)
+- [Neural Tangent Kernel](04-neural-tangent-kernel.qmd)
+- [Infinite Width Limit](05-infinite-width-limit.qmd)
+- [Representation Learning](06-representation-learning.qmd)
+- [Universality Classes](07-universality-classes.qmd)

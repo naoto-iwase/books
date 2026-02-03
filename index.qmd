@@ -1,0 +1,76 @@
+---
+title: "Books"
+page-layout: full
+title-block-banner: false
+listing:
+  - id: listing-ja
+    contents: "ja/*/index.qmd"
+    sort: "date desc"
+    type: default
+    categories: true
+    sort-ui: false
+    filter-ui: true
+    fields: [image, date, title, author, categories, description]
+    page-size: 25
+  - id: listing-en
+    contents: "en/*/index.qmd"
+    sort: "date desc"
+    type: default
+    categories: true
+    sort-ui: false
+    filter-ui: false
+    fields: [image, date, title, author, categories, description]
+    page-size: 25
+---
+
+Machine learning research notes.
+
+::: {.panel-tabset}
+
+## 日本語 (Japanese)
+
+::: {#listing-ja}
+:::
+
+## English
+
+::: {#listing-en}
+:::
+
+::: {.callout-note}
+English translations are in progress. Please check the Japanese tab for now.
+:::
+
+:::
+
+```{=html}
+<script>
+// URL hash (#ja, #en) to switch tabs
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.querySelectorAll('.panel-tabset .nav-link');
+
+  // Activate tab based on URL hash
+  const activate = () => {
+    const hash = location.hash.slice(1);
+    tabs.forEach(tab => {
+      const text = tab.textContent.toLowerCase();
+      if ((hash === 'ja' && text.includes('japanese')) ||
+          (hash === 'en' && text.includes('english'))) {
+        tab.click();
+      }
+    });
+  };
+
+  // Update URL hash when tab is clicked
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const lang = tab.textContent.toLowerCase().includes('japanese') ? 'ja' : 'en';
+      history.replaceState(null, null, `#${lang}`);
+    });
+  });
+
+  activate();
+  addEventListener('hashchange', activate);
+});
+</script>
+```
