@@ -463,10 +463,10 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="delta-learning-選好調整の新手法" class="level1">
 <h1>Delta Learning: 選好調整の新手法</h1>
-<p>Delta Learning は、Preference tuning（選好調整）における新しいアプローチです。本手法は、SFT（Supervised Fine-Tuning）モデルと Base モデルの「差分」を活用することで、高品質な contrastive data を生成し、DPO（Direct Preference Optimization）の効果を最大化します。</p>
+<p>Delta Learning は、Preference tuning（選好調整）における新しいアプローチである。本手法は、SFT（Supervised Fine-Tuning）モデルと Base モデルの「差分」を活用することで、高品質な contrastive data を生成し、DPO（Direct Preference Optimization）の効果を最大化する。</p>
 <section id="基本原理" class="level2">
 <h2 class="anchored" data-anchor-id="基本原理">基本原理</h2>
-<p>Delta Learning の核心は、モデル間の能力差を明示的に捉えることにあります。</p>
+<p>Delta Learning の核心は、モデル間の能力差を明示的に捉えることにある。</p>
 <pre><code>+------------------------------------------------------------------+
 |                      Delta Learning Concept                      |
 +------------------------------------------------------------------+
@@ -479,18 +479,18 @@ ul.task-list li input[type="checkbox"] {
 +------------------------------------------------------------------+</code></pre>
 <section id="モデル間の差分" class="level3">
 <h3 class="anchored" data-anchor-id="モデル間の差分">モデル間の差分</h3>
-<p>SFT モデルは、Base モデルに対して以下の能力を獲得しています。</p>
+<p>SFT モデルは、Base モデルに対して以下の能力を獲得している。</p>
 <ul>
 <li>より構造化された推論プロセス</li>
 <li>段階的な問題解決アプローチ</li>
 <li>タスク固有の知識の適用</li>
 </ul>
-<p>Delta Learning は、この「獲得された能力」を優先応答（Preferred response）の生成に活用します。</p>
+<p>Delta Learning は、この「獲得された能力」を優先応答（Preferred response）の生成に活用する。</p>
 </section>
 </section>
 <section id="dolci-think-dpo-での適用" class="level2">
 <h2 class="anchored" data-anchor-id="dolci-think-dpo-での適用">Dolci Think DPO での適用</h2>
-<p>Dolci Think では、Delta Learning を用いて推論能力の向上を図ります（Section 4.3）。</p>
+<p>Dolci Think では、Delta Learning を用いて推論能力の向上を図る（Section 4.3）。</p>
 <section id="合成データの生成" class="level3">
 <h3 class="anchored" data-anchor-id="合成データの生成">合成データの生成</h3>
 <pre><code>+------------------------------------------------------------------+
@@ -521,18 +521,18 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="品質フィルタリング" class="level3">
 <h3 class="anchored" data-anchor-id="品質フィルタリング">品質フィルタリング</h3>
-<p>生成されたペアに対して、以下の基準でフィルタリングを実施します。</p>
+<p>生成されたペアに対して、以下の基準でフィルタリングを実施する。</p>
 <ul>
 <li>Preferred 応答が正答を含む</li>
 <li>Dispreferred 応答が誤答または不完全</li>
 <li>両応答間に明確な品質差が存在</li>
 </ul>
-<p>この結果、約 1M の高品質な preference pair が作成されました。</p>
+<p>この結果、約 1M の高品質な preference pair が作成された。</p>
 </section>
 </section>
 <section id="dolci-instruct-dpo-での適用" class="level2">
 <h2 class="anchored" data-anchor-id="dolci-instruct-dpo-での適用">Dolci Instruct DPO での適用</h2>
-<p>Dolci Instruct では、Delta Learning を multi-turn 対話の最適化に使用します（Section 5.3）。</p>
+<p>Dolci Instruct では、Delta Learning を multi-turn 対話の最適化に使用する（Section 5.3）。</p>
 <section id="multi-turn-preference-data" class="level3">
 <h3 class="anchored" data-anchor-id="multi-turn-preference-data">Multi-turn Preference Data</h3>
 <pre><code>+------------------------------------------------------------------+
@@ -553,7 +553,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="応答長の最適化" class="level3">
 <h3 class="anchored" data-anchor-id="応答長の最適化">応答長の最適化</h3>
-<p>Delta Learning により、以下の改善が実現されます。</p>
+<p>Delta Learning により、以下の改善が実現される。</p>
 <ul>
 <li><strong>簡潔さの維持</strong>: 不要な冗長性を排除</li>
 <li><strong>情報密度の向上</strong>: 重要な情報を効率的に伝達</li>
@@ -562,15 +562,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="実装の詳細" class="level3">
 <h3 class="anchored" data-anchor-id="実装の詳細">実装の詳細</h3>
-<p>約 500K の multi-turn プロンプトから preference pair を生成し、応答品質の向上を図ります。</p>
+<p>約 500K の multi-turn プロンプトから preference pair を生成し、応答品質の向上を図る。</p>
 </section>
 </section>
 <section id="効果と利点" class="level2">
 <h2 class="anchored" data-anchor-id="効果と利点">効果と利点</h2>
-<p>Delta Learning による Preference tuning は、複数の利点をもたらします。</p>
+<p>Delta Learning による Preference tuning は、複数の利点をもたらす。</p>
 <section id="sft-を超える性能" class="level3">
 <h3 class="anchored" data-anchor-id="sft-を超える性能">SFT を超える性能</h3>
-<p>DPO による追加の最適化により、SFT 単独では到達できない性能レベルを実現します。</p>
+<p>DPO による追加の最適化により、SFT 単独では到達できない性能レベルを実現する。</p>
 <pre><code>+------------------------------------------------------------------+
 |                    Performance Progression                       |
 +------------------------------------------------------------------+
@@ -584,7 +584,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="rl-への準備priming-for-rl" class="level3">
 <h3 class="anchored" data-anchor-id="rl-への準備priming-for-rl">RL への準備（Priming for RL）</h3>
-<p>Delta Learning による DPO は、将来の Reinforcement Learning の基盤となります。</p>
+<p>Delta Learning による DPO は、将来の Reinforcement Learning の基盤となる。</p>
 <ul>
 <li><strong>報酬モデルとの整合性</strong>: 人間の選好との alignment を改善</li>
 <li><strong>探索の効率化</strong>: より良い初期方策を提供</li>
@@ -593,7 +593,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="推論能力の向上" class="level3">
 <h3 class="anchored" data-anchor-id="推論能力の向上">推論能力の向上</h3>
-<p>Dolci Think での適用により、以下の改善が確認されました。</p>
+<p>Dolci Think での適用により、以下の改善が確認された。</p>
 <ul>
 <li>複雑な問題に対する段階的アプローチの強化</li>
 <li>推論の深さと正確性の向上</li>
@@ -628,14 +628,14 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>品質保証</strong>: モデル間の能力差により、明確な contrastive signal を生成</li>
 <li><strong>柔軟性</strong>: 異なるタスクやドメインに容易に適用可能</li>
 </ul>
-<p>Delta Learning は、SFT で獲得した能力を最大限に活用し、効率的かつ効果的な preference tuning を実現します。</p>
+<p>Delta Learning は、SFT で獲得した能力を最大限に活用し、効率的かつ効果的な preference tuning を実現する。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Delta Learning は、OLMo2 3B の preference tuning において中心的な役割を果たします。</p>
+<p>Delta Learning は、OLMo2 3B の preference tuning において中心的な役割を果たす。</p>
 <p><strong>主要なポイント</strong>:</p>
 <ul>
 <li>SFT モデルと Base モデルの差分を活用</li>
@@ -643,7 +643,7 @@ ul.task-list li input[type="checkbox"] {
 <li>推論能力と応答品質の両面で性能向上</li>
 <li>スケーラブルで cost-effective な手法</li>
 </ul>
-<p>この手法により、Dolci Think と Dolci Instruct は、それぞれの領域で最先端の性能を達成しています。</p>
+<p>この手法により、Dolci Think と Dolci Instruct は、それぞれの領域で最先端の性能を達成している。</p>
 
 
 </section>

@@ -449,7 +449,7 @@ ul.task-list li input[type="checkbox"] {
 +------------------------------------------------------------------+</code></pre>
 <section id="概要" class="level2">
 <h2 class="anchored" data-anchor-id="概要">概要</h2>
-<p>olmOCR science PDFs は、学術 PDF 文書から構築された新しいデータソースです。</p>
+<p>olmOCR science PDFs は、学術 PDF 文書から構築された新しいデータソースである。</p>
 <ul>
 <li><strong>peS2o の代替</strong>: Semantic Scholar の既存データセット peS2o を置き換えるために開発</li>
 <li><strong>AI2Bot クローラー</strong>: robots.txt に準拠した独自のウェブクローラーを使用</li>
@@ -458,7 +458,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="olmocr-テキスト抽出プロセス" class="level2">
 <h2 class="anchored" data-anchor-id="olmocr-テキスト抽出プロセス">olmOCR テキスト抽出プロセス</h2>
-<p>PDF からプレーンテキストへの変換には、以下の 2 段階のアプローチを採用しています。</p>
+<p>PDF からプレーンテキストへの変換には、以下の 2 段階のアプローチを採用している。</p>
 <ul>
 <li><strong>第 1 段階</strong>: olmOCR（AI2 の OCR モデル）による PDF → プレーンテキスト変換</li>
 <li><strong>第 2 段階</strong>: Poppler の pdftotext をフォールバックとして使用</li>
@@ -467,7 +467,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="データ処理パイプライン" class="level2">
 <h2 class="anchored" data-anchor-id="データ処理パイプライン">データ処理パイプライン</h2>
-<p>olmOCR science PDFs は、複数段階のフィルタリングプロセスを経て構築されています。</p>
+<p>olmOCR science PDFs は、複数段階のフィルタリングプロセスを経て構築されている。</p>
 <pre><code>Initial Collection:     238M PDF documents
          |
          v
@@ -482,7 +482,7 @@ PII Filtering:          148M documents (4.9% reduction)
          |
          v
 Heuristic Filtering:    108M documents (final)</code></pre>
-<p>各段階での削減率は以下の通りです。</p>
+<p>各段階での削減率は以下の通りである。</p>
 <ul>
 <li><strong>言語検出・スパムフィルタ</strong>: 238M → 160M（約 33% 削減）</li>
 <li><strong>Fuzzy deduplication</strong>: 160M → 156M（2.3% 削減）</li>
@@ -492,24 +492,24 @@ Heuristic Filtering:    108M documents (final)</code></pre>
 </section>
 <section id="pii-フィルタリング" class="level2">
 <h2 class="anchored" data-anchor-id="pii-フィルタリング">PII フィルタリング</h2>
-<p>個人情報（PII: Personally Identifiable Information）を含む文書を除外するため、文書タイプごとの判定を実施しました。</p>
+<p>個人情報（PII: Personally Identifiable Information）を含む文書を除外するため、文書タイプごとの判定を実施した。</p>
 <ul>
 <li><strong>使用モデル</strong>: Gemma 3 12B および Gemma 3 4B</li>
 <li><strong>判定基準</strong>: 公開意図のない文書かどうかを分類</li>
 <li><strong>対象例</strong>: 個人の医療記録、学生の成績表、履歴書など</li>
 <li><strong>削減効果</strong>: 4.9% の文書を除外</li>
 </ul>
-<p>このフィルタリングにより、プライバシーを尊重したデータセットを構築しています。</p>
+<p>このフィルタリングにより、プライバシーを尊重したデータセットを構築している。</p>
 </section>
 <section id="データ規模と特徴" class="level2">
 <h2 class="anchored" data-anchor-id="データ規模と特徴">データ規模と特徴</h2>
-<p>olmOCR science PDFs は、長文脈研究のための最大のオープンコレクションです。</p>
-<p>文書長別の統計は以下の通りです。</p>
+<p>olmOCR science PDFs は、長文脈研究のための最大のオープンコレクションである。</p>
+<p>文書長別の統計は以下の通りである。</p>
 <ul>
 <li><strong>8K+ トークン</strong>: 22.3M 文書（640B トークン）</li>
 <li><strong>32K+ トークン</strong>: 4.5M 文書（380B トークン）</li>
 </ul>
-<p>これらの長文文書は、長文脈モデリングの研究に特に有用です。</p>
+<p>これらの長文文書は、長文脈モデリングの研究に特に有用である。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -520,13 +520,13 @@ Heuristic Filtering:    108M documents (final)</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>8K トークン以上の文書が 22.3M、32K トークン以上の文書が 4.5M も含まれており、長文脈を扱う言語モデルのトレーニングに最適なデータセットとなっています。</p>
+<p>8K トークン以上の文書が 22.3M、32K トークン以上の文書が 4.5M も含まれており、長文脈を扱う言語モデルのトレーニングに最適なデータセットとなっている。</p>
 </div>
 </div>
 </section>
 <section id="weborganizer-による分類" class="level2">
 <h2 class="anchored" data-anchor-id="weborganizer-による分類">WebOrganizer による分類</h2>
-<p>最終的な文書コレクションは、WebOrganizer を用いて <strong>24 の学術トピック</strong> に分類されています。</p>
+<p>最終的な文書コレクションは、WebOrganizer を用いて <strong>24 の学術トピック</strong> に分類されている。</p>
 <ul>
 <li><strong>分類手法</strong>: WebOrganizer（AI2 のドメイン分類器）</li>
 <li><strong>トピック数</strong>: 24 カテゴリ</li>
@@ -542,7 +542,7 @@ Heuristic Filtering:    108M documents (final)</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>olmOCR science PDFs は、peS2o と比較して以下の利点があります。</p>
+<p>olmOCR science PDFs は、peS2o と比較して以下の利点がある。</p>
 <ul>
 <li>より新しいクローリングデータ</li>
 <li>より厳格な PII フィルタリング</li>

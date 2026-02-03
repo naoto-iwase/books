@@ -460,10 +460,10 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="dolma-3-データセット" class="level1">
 <h1>Dolma 3 データセット</h1>
-<p>Dolma 3 は、Olmo 3 Base モデルの事前学習に使用される大規模なデータセットです。<strong>Dolma 3 Mix</strong> として知られる約 6 兆トークンの多様なデータで構成されており、Web ページ、学術 PDF、コードリポジトリ、数学データなど、複数のデータソースを含んでいます。</p>
+<p>Dolma 3 は、Olmo 3 Base モデルの事前学習に使用される大規模なデータセットである。<strong>Dolma 3 Mix</strong> として知られる約 6 兆トークンの多様なデータで構成されており、Web ページ、学術 PDF、コードリポジトリ、数学データなど、複数のデータソースを含んでいる。</p>
 <section id="概要と目的" class="level2">
 <h2 class="anchored" data-anchor-id="概要と目的">概要と目的</h2>
-<p>Dolma 3 の主な目的は、Olmo 3 Base モデルに幅広い知識と能力を与えることです。データセットは、最も計算集約的な事前学習ステージ（全体の計算量の 90% 以上を消費）で使用されるため、スケーラビリティと品質が重要視されています。</p>
+<p>Dolma 3 の主な目的は、Olmo 3 Base モデルに幅広い知識と能力を与えることである。データセットは、最も計算集約的な事前学習ステージ（全体の計算量の 90% 以上を消費）で使用されるため、スケーラビリティと品質が重要視されている。</p>
 <p><strong>データ戦略の基本原則</strong>:</p>
 <ul>
 <li><strong>規模の重要性</strong>: 事前学習に影響を与えるには、兆トークンスケールで十分な量のデータが必要</li>
@@ -472,7 +472,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-dolma3-composition" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolma3-composition">データソースの構成</h2>
-<p>Dolma 3 Mix は、複数のデータソースから構成されています。以下の表は、各ソースのトークン数と文書数を示しています。</p>
+<p>Dolma 3 Mix は、複数のデータソースから構成されている。以下の表は、各ソースのトークン数と文書数を示している。</p>
 <div id="tbl-dolma3-composition" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dolma3-composition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -589,11 +589,11 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 </section>
 <section id="主要な革新点" class="level2">
 <h2 class="anchored" data-anchor-id="主要な革新点">主要な革新点</h2>
-<p>Dolma 3 は、3 つの主要な技術革新を導入しています。</p>
+<p>Dolma 3 は、3 つの主要な技術革新を導入している。</p>
 <section id="グローバル重複排除-deduplication" class="level3">
 <h3 class="anchored" data-anchor-id="グローバル重複排除-deduplication">1. グローバル重複排除 (Deduplication)</h3>
-<p>Dolma 3 では、兆トークンスケールで高速かつスケーラブルなグローバル重複排除を実現するために、<strong>Duplodocus</strong> という新しいツールを開発しました。</p>
-<p>重複排除は 3 つのステージで実施されます:</p>
+<p>Dolma 3 では、兆トークンスケールで高速かつスケーラブルなグローバル重複排除を実現するために、<strong>Duplodocus</strong> という新しいツールを開発した。</p>
+<p>重複排除は 3 つのステージで実施される:</p>
 <p><strong>Stage 1: 完全重複排除 (Exact Deduplication)</strong>:</p>
 <ul>
 <li>文書テキストハッシュに基づくグローバル重複排除</li>
@@ -613,11 +613,11 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 <li>500 バイト以上の繰り返し部分文字列をマーク</li>
 <li>14% のテキストバイトを削除し、9.7B 文書（36.5T バイト）に削減</li>
 </ul>
-<p>この 3 段階の手順により、Web コーパスは 38.7B から 9.7B 文書に削減されました（文書数で 75% 削減）。</p>
+<p>この 3 段階の手順により、Web コーパスは 38.7B から 9.7B 文書に削減された（文書数で 75% 削減）。</p>
 </section>
 <section id="token-constrained-mixing-と-quality-aware-upsampling" class="level3">
 <h3 class="anchored" data-anchor-id="token-constrained-mixing-と-quality-aware-upsampling">2. Token-constrained Mixing と Quality-aware Upsampling</h3>
-<p>Dolma 3 では、データミキシングの 2 つの新しい手法を導入しています。</p>
+<p>Dolma 3 では、データミキシングの 2 つの新しい手法を導入している。</p>
 <p><strong>Token-constrained Mixing (トークン制約付きミキシング)</strong>:</p>
 <ul>
 <li>Swarm ベースのアプローチを使用して、多数の小型プロキシモデルを訓練・評価</li>
@@ -638,7 +638,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 </section>
 <section id="olmocr-science-pdfs" class="level3">
 <h3 class="anchored" data-anchor-id="olmocr-science-pdfs">3. olmOCR science PDFs</h3>
-<p>olmOCR science PDFs は、学術 PDF を線形化プレーンテキストに変換した新しいデータソースです。従来の peS2o データセットを置き換える形で導入されました。</p>
+<p>olmOCR science PDFs は、学術 PDF を線形化プレーンテキストに変換した新しいデータソースである。従来の peS2o データセットを置き換える形で導入された。</p>
 <p><strong>特徴</strong>:</p>
 <ul>
 <li>AI2Bot として識別される「礼儀正しい」クローリング</li>
@@ -656,7 +656,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 </section>
 <section id="データキュレーションのパイプライン" class="level2">
 <h2 class="anchored" data-anchor-id="データキュレーションのパイプライン">データキュレーションのパイプライン</h2>
-<p>Dolma 3 Mix のデータキュレーションは、以下のフローで実施されます。</p>
+<p>Dolma 3 Mix のデータキュレーションは、以下のフローで実施される。</p>
 <pre><code>┌──────────────────────────────────────────────────────────────┐
 │                  Data Curation Pipeline                      │
 ├──────────────────────────────────────────────────────────────┤
@@ -694,7 +694,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 </section>
 <section id="つのステージでの使用方法" class="level2">
 <h2 class="anchored" data-anchor-id="つのステージでの使用方法">3 つのステージでの使用方法</h2>
-<p>Dolma 3 データセットは、Olmo 3 の訓練プロセスの 3 つのステージで使用されます。</p>
+<p>Dolma 3 データセットは、Olmo 3 の訓練プロセスの 3 つのステージで使用される。</p>
 <section id="stage-1-pretraining-事前学習" class="level3">
 <h3 class="anchored" data-anchor-id="stage-1-pretraining-事前学習">Stage 1: Pretraining (事前学習)</h3>
 <p><strong>使用データ</strong>: Dolma 3 Mix（6T トークン）</p>
@@ -714,7 +714,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 <p><strong>使用データ</strong>: Dolma 3 Dolmino Mix（100B トークン）</p>
 <p><strong>目的</strong>: コード、数学、一般知識 QA などの重要な能力を強化</p>
 <p><strong>特徴</strong>: Post-training の下準備として、指示データと思考トレースを意図的に含める</p>
-<p>詳細な Midtraining の説明は別の文書で扱われています。</p>
+<p>詳細な Midtraining の説明は別の文書で扱われる。</p>
 </section>
 <section id="stage-3-long-context-extension-長文脈拡張" class="level3">
 <h3 class="anchored" data-anchor-id="stage-3-long-context-extension-長文脈拡張">Stage 3: Long-context Extension (長文脈拡張)</h3>
@@ -730,13 +730,13 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 <li>8K トークン以上: 22.3M 文書（640B トークン）</li>
 <li>32K トークン以上: 4.5M 文書（380B トークン）</li>
 </ul>
-<p>これは、長文脈研究のための最大のオープン利用可能なコレクションです。</p>
-<p>詳細な Long-context Extension の説明は別の文書で扱われています。</p>
+<p>これは、長文脈研究のための最大のオープン利用可能なコレクションである。</p>
+<p>詳細な Long-context Extension の説明は別の文書で扱われる。</p>
 </section>
 </section>
 <section id="データミキシングの結果" class="level2">
 <h2 class="anchored" data-anchor-id="データミキシングの結果">データミキシングの結果</h2>
-<p>Token-constrained mixing により、データソースの最適な比率が決定されました。</p>
+<p>Token-constrained mixing により、データソースの最適な比率が決定された。</p>
 <p><strong>Web テキストのトピック分布</strong>:</p>
 <ul>
 <li>STEM ドメイン（「Science, Math, and Technology」、「Software Development」）を大幅にアップウェイト</li>
@@ -760,7 +760,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Dolma 3 では、より少ない計算リソースで実験できるように、サンプルミックスも公開しています。</p>
+<p>Dolma 3 では、より少ない計算リソースで実験できるように、サンプルミックスも公開している。</p>
 <p><strong>Pretraining サンプルミックス</strong>:</p>
 <ul>
 <li>150B トークン</li>
@@ -778,7 +778,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Dolma 3 は、Olmo 3 Base モデルの事前学習に使用される大規模で高品質なデータセットです。グローバル重複排除、Token-constrained mixing、Quality-aware upsampling などの革新的な手法により、最適なデータミキシングを実現しています。</p>
+<p>Dolma 3 は、Olmo 3 Base モデルの事前学習に使用される大規模で高品質なデータセットである。グローバル重複排除、Token-constrained mixing、Quality-aware upsampling などの革新的な手法により、最適なデータミキシングを実現している。</p>
 <p><strong>主な特徴</strong>:</p>
 <ul>
 <li><strong>多様なデータソース</strong>: Web、学術 PDF、コード、数学、百科事典など</li>
@@ -787,7 +787,7 @@ Table&nbsp;1: Dolma 3 Mix のデータソース構成
 <li><strong>最適化されたミキシング</strong>: Swarm ベースの手法で最適な比率を決定</li>
 <li><strong>3 つのステージ</strong>: Pretraining、Midtraining、Long-context Extension で使用</li>
 </ul>
-<p>Dolma 3 は完全にオープンで、研究者が再現性の高い研究を行えるようにすべてのデータソース、処理パイプライン、ミキシング比率を公開しています。</p>
+<p>Dolma 3 は完全にオープンで、研究者が再現性の高い研究を行えるようにすべてのデータソース、処理パイプライン、ミキシング比率を公開している。</p>
 
 
 </section>

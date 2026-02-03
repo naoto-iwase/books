@@ -494,11 +494,11 @@ window.Quarto = {
 
 <section id="olmorl-grpo-効率的な強化学習" class="level1">
 <h1>OlmoRL / GRPO: 効率的な強化学習</h1>
-<p>OlmoRL は、思考型モデル（reasoning model）の強化学習訓練を効率化するために開発されたフレームワークです。Group Relative Policy Optimization（GRPO）をベースとし、Reinforcement Learning with Verifiable Rewards（RLVR）の手法を採用しています。</p>
-<p>Post-training の第3段階として、数学、コーディング、指示追従、一般的なチャットの複数ドメインにわたり、検証可能な報酬と LM-judge 報酬を組み合わせた強化学習を実施します。</p>
+<p>OlmoRL は、思考型モデル（reasoning model）の強化学習訓練を効率化するために開発されたフレームワークである。Group Relative Policy Optimization（GRPO）をベースとし、Reinforcement Learning with Verifiable Rewards（RLVR）の手法を採用している。</p>
+<p>Post-training の第3段階として、数学、コーディング、指示追従、一般的なチャットの複数ドメインにわたり、検証可能な報酬と LM-judge 報酬を組み合わせた強化学習を実施する。</p>
 <section id="olmorl-の概要" class="level2">
 <h2 class="anchored" data-anchor-id="olmorl-の概要">OlmoRL の概要</h2>
-<p>OlmoRL は、長い推論トレースを伴う強化学習の課題に対処するため、アルゴリズムとエンジニアリングインフラを密接に統合したシステムです。従来の数学とコードに限定されていた RLVR を、より幅広い検証可能なタスクへと拡張しています。</p>
+<p>OlmoRL は、長い推論トレースを伴う強化学習の課題に対処するため、アルゴリズムとエンジニアリングインフラを密接に統合したシステムである。従来の数学とコードに限定されていた RLVR を、より幅広い検証可能なタスクへと拡張している。</p>
 <p><strong>主な特徴</strong>:</p>
 <ul>
 <li><strong>アルゴリズムの改善</strong>: GRPO をベースに、DAPO や Dr GRPO などの最新の改善を統合</li>
@@ -509,10 +509,10 @@ window.Quarto = {
 </section>
 <section id="olmorl-アルゴリズムの詳細" class="level2">
 <h2 class="anchored" data-anchor-id="olmorl-アルゴリズムの詳細">OlmoRL アルゴリズムの詳細</h2>
-<p>OlmoRL の強化学習段階は、GRPO（Shao et al., 2024）をベースに構築され、DAPO（Yu et al., 2025）や Dr GRPO（Liu et al., 2025b）などの最新のアルゴリズム改善を統合しています。</p>
+<p>OlmoRL の強化学習段階は、GRPO（Shao et al., 2024）をベースに構築され、DAPO（Yu et al., 2025）や Dr GRPO（Liu et al., 2025b）などの最新のアルゴリズム改善を統合している。</p>
 <section id="vanilla-grpo-からの改善点" class="level3">
 <h3 class="anchored" data-anchor-id="vanilla-grpo-からの改善点">Vanilla GRPO からの改善点</h3>
-<p>OlmoRL は、Vanilla GRPO に対して以下の改善を実施しています：</p>
+<p>OlmoRL は、Vanilla GRPO に対して以下の改善を実施している：</p>
 <p><strong>1. Zero gradient signal filtering</strong>:</p>
 <ul>
 <li>報酬がすべて同一のグループ（advantage の標準偏差がゼロ）を除外</li>
@@ -551,7 +551,7 @@ window.Quarto = {
 </section>
 <section id="olmorl-の目的関数" class="level3">
 <h3 class="anchored" data-anchor-id="olmorl-の目的関数">OlmoRL の目的関数</h3>
-<p>最終的な目的関数は、token-level loss、truncated importance sampling、clip-higher、および advantage 計算における標準偏差正規化なしを含みます：</p>
+<p>最終的な目的関数は、token-level loss、truncated importance sampling、clip-higher、および advantage 計算における標準偏差正規化なしを含む：</p>
 <p><span class="math display">\[
 J(\theta) = \frac{1}{\sum_{i=1}^{G} |y_i|} \sum_{i=1}^{G} \sum_{t=1}^{|y_i|} \min\left(\frac{\pi(y_{i,t} | x, y_{i,&lt;t}; \theta_{\text{old}})}{\pi_{\text{vllm}}(y_{i,t} | x, y_{i,&lt;t}; \theta_{\text{old}})}, \rho\right) \times \min(r_{i,t} A_{i,t}, \text{clip}(r_{i,t}, 1 - \varepsilon_{\text{low}}, 1 + \varepsilon_{\text{high}}) A_{i,t})
 \]</span></p>
@@ -577,7 +577,7 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>GRPO は PPO の変種であり、主な違いは報酬の正規化方法にあります。</p>
+<p>GRPO は PPO の変種であり、主な違いは報酬の正規化方法にある。</p>
 <p><strong>PPO</strong>:</p>
 <ul>
 <li>報酬を全データセットまたはバッチ全体で正規化</li>
@@ -600,7 +600,7 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 </section>
 <section id="verifiers検証器" class="level3">
 <h3 class="anchored" data-anchor-id="verifiers検証器">Verifiers（検証器）</h3>
-<p>OlmoRL は、OLMo 2 の数学ドメインを超えて、一般的なドメインへと検証可能な報酬を拡張しています。各ドメインに対して異なるカスタム検証器を使用します：</p>
+<p>OlmoRL は、OLMo 2 の数学ドメインを超えて、一般的なドメインへと検証可能な報酬を拡張している。各ドメインに対して異なるカスタム検証器を使用する：</p>
 <p><strong>Math（数学）</strong>:</p>
 <ul>
 <li>ルールベースの検証器</li>
@@ -633,7 +633,7 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 </section>
 <section id="dolci-think-rl-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="dolci-think-rl-データセット">Dolci-Think-RL データセット</h2>
-<p>Dolci-Think-RL は、4 つのドメイン（数学、コーディング、指示追従、一般的なチャット）にわたる約 100K のサンプルからなる大規模で多様なデータセットです。多様な推論タスクでの堅牢な RL を支援しながら、一般的な有用性を維持します。</p>
+<p>Dolci-Think-RL は、4 つのドメイン（数学、コーディング、指示追従、一般的なチャット）にわたる約 100K のサンプルからなる大規模で多様なデータセットである。多様な推論タスクでの堅牢な RL を支援しながら、一般的な有用性を維持する。</p>
 <section id="データセット構成" class="level3">
 <h3 class="anchored" data-anchor-id="データセット構成">データセット構成</h3>
 <table class="caption-top table">
@@ -748,7 +748,7 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 <section id="データ構築プロセス" class="level3">
 <h3 class="anchored" data-anchor-id="データ構築プロセス">データ構築プロセス</h3>
 <p><strong>Step 1: プロンプトの調達</strong>:</p>
-<p>各ドメインから高品質なプロンプトを収集し、キュレーションします。</p>
+<p>各ドメインから高品質なプロンプトを収集し、キュレーションする。</p>
 <ul>
 <li><strong>Math</strong>: Open-Reasoner-Zero、DAPO-Math、AceReason-Math、KlearReasoner-MathSub、OMEGA など</li>
 <li><strong>Coding</strong>: AceCoder、Klear-Reasoner Code、Nemotron Post-training Code、SYNTHETIC-2 など</li>
@@ -772,17 +772,17 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 </section>
 <section id="olmorl-インフラストラクチャ" class="level2">
 <h2 class="anchored" data-anchor-id="olmorl-インフラストラクチャ">OlmoRL インフラストラクチャ</h2>
-<p>OlmoRL は、長いシーケンスとより高速な全体的スループットを処理するために、強化学習インフラストラクチャに大幅な改善を加えました。</p>
+<p>OlmoRL は、長いシーケンスとより高速な全体的スループットを処理するために、強化学習インフラストラクチャに大幅な改善を加えた。</p>
 <section id="計算リソース" class="level3">
 <h3 class="anchored" data-anchor-id="計算リソース">計算リソース</h3>
-<p>RL での主要な技術的課題は、推論（ロールアウト）の管理です。最終モデルでは、最大 32K トークンの長さのロールアウトを生成し、平均 10K トークン以上になります。</p>
+<p>RL での主要な技術的課題は、推論（ロールアウト）の管理である。最終モデルでは、最大 32K トークンの長さのロールアウトを生成し、平均 10K トークン以上になる。</p>
 <p><strong>リソース配分</strong>（32B モデルの場合）:</p>
 <ul>
 <li><strong>訓練</strong>: 8 H100 ノード</li>
 <li><strong>推論</strong>: 20 ノード</li>
 <li><strong>GPU 利用率</strong>: 推論が訓練の約 5 倍の計算量を使用</li>
 </ul>
-<p>自己回帰推論のコストが高いため、学習器は時間の 75% をデータ待ちに費やします。</p>
+<p>自己回帰推論のコストが高いため、学習器は時間の 75% をデータ待ちに費やす。</p>
 </section>
 <section id="主要な技術革新" class="level3">
 <h3 class="anchored" data-anchor-id="主要な技術革新">主要な技術革新</h3>
@@ -881,29 +881,29 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 </tr>
 </tbody>
 </table>
-<p>Inflight updates の追加が最も劇的な改善をもたらしています。</p>
+<p>Inflight updates の追加が最も劇的な改善をもたらしている。</p>
 </section>
 </section>
 <section id="olmo-3.1-think-32b-の拡張訓練" class="level2">
 <h2 class="anchored" data-anchor-id="olmo-3.1-think-32b-の拡張訓練">Olmo 3.1 Think 32B の拡張訓練</h2>
-<p>Olmo 3.1 Think 32B は、拡張された OlmoRL 訓練を通じて、性能向上を示しました。Dolci Think RL データセットでの追加エポックにより、以下の改善が観察されました：</p>
+<p>Olmo 3.1 Think 32B は、拡張された OlmoRL 訓練を通じて、性能向上を示した。Dolci Think RL データセットでの追加エポックにより、以下の改善が観察された：</p>
 <p><strong>性能向上</strong>:</p>
 <ul>
 <li><strong>AIME 2024</strong>: +4 ポイント</li>
 <li><strong>IFBench</strong>: +20 ポイント</li>
 <li><strong>他のベンチマーク</strong>: 性能を維持</li>
 </ul>
-<p>拡張訓練により、より長い RL 訓練が汎化性能を向上させ、破局的忘却なしに安定した訓練が可能であることが確認されました。</p>
+<p>拡張訓練により、より長い RL 訓練が汎化性能を向上させ、破局的忘却なしに安定した訓練が可能であることが確認された。</p>
 </section>
 <section id="主要な発見" class="level2">
 <h2 class="anchored" data-anchor-id="主要な発見">主要な発見</h2>
 <section id="delta-learning-が-rlvr-のより強力な初期化を提供" class="level3">
 <h3 class="anchored" data-anchor-id="delta-learning-が-rlvr-のより強力な初期化を提供">Delta Learning が RLVR のより強力な初期化を提供</h3>
-<p>Delta Learning を用いた選好調整を先に実施してから RLVR を適用すると、SFT 単独よりも優れた全体的な性能を達成します。</p>
+<p>Delta Learning を用いた選好調整を先に実施してから RLVR を適用すると、SFT 単独よりも優れた全体的な性能を達成する。</p>
 </section>
 <section id="dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点" class="level3">
 <h3 class="anchored" data-anchor-id="dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点">DPO と SFT の両方が RL から恩恵を受けるが、DPO がより良い開始点</h3>
-<p>最終的な RL ミックスを DPO モデルで実行すると、SFT モデルで実行する場合よりも一貫して優れた性能を示します。</p>
+<p>最終的な RL ミックスを DPO モデルで実行すると、SFT モデルで実行する場合よりも一貫して優れた性能を示す。</p>
 <p><strong>主要な違い</strong>:</p>
 <ul>
 <li>RL が改善しない評価では、DPO モデルがしばしば優れた性能を発揮し、RL 訓練中もその優位性を維持（例: AlpacaEval）</li>
@@ -913,12 +913,12 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 </section>
 <section id="すべてのドメインで報酬が着実に増加" class="level3">
 <h3 class="anchored" data-anchor-id="すべてのドメインで報酬が着実に増加">すべてのドメインで報酬が着実に増加</h3>
-<p>RL 訓練中、すべてのドメインで報酬が着実に増加します（ただし、増加率は異なります）。指示追従データが最も着実に増加し、コード報酬が最もゆっくり増加します。</p>
+<p>RL 訓練中、すべてのドメインで報酬が着実に増加する（ただし、増加率は異なる）。指示追従データが最も着実に増加し、コード報酬が最もゆっくり増加する。</p>
 </section>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>OlmoRL は、GRPO をベースとした効率的な強化学習フレームワークであり、以下を実現しています：</p>
+<p>OlmoRL は、GRPO をベースとした効率的な強化学習フレームワークであり、以下を実現している：</p>
 <p><strong>主要な貢献</strong>:</p>
 <ul>
 <li><strong>アルゴリズムの改善</strong>: Vanilla GRPO に対して 7 つの重要な改善を実施</li>
@@ -927,7 +927,7 @@ A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
 <li><strong>複数ドメイン対応</strong>: Math、Code、Instruction-following、General chat</li>
 <li><strong>拡張訓練</strong>: Olmo 3.1 Think 32B で 2300 ステップの拡張訓練により大幅な性能向上</li>
 </ul>
-<p>OlmoRL により、思考型モデルの訓練が大幅に効率化され、完全にオープンな RL 研究環境が提供されています。</p>
+<p>OlmoRL により、思考型モデルの訓練が大幅に効率化され、完全にオープンな RL 研究環境が提供されている。</p>
 
 
 </section>

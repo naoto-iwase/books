@@ -466,23 +466,23 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="long-context-extension-長文脈拡張" class="level1">
 <h1>Long-context Extension: 長文脈拡張</h1>
-<p>OLMo 3 では、ベースモデル（8K トークンのコンテキスト長）から 65K トークンへと長文脈拡張を実施しました。この拡張により、長文書の理解や複雑なタスクに対応できるモデルとなっています。</p>
+<p>OLMo 3 では、ベースモデル（8K トークンのコンテキスト長）から 65K トークンへと長文脈拡張を実施した。この拡張により、長文書の理解や複雑なタスクに対応できるモデルとなっている。</p>
 <section id="拡張の概要" class="level2">
 <h2 class="anchored" data-anchor-id="拡張の概要">拡張の概要</h2>
-<p>長文脈拡張では、以下の規模でトレーニングを行いました。</p>
+<p>長文脈拡張では、以下の規模でトレーニングを行った。</p>
 <ul>
 <li><strong>7B モデル</strong>: 50B トークンで学習</li>
 <li><strong>32B モデル</strong>: 100B トークンで学習</li>
 <li><strong>コンテキスト長</strong>: 8K トークン → 65K トークンへ拡張</li>
 </ul>
-<p>この拡張は、特定のデータミックス（Dolma 3 Longmino Mix）と複数の技術的手法を組み合わせて実現されています。</p>
+<p>この拡張は、特定のデータミックス（Dolma 3 Longmino Mix）と複数の技術的手法を組み合わせて実現されている。</p>
 </section>
 <section id="dolma-3-longmino-mix-の構成" class="level2">
 <h2 class="anchored" data-anchor-id="dolma-3-longmino-mix-の構成">Dolma 3 Longmino Mix の構成</h2>
-<p>長文脈拡張に使用されたデータセットは、以下の3つの主要コンポーネントから構成されています（Table 11 参照）。</p>
+<p>長文脈拡張に使用されたデータセットは、以下の3つの主要コンポーネントから構成されている（Table 11 参照）。</p>
 <section id="olmocr-pdfs" class="level3">
 <h3 class="anchored" data-anchor-id="olmocr-pdfs">1. olmOCR PDFs</h3>
-<p>PDF から抽出された長文書データで、様々な長さのバケットに分類されています。</p>
+<p>PDF から抽出された長文書データで、様々な長さのバケットに分類されている。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -537,7 +537,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="合成データ" class="level3">
 <h3 class="anchored" data-anchor-id="合成データ">2. 合成データ</h3>
-<p>長文脈能力を強化するための合成的に生成されたデータです。</p>
+<p>長文脈能力を強化するための合成的に生成されたデータである。</p>
 <ul>
 <li><strong>CWE (Common Word Extraction)</strong>: 7.4B トークン</li>
 <li><strong>REX (Rewriting Expressions)</strong>: 1.5B トークン</li>
@@ -545,7 +545,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="midtraining-data-mix" class="level3">
 <h3 class="anchored" data-anchor-id="midtraining-data-mix">3. Midtraining Data Mix</h3>
-<p>Midtraining phase で使用されたデータの 66% を含めることで、一般的な能力の維持を図っています。</p>
+<p>Midtraining phase で使用されたデータの 66% を含めることで、一般的な能力の維持を図っている。</p>
 <ul>
 <li><strong>Midtraining data mix</strong>: 34.9B トークン（66% の割合）</li>
 </ul>
@@ -553,10 +553,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="主要技術コンポーネント" class="level2">
 <h2 class="anchored" data-anchor-id="主要技術コンポーネント">主要技術コンポーネント</h2>
-<p>長文脈拡張の実現には、Figure 13 に示される 5つの技術コンポーネントが使用されています。</p>
+<p>長文脈拡張の実現には、Figure 13 に示される 5つの技術コンポーネントが使用されている。</p>
 <section id="rope-拡張-yarn" class="level3">
 <h3 class="anchored" data-anchor-id="rope-拡張-yarn">1. RoPE 拡張 (YaRN)</h3>
-<p>RoPE (Rotary Position Embedding) を拡張するために YaRN (Yet another RoPE extensioN) を採用しました。</p>
+<p>RoPE (Rotary Position Embedding) を拡張するために YaRN (Yet another RoPE extensioN) を採用した。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -567,13 +567,13 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>YaRN は <strong>Full attention layers のみ</strong>に適用されています。Sliding window attention layers では、元の RoPE 設定を維持しています。</p>
+<p>YaRN は <strong>Full attention layers のみ</strong>に適用されている。Sliding window attention layers では、元の RoPE 設定を維持している。</p>
 </div>
 </div>
 </section>
 <section id="document-packing" class="level3">
 <h3 class="anchored" data-anchor-id="document-packing">2. Document Packing</h3>
-<p>効率的なトレーニングのために、複数の文書を1つのシーケンスにパッキングします。</p>
+<p>効率的なトレーニングのために、複数の文書を1つのシーケンスにパッキングする。</p>
 <ul>
 <li><strong>手法</strong>: Best-fit packing アルゴリズム</li>
 <li><strong>目的</strong>: GPU メモリの効率的な利用とトレーニングスループットの向上</li>
@@ -581,7 +581,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="intra-document-masking" class="level3">
 <h3 class="anchored" data-anchor-id="intra-document-masking">3. Intra-document Masking</h3>
-<p>パッキングされた文書間で情報が漏れないように、文書内マスキングを適用します。</p>
+<p>パッキングされた文書間で情報が漏れないように、文書内マスキングを適用する。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -592,13 +592,13 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Document packing を使用する場合、異なる文書間でアテンションが計算されないようにマスキングすることが重要です。これにより、各文書が独立して処理されます。</p>
+<p>Document packing を使用する場合、異なる文書間でアテンションが計算されないようにマスキングすることが重要である。これにより、各文書が独立して処理される。</p>
 </div>
 </div>
 </section>
 <section id="model-souping" class="level3">
 <h3 class="anchored" data-anchor-id="model-souping">4. Model Souping</h3>
-<p>複数のチェックポイントを平均化することで、モデルの安定性と性能を向上させます。</p>
+<p>複数のチェックポイントを平均化することで、モデルの安定性と性能を向上させる。</p>
 <ul>
 <li><strong>手法</strong>: 異なるトレーニングステップで保存されたチェックポイントの重みを平均化</li>
 <li><strong>効果</strong>: より汎用的で安定したモデルの獲得</li>
@@ -606,7 +606,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="token-budget" class="level3">
 <h3 class="anchored" data-anchor-id="token-budget">5. Token Budget</h3>
-<p>長い拡張により多くのトークンを割り当てることで、より良い性能を達成します。</p>
+<p>長い拡張により多くのトークンを割り当てることで、より良い性能を達成する。</p>
 <ul>
 <li><strong>7B モデル</strong>: 50B トークン</li>
 <li><strong>32B モデル</strong>: 100B トークン</li>
@@ -615,14 +615,14 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="合成データ生成パイプライン" class="level2">
 <h2 class="anchored" data-anchor-id="合成データ生成パイプライン">合成データ生成パイプライン</h2>
-<p>長文脈能力を効果的に向上させるため、2つの合成データ生成手法を使用しています。</p>
+<p>長文脈能力を効果的に向上させるため、2つの合成データ生成手法を使用している。</p>
 <section id="cwe-common-word-extraction" class="level3">
 <h3 class="anchored" data-anchor-id="cwe-common-word-extraction">CWE (Common Word Extraction)</h3>
-<p>文書内で共通して出現する単語を抽出するタスクを生成します。これにより、モデルは長文書全体を参照する能力を獲得します。</p>
+<p>文書内で共通して出現する単語を抽出するタスクを生成する。これにより、モデルは長文書全体を参照する能力を獲得する。</p>
 </section>
 <section id="rex-rewriting-expressions" class="level3">
 <h3 class="anchored" data-anchor-id="rex-rewriting-expressions">REX (Rewriting Expressions)</h3>
-<p>REX では、12 種類の vignettes（小場面）を用いて、様々な長文脈タスクをシミュレートします。</p>
+<p>REX では、12 種類の vignettes（小場面）を用いて、様々な長文脈タスクをシミュレートする。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -633,17 +633,17 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>REX は多様なタスク形式を含み、要約、情報抽出、質問応答など、実際のユースケースに近い合成データを生成します。これにより、モデルは様々な長文脈タスクに適応できるようになります。</p>
+<p>REX は多様なタスク形式を含み、要約、情報抽出、質問応答など、実際のユースケースに近い合成データを生成する。これにより、モデルは様々な長文脈タスクに適応できるようになる。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="評価結果" class="level2">
 <h2 class="anchored" data-anchor-id="評価結果">評価結果</h2>
-<p>長文脈拡張モデルの性能は、RULER（開発スイート）と HELMET（Held-out 評価）で評価されています（Table 12 参照）。</p>
+<p>長文脈拡張モデルの性能は、RULER（開発スイート）と HELMET（Held-out 評価）で評価されている（Table 12 参照）。</p>
 <section id="ruler-評価結果" class="level3">
 <h3 class="anchored" data-anchor-id="ruler-評価結果">RULER 評価結果</h3>
-<p>RULER は、様々なコンテキスト長での性能を測定する開発用評価スイートです。</p>
+<p>RULER は、様々なコンテキスト長での性能を測定する開発用評価スイートである。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -683,7 +683,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="helmet-評価結果" class="level3">
 <h3 class="anchored" data-anchor-id="helmet-評価結果">HELMET 評価結果</h3>
-<p>HELMET は、実際のユースケースに近い held-out 評価セットです。</p>
+<p>HELMET は、実際のユースケースに近い held-out 評価セットである。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -694,19 +694,19 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>OLMo 3 の長文脈モデルは、同規模の他のオープンモデルと比較して競争力のある性能を示しています。特に、32B モデルは多くのベンチマークで高いスコアを達成しています。</p>
+<p>OLMo 3 の長文脈モデルは、同規模の他のオープンモデルと比較して競争力のある性能を示している。特に、32B モデルは多くのベンチマークで高いスコアを達成している。</p>
 </div>
 </div>
 </section>
 <section id="主要な発見" class="level3">
 <h3 class="anchored" data-anchor-id="主要な発見">主要な発見</h3>
-<p>長文脈拡張の評価から、以下の知見が得られました。</p>
+<p>長文脈拡張の評価から、以下の知見が得られた。</p>
 <ul>
 <li><strong>Token budget の効果</strong>: より多くのトークンで学習することで、長文脈能力が大幅に向上</li>
 <li><strong>合成データの重要性</strong>: CWE と REX の合成データが、実際のタスクでの性能向上に寄与</li>
 <li><strong>Model souping の効果</strong>: 複数チェックポイントの平均化により、安定した性能を獲得</li>
 </ul>
-<p>これらの技術を組み合わせることで、OLMo 3 は 65K トークンの長文脈を効果的に扱えるモデルとなっています。</p>
+<p>これらの技術を組み合わせることで、OLMo 3 は 65K トークンの長文脈を効果的に扱えるモデルとなっている。</p>
 
 
 </section>

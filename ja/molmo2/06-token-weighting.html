@@ -476,7 +476,7 @@ window.Quarto = {
 </section>
 <section id="molmo2-の重み付け戦略" class="level2">
 <h2 class="anchored" data-anchor-id="molmo2-の重み付け戦略">Molmo2 の重み付け戦略</h2>
-<p>Molmo2 では、タスクの種類と出力長に応じて、各サンプルの損失に対する重みを調整している。</p>
+<p>Molmo2 では、タスクの種類と出力長に応じて、各サンプルの損失に対する重みを調整する。</p>
 <section id="重み付けスキーム" class="level3">
 <h3 class="anchored" data-anchor-id="重み付けスキーム">重み付けスキーム</h3>
 <table class="caption-top table">
@@ -531,7 +531,7 @@ w_i = \begin{cases}
 <li><strong>中程度の出力</strong>: <span class="math inline">\(n = 100\)</span> のとき <span class="math inline">\(w = 0.4\)</span></li>
 <li><strong>長い出力</strong>: <span class="math inline">\(n = 400\)</span> のとき <span class="math inline">\(w = 0.2\)</span></li>
 </ul>
-<p>この平方根による減衰により、長い出力を持つサンプルの影響を抑えつつ、完全に無視することを避けている。</p>
+<p>この平方根による減衰により、長い出力を持つサンプルの影響を抑えつつ、完全に無視することを避ける。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -568,9 +568,9 @@ w_i = \begin{cases}
 <div class="callout-body-container callout-body">
 <p>Token Weighting の導入により、以下の効果が得られる:</p>
 <ol type="1">
-<li><strong>多様なタスクでの性能維持</strong>: 短い回答を要求するタスク（多肢選択問題など）と長い出力を生成するタスク（ビデオキャプションなど）の両方で良好な性能を達成</li>
-<li><strong>訓練の安定性向上</strong>: 損失が特定のタスクに支配されることを防ぎ、より安定した訓練が可能</li>
-<li><strong>効率的なデータ活用</strong>: 出力長が異なる多様なタスクを単一のモデルで効果的に学習可能</li>
+<li><strong>多様なタスクでの性能維持</strong>: 短い回答を要求するタスク（多肢選択問題など）と長い出力を生成するタスク（ビデオキャプションなど）の両方で良好な性能を達成する</li>
+<li><strong>訓練の安定性向上</strong>: 損失が特定のタスクに支配されることを防ぎ、より安定した訓練が可能になる</li>
+<li><strong>効率的なデータ活用</strong>: 出力長が異なる多様なタスクを単一のモデルで効果的に学習できる</li>
 </ol>
 </div>
 </div>
@@ -594,7 +594,7 @@ w_i = \begin{cases}
 <section id="従来のアプローチ" class="level3">
 <h3 class="anchored" data-anchor-id="従来のアプローチ">従来のアプローチ</h3>
 <ol type="1">
-<li><strong>サンプリング比率の調整</strong>: タスクごとのサンプリング確率を調整する方法だが、長い出力を持つタスクは少数サンプルでも損失を支配してしまうため不十分</li>
+<li><strong>サンプリング比率の調整</strong>: タスクごとのサンプリング確率を調整する方法だが、長い出力を持つタスクは少数サンプルでも損失を支配してしまうため不十分である</li>
 <li><strong>損失の正規化</strong>: タスクごとに損失を正規化する方法だが、同一タスク内での出力長の違いに対応できない</li>
 <li><strong>固定重み</strong>: 全てのサンプルに固定の重みを使用する方法だが、出力長の多様性に対応できない</li>
 </ol>
@@ -603,8 +603,8 @@ w_i = \begin{cases}
 <h3 class="anchored" data-anchor-id="molmo2-のアプローチの利点">Molmo2 のアプローチの利点</h3>
 <ul>
 <li><strong>適応性</strong>: 出力長に応じて自動的に重みが調整される</li>
-<li><strong>柔軟性</strong>: タスクの特性（ビデオキャプション、ポインティング）に応じた固定重みと、一般的なタスク向けの適応的重みを組み合わせ</li>
-<li><strong>シンプルさ</strong>: 実装が容易で、ハイパーパラメータの調整が最小限</li>
+<li><strong>柔軟性</strong>: タスクの特性（ビデオキャプション、ポインティング）に応じた固定重みと、一般的なタスク向けの適応的重みを組み合わせる</li>
+<li><strong>シンプルさ</strong>: 実装が容易で、ハイパーパラメータの調整が最小限である</li>
 </ul>
 
 

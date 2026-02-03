@@ -420,8 +420,8 @@ ul.task-list li input[type="checkbox"] {
 <h1>Dense Video Captioning</h1>
 <section id="概要" class="level2">
 <h2 class="anchored" data-anchor-id="概要">概要</h2>
-<p><strong>Molmo2-Cap</strong> は、Molmo2 の事前学習に使用される超詳細（dense）なビデオキャプションデータセットです。このデータセットは、従来のビデオキャプションデータセットと比較して桁違いに詳細な記述を含み、平均 <strong>924 語/動画</strong> という驚異的な記述量を実現しています。</p>
-<p>従来の VLM が生成する短く表面的なキャプションとは異なり、Molmo2-Cap は動的イベントと細かな視覚的詳細の両方を捉えることで、モデルがビデオの時空間的理解を深める基盤を提供します。</p>
+<p><strong>Molmo2-Cap</strong> は、Molmo2 の事前学習に使用される超詳細（dense）なビデオキャプションデータセットである。このデータセットは、従来のビデオキャプションデータセットと比較して桁違いに詳細な記述を含み、平均 <strong>924 語/動画</strong> という驚異的な記述量を実現している。</p>
+<p>従来の VLM が生成する短く表面的なキャプションとは異なり、Molmo2-Cap は動的イベントと細かな視覚的詳細の両方を捉えることで、モデルがビデオの時空間的理解を深める基盤を提供する。</p>
 <p><strong>データセット規模</strong>:</p>
 <ul>
 <li><strong>104k のビデオレベルキャプション</strong></li>
@@ -433,16 +433,16 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="なぜ-dense-captioning-が重要か">なぜ Dense Captioning が重要か</h2>
 <section id="ビデオ理解の課題" class="level3">
 <h3 class="anchored" data-anchor-id="ビデオ理解の課題">ビデオ理解の課題</h3>
-<p>ビデオキャプションは画像キャプションよりも本質的に困難です。なぜなら、アノテーターは以下の両方を記述する必要があるからです:</p>
+<p>ビデオキャプションは画像キャプションよりも本質的に困難である。なぜなら、アノテーターは以下の両方を記述する必要があるからである:</p>
 <ol type="1">
 <li><strong>動的イベント</strong>: 時間とともに変化する出来事、動作、状態遷移</li>
 <li><strong>細かな視覚的詳細</strong>: オブジェクトの外観、空間配置、属性の変化</li>
 </ol>
-<p>既存のビデオキャプションデータセットの多くは、表面的な記述に留まっており、ビデオグラウンディング（いつ・どこで何が起きたか）を学習するには不十分でした。Molmo2-Cap は、この gap を埋めるために設計されました。</p>
+<p>既存のビデオキャプションデータセットの多くは、表面的な記述に留まっており、ビデオグラウンディング（いつ・どこで何が起きたか）を学習するには不十分であった。Molmo2-Cap は、この gap を埋めるために設計された。</p>
 </section>
 <section id="密度の重要性" class="level3">
 <h3 class="anchored" data-anchor-id="密度の重要性">密度の重要性</h3>
-<p>より詳細なキャプションは、モデルに以下の能力を与えます:</p>
+<p>より詳細なキャプションは、モデルに以下の能力を与える:</p>
 <ul>
 <li><strong>時空間的な理解</strong>: 「いつ」「どこで」「何が」起きたかを正確に把握</li>
 <li><strong>細粒度の視覚認識</strong>: 小さな物体、微細な動作、属性の変化を捉える</li>
@@ -464,7 +464,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Molmo2-Cap は既存のビデオキャプションデータセットを大きく上回る記述量を実現しています:</p>
+<p>Molmo2-Cap は既存のビデオキャプションデータセットを大きく上回る記述量を実現している:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -506,7 +506,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Molmo2-Cap は、LLaVA-Video の <strong>1.7 倍</strong>、ShareGPT4-Video の <strong>3.3 倍</strong>、Video Localized Narratives の <strong>12 倍</strong> 以上の記述量を持ちます。</p>
+<p>Molmo2-Cap は、LLaVA-Video の <strong>1.7 倍</strong>、ShareGPT4-Video の <strong>3.3 倍</strong>、Video Localized Narratives の <strong>12 倍</strong> 以上の記述量を持つ。</p>
 <p><strong>重要な差異</strong>:</p>
 <ul>
 <li>Molmo2-Cap は <strong>プロプライエタリモデル（GPT など）に依存しない</strong> 完全にオープンなパイプラインで構築されている</li>
@@ -519,7 +519,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="データ収集パイプライン" class="level2">
 <h2 class="anchored" data-anchor-id="データ収集パイプライン">データ収集パイプライン</h2>
-<p>Molmo2-Cap のデータ収集は、革新的な <strong>2 段階パイプライン</strong> を採用しています。</p>
+<p>Molmo2-Cap のデータ収集は、革新的な <strong>2 段階パイプライン</strong> を採用している。</p>
 <section id="ステージ-1-ビデオソーシングと選定" class="level3">
 <h3 class="anchored" data-anchor-id="ステージ-1-ビデオソーシングと選定">ステージ 1: ビデオソーシングと選定</h3>
 <ol type="1">
@@ -543,7 +543,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="ステージ-2-人手アノテーション">ステージ 2: 人手アノテーション</h3>
 <section id="クリップ分割アルゴリズム" class="level4">
 <h4 class="anchored" data-anchor-id="クリップ分割アルゴリズム">クリップ分割アルゴリズム</h4>
-<p>ビデオを可変長のクリップ（10〜30 秒）に分割します。<strong>情報密度が高いクリップほど短い期間に設定</strong> することで、アノテーターの負担を均等化しながら詳細な記述を促します。</p>
+<p>ビデオを可変長のクリップ（10〜30 秒）に分割する。<strong>情報密度が高いクリップほど短い期間に設定</strong> することで、アノテーターの負担を均等化しながら詳細な記述を促す。</p>
 <ul>
 <li>平均 <strong>4〜5 クリップ/動画</strong> に分割</li>
 </ul>
@@ -560,13 +560,13 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>音声記述（Spoken Captions）は、タイピングによる記述と比較して以下の利点があります:</p>
+<p>音声記述（Spoken Captions）は、タイピングによる記述と比較して以下の利点がある:</p>
 <ol type="1">
 <li><strong>記述速度が速い</strong>: タイピングよりも自然に詳細を語れる</li>
 <li><strong>自然な言語表現</strong>: 書き言葉よりも口語の方が流暢で豊かな記述が得られる</li>
 <li><strong>認知負荷の軽減</strong>: タイピングに気を取られず、ビデオに集中できる</li>
 </ol>
-<p>この手法は PixMo-Cap（画像キャプションデータセット）でも採用されており、高品質なキャプション生成に有効であることが実証されています。</p>
+<p>この手法は PixMo-Cap（画像キャプションデータセット）でも採用されており、高品質なキャプション生成に有効であることが実証されている。</p>
 </div>
 </div>
 <p><strong>アノテーションプロセス</strong>:</p>
@@ -592,7 +592,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="ステージ-3-llm-ベースの文章整形" class="level3">
 <h3 class="anchored" data-anchor-id="ステージ-3-llm-ベースの文章整形">ステージ 3: LLM ベースの文章整形</h3>
-<p>Whisper の文字起こしは不完全な文や口語表現を含むため、<strong>テキスト専用 LLM</strong> で以下を実行:</p>
+<p>Whisper の文字起こしは不完全な文や口語表現を含むため、<strong>テキスト専用 LLM</strong> で以下を実行する:</p>
 <ul>
 <li>文の構造を整理し、一貫性を確保</li>
 <li>冗長性を削除し、読みやすさを向上</li>
@@ -601,7 +601,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="ステージ-4-molmo-によるフレームレベル統合" class="level3">
 <h3 class="anchored" data-anchor-id="ステージ-4-molmo-によるフレームレベル統合">ステージ 4: Molmo によるフレームレベル統合</h3>
-<p>人手記述だけでは見落としがちな <strong>低レベルの視覚的詳細</strong> を補完するため:</p>
+<p>人手記述だけでは見落としがちな <strong>低レベルの視覚的詳細</strong> を補完する:</p>
 <ol type="1">
 <li><strong>Molmo でフレームレベルのキャプションを生成</strong>:
 <ul>
@@ -655,7 +655,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="学習での使用" class="level2">
 <h2 class="anchored" data-anchor-id="学習での使用">学習での使用</h2>
-<p>Molmo2-Cap は、Molmo2 の <strong>事前学習（Pre-training）</strong> フェーズで使用されます:</p>
+<p>Molmo2-Cap は、Molmo2 の <strong>事前学習（Pre-training）</strong> フェーズで使用される:</p>
 <ul>
 <li><strong>長さ条件付きキャプション生成</strong>: モデルは指定された長さのキャプションを生成するよう学習</li>
 <li><strong>重み付けサンプリング</strong>: ビデオキャプションデータには固定重み 0.1 を設定（他のタスクとバランス）</li>
@@ -663,7 +663,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="影響と貢献" class="level2">
 <h2 class="anchored" data-anchor-id="影響と貢献">影響と貢献</h2>
-<p>Molmo2-Cap は以下の点で重要な貢献をしています:</p>
+<p>Molmo2-Cap は以下の点で重要な貢献をしている:</p>
 <ol type="1">
 <li><strong>オープンソースの基盤</strong>: プロプライエタリモデル（GPT など）に依存しない完全にオープンなパイプライン</li>
 <li><strong>ビデオグラウンディングの基礎</strong>: 超詳細な記述により、時空間的なポインティングとトラッキングを学習</li>
@@ -673,7 +673,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="評価-molmo2-captest" class="level2">
 <h2 class="anchored" data-anchor-id="評価-molmo2-captest">評価: Molmo2-CapTest</h2>
-<p>Molmo2 のビデオキャプション能力を評価するため、<strong>Molmo2-CapTest</strong> という評価セットが構築されています:</p>
+<p>Molmo2 のビデオキャプション能力を評価するため、<strong>Molmo2-CapTest</strong> という評価セットが構築されている:</p>
 <ul>
 <li><strong>693 の Creative Commons ライセンスビデオ</strong></li>
 <li>Molmo2-Cap と同様のプロトコルで収集されたが、<strong>手動選定された高品質アノテーター</strong> が担当</li>
@@ -683,14 +683,14 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Molmo2-Cap は、以下の革新的な設計により、史上最も詳細なビデオキャプションデータセットとなっています:</p>
+<p>Molmo2-Cap は、以下の革新的な設計により、史上最も詳細なビデオキャプションデータセットとなっている:</p>
 <ul>
 <li><strong>音声記述 + Whisper</strong>: 自然で流暢な記述を効率的に収集</li>
 <li><strong>LLM 整形</strong>: 口語表現を読みやすい文章に変換</li>
 <li><strong>Molmo 統合</strong>: 低レベルの視覚的詳細を補完</li>
 <li><strong>多様性ベースサンプリング</strong>: 視覚的・意味的に多様なビデオセットを構築</li>
 </ul>
-<p>このデータセットは、Molmo2 がビデオグラウンディング（pointing &amp; tracking）を実現する上で不可欠な基盤となっており、完全にオープンなビデオ VLM の可能性を示しています。</p>
+<p>このデータセットは、Molmo2 がビデオグラウンディング（pointing &amp; tracking）を実現する上で不可欠な基盤となっており、完全にオープンなビデオ VLM の可能性を示している。</p>
 <hr>
 <p><strong>関連セクション</strong>:</p>
 <ul>

@@ -457,8 +457,8 @@ window.Quarto = {
 <h1>Molmo2 Technical Report まとめ</h1>
 <section id="概要" class="level2">
 <h2 class="anchored" data-anchor-id="概要">概要</h2>
-<p>Molmo2 (Multimodal Open Language Model 2) は、Allen Institute for AI (AI2) とワシントン大学が開発した完全オープンな Vision-Language Model (VLM) ファミリーです。最大の特徴は、<strong>ビデオグラウンディング（video grounding）</strong> 機能を備えたことです。</p>
-<p>従来の VLM は画像や動画の内容を理解して説明することはできましたが、「いつ、どこで」特定のイベントや物体が発生したかを正確に指し示す（grounding）能力が不足していました。Molmo2 は、ビデオ内の時空間的なポインティングとトラッキングを実現し、オープンソースモデルの中で最高水準の性能を達成しています。</p>
+<p>Molmo2 (Multimodal Open Language Model 2) は、Allen Institute for AI (AI2) とワシントン大学が開発した完全オープンな Vision-Language Model (VLM) ファミリーである。最大の特徴は、<strong>ビデオグラウンディング（video grounding）</strong> 機能を備えたことである。</p>
+<p>従来の VLM は画像や動画の内容を理解して説明することはできたが、「いつ、どこで」特定のイベントや物体が発生したかを正確に指し示す（grounding）能力が不足していた。Molmo2 は、ビデオ内の時空間的なポインティングとトラッキングを実現し、オープンソースモデルの中で最高水準の性能を達成している。</p>
 <p><strong>論文</strong>: <a href="https://arxiv.org/abs/2601.10611">arXiv:2601.10611</a></p>
 <p><strong>主な貢献</strong>:</p>
 <ul>
@@ -476,14 +476,14 @@ window.Quarto = {
 </section>
 <section id="モチベーション-video-grounding-の重要性" class="level2">
 <h2 class="anchored" data-anchor-id="モチベーション-video-grounding-の重要性">モチベーション: Video Grounding の重要性</h2>
-<p>現在、最も強力な Video-Language Model (VLM) はプロプライエタリであり、ウェイト、データ、トレーニングレシピが公開されていません。また、オープンウェイトモデルの多くは、プロプライエタリモデルから合成データを生成する「蒸留」に依存しており、完全に独立したオープンな基盤が不足していました。</p>
-<p>さらに、既存の VLM には <strong>グラウンディング（grounding）</strong> 能力が欠けています。グラウンディングとは、モデルが「ロボットが赤いブロックを何回掴んだか？」という質問に対して、各掴みイベントの時空間座標を出力したり、「カップがいつテーブルから落ちたか？」に対してカップの軌跡（track）を返したりする能力です。</p>
-<p>画像グラウンディングは既に標準的な機能ですが、ビデオグラウンディングは一部のプロプライエタリシステムでのみ限定的にサポートされており、オープンソースでは未開拓の領域でした。</p>
-<p>Molmo2 は、この gap を埋めるために開発されました。</p>
+<p>現在、最も強力な Video-Language Model (VLM) はプロプライエタリであり、ウェイト、データ、トレーニングレシピが公開されていない。また、オープンウェイトモデルの多くは、プロプライエタリモデルから合成データを生成する「蒸留」に依存しており、完全に独立したオープンな基盤が不足していた。</p>
+<p>さらに、既存の VLM には <strong>グラウンディング（grounding）</strong> 能力が欠けている。グラウンディングとは、モデルが「ロボットが赤いブロックを何回掴んだか？」という質問に対して、各掴みイベントの時空間座標を出力したり、「カップがいつテーブルから落ちたか？」に対してカップの軌跡（track）を返したりする能力である。</p>
+<p>画像グラウンディングは既に標準的な機能であるが、ビデオグラウンディングは一部のプロプライエタリシステムでのみ限定的にサポートされており、オープンソースでは未開拓の領域であった。</p>
+<p>Molmo2 は、この gap を埋めるために開発された。</p>
 </section>
 <section id="データセット-9つの新規データセット" class="level2">
 <h2 class="anchored" data-anchor-id="データセット-9つの新規データセット">データセット: 9つの新規データセット</h2>
-<p>Molmo2 の核心は、<strong>9つの新規データセット</strong> です。すべてプロプライエタリモデルからの蒸留を一切使用せず、人手アノテーションと LLM ベースの合成パイプラインで構築されています。</p>
+<p>Molmo2 の核心は、<strong>9つの新規データセット</strong> である。すべてプロプライエタリモデルからの蒸留を一切使用せず、人手アノテーションと LLM ベースの合成パイプラインで構築されている。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -494,14 +494,14 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>多くのオープンモデル（LLaVA-Video, PLM, ShareGPT4Video など）は、GPT-4V や Gemini などのプロプライエタリモデルから合成データを生成する「蒸留」アプローチを採用しています。</p>
-<p>この手法には以下の問題があります：</p>
+<p>多くのオープンモデル（LLaVA-Video, PLM, ShareGPT4Video など）は、GPT-4V や Gemini などのプロプライエタリモデルから合成データを生成する「蒸留」アプローチを採用している。</p>
+<p>この手法には以下の問題がある：</p>
 <ul>
 <li><strong>透明性の欠如</strong>: プロプライエタリモデルの能力に依存するため、データの品質が不透明</li>
 <li><strong>バイアスの継承</strong>: プロプライエタリモデルのバイアスや誤りがそのまま継承される</li>
 <li><strong>改善の限界</strong>: 元モデルを超える性能を達成することが困難</li>
 </ul>
-<p>Molmo2 は、人手アノテーションと自前モデル（Molmo, Claude Sonnet 4.5）のみを使用することで、完全に独立したデータセット構築を実現しています。これにより、オープンソースコミュニティが SOTA を超える基盤を得られます。</p>
+<p>Molmo2 は、人手アノテーションと自前モデル（Molmo, Claude Sonnet 4.5）のみを使用することで、完全に独立したデータセット構築を実現している。これにより、オープンソースコミュニティが SOTA を超える基盤を得られる。</p>
 </div>
 </div>
 <section id="molmo2-cap人手アノテーション" class="level3">
@@ -623,7 +623,7 @@ window.Quarto = {
 </section>
 <section id="アーキテクチャ" class="level2">
 <h2 class="anchored" data-anchor-id="アーキテクチャ">アーキテクチャ</h2>
-<p>Molmo2 は、標準的な VLM アーキテクチャを採用しています。</p>
+<p>Molmo2 は、標準的な VLM アーキテクチャを採用している。</p>
 <pre><code>┌─────────────────────────────────────────────────────────────┐
 │  Video Input (max 128 frames @ 2fps, or 384 for long ctx)   │
 │  or Image Input (1 crop + up to K=8 overlapping crops)      │
@@ -661,7 +661,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="トレーニング">トレーニング</h2>
 <section id="段階トレーニングパイプライン" class="level3">
 <h3 class="anchored" data-anchor-id="段階トレーニングパイプライン">3段階トレーニングパイプライン</h3>
-<p>Molmo2 は <strong>3段階</strong> でトレーニングされます。</p>
+<p>Molmo2 は <strong>3段階</strong> でトレーニングされる。</p>
 <section id="stage-1-pre-training画像のみ" class="level4">
 <h4 class="anchored" data-anchor-id="stage-1-pre-training画像のみ">Stage 1: Pre-training（画像のみ）</h4>
 <ul>
@@ -751,7 +751,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="主要なトレーニング技術">主要なトレーニング技術</h3>
 <section id="token-weighting" class="level4">
 <h4 class="anchored" data-anchor-id="token-weighting">Token Weighting</h4>
-<p>データには、単一トークン出力の多肢選択問題から、4000+トークンの長いビデオキャプションまで含まれます。長い出力が損失の大部分を占めてしまうと、短い回答タスクの性能が低下します。</p>
+<p>データには、単一トークン出力の多肢選択問題から、4000+トークンの長いビデオキャプションまで含まれる。長い出力が損失の大部分を占めてしまうと、短い回答タスクの性能が低下する。</p>
 <p><strong>解決策</strong>: タスクごとに重み付けを調整</p>
 <ul>
 <li>ビデオキャプション: 重み 0.1</li>
@@ -764,16 +764,16 @@ window.Quarto = {
 </section>
 <section id="packing" class="level4">
 <h4 class="anchored" data-anchor-id="packing">Packing</h4>
-<p>例によってトークン数が大きく異なる（数百～16k+）ため、padding を避けるために <strong>packing</strong> を使用します。Vision-language モデルでは、ViT 用のクロップと LLM 用のトークンの両方を効率的にパックする必要があります。</p>
-<p>Molmo2 は、オンザフライでパッキングするアルゴリズムを開発し、<strong>15倍</strong> のトレーニング効率を達成しています。</p>
+<p>例によってトークン数が大きく異なる（数百～16k+）ため、padding を避けるために <strong>packing</strong> を使用する。Vision-language モデルでは、ViT 用のクロップと LLM 用のトークンの両方を効率的にパックする必要がある。</p>
+<p>Molmo2 は、オンザフライでパッキングするアルゴリズムを開発し、<strong>15倍</strong> のトレーニング効率を達成している。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/molmo2/07-packing-message-trees.html">Packing &amp; Message Trees</a></p>
 </blockquote>
 </section>
 <section id="message-trees" class="level4">
 <h4 class="anchored" data-anchor-id="message-trees">Message Trees</h4>
-<p>1つの画像/動画に複数のアノテーションがある場合、<strong>メッセージツリー</strong> としてエンコードします。視覚入力が最初のメッセージとなり、各アノテーションが異なるブランチになります。ツリーは単一シーケンスに線形化され、カスタムアテンションマスクによってブランチ間のクロスアテンションを防ぎます。</p>
-<p>平均して、データ内の例には4つのアノテーションがあり、packing により16,348トークンのシーケンスに平均3.8例を詰め込むことができています。</p>
+<p>1つの画像/動画に複数のアノテーションがある場合、<strong>メッセージツリー</strong> としてエンコードする。視覚入力が最初のメッセージとなり、各アノテーションが異なるブランチになる。ツリーは単一シーケンスに線形化され、カスタムアテンションマスクによってブランチ間のクロスアテンションを防ぐ。</p>
+<p>平均して、データ内の例には4つのアノテーションがあり、packing により16,348トークンのシーケンスに平均3.8例を詰め込むことができている。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/molmo2/07-packing-message-trees.html">Packing &amp; Message Trees</a></p>
 </blockquote>
@@ -784,7 +784,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="評価">評価</h2>
 <section id="overall-results短尺ビデオキャプションカウンティング" class="level3">
 <h3 class="anchored" data-anchor-id="overall-results短尺ビデオキャプションカウンティング">Overall Results（短尺ビデオ、キャプション、カウンティング）</h3>
-<p>Molmo2 は、標準的なビデオベンチマークと新規のキャプション・カウンティングベンチマークで評価されています。</p>
+<p>Molmo2 は、標準的なビデオベンチマークと新規のキャプション・カウンティングベンチマークで評価されている。</p>
 <p><strong>主要な結果</strong>:</p>
 <ul>
 <li><strong>短尺ビデオ理解</strong>: オープンウェイトモデル中で SOTA
@@ -819,7 +819,7 @@ window.Quarto = {
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Molmo2 は、以下の長尺ビデオベンチマークで課題を抱えています：</p>
+<p>Molmo2 は、以下の長尺ビデオベンチマークで課題を抱えている：</p>
 <ul>
 <li><strong>LongVideoBench</strong>: 67.5（Eagle2.5-8B: 66.4、PLM-8B: 56.9）</li>
 <li><strong>MLVU</strong>: 60.2（Eagle2.5-8B: 60.4、PLM-8B: 52.6）</li>
@@ -831,7 +831,7 @@ window.Quarto = {
 <li><strong>計算制約</strong>: Long-Context Training（Stage 3）は 2,000 ステップのみ実施（オーバーヘッドが大きい）</li>
 <li><strong>トレードオフ</strong>: キャプション品質を優先したため、長尺ビデオタスクの性能がやや低下</li>
 </ol>
-<p>ただし、Molmo2 の長尺ビデオ性能は依然として多くのオープンモデルを上回っており、完全オープンデータのみを使用していることを考慮すれば十分な成果です。</p>
+<p>ただし、Molmo2 の長尺ビデオ性能は依然として多くのオープンモデルを上回っており、完全オープンデータのみを使用していることを考慮すれば十分な成果である。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/molmo2/05-long-context-training.html">Long-Context Training</a></p>
 </blockquote>
@@ -847,7 +847,7 @@ window.Quarto = {
 </section>
 <section id="grounding-resultsビデオポインティング-トラッキング" class="level3">
 <h3 class="anchored" data-anchor-id="grounding-resultsビデオポインティング-トラッキング">Grounding Results（ビデオポインティング &amp; トラッキング）</h3>
-<p>Molmo2 の最大の強みは <strong>ビデオグラウンディング</strong> です。</p>
+<p>Molmo2 の最大の強みは <strong>ビデオグラウンディング</strong> である。</p>
 <p><strong>Video Pointing</strong>:</p>
 <ul>
 <li>Molmo2-VP ベンチマーク（新規）で F1 Score <strong>38.4</strong>
@@ -864,25 +864,25 @@ window.Quarto = {
 <li>Gemini 3 Pro を上回る（詳細はベンチマークによる）</li>
 </ul></li>
 </ul>
-<p>既存のオープンウェイトモデル（Qwen3-VL など）は、ビデオトラッキング機能を提供していないため、Molmo2 が新たな capability を開拓したと言えます。</p>
+<p>既存のオープンウェイトモデル（Qwen3-VL など）は、ビデオトラッキング機能を提供していないため、Molmo2 が新たな capability を開拓したと言える。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/molmo2/02-video-grounding.html">Video Grounding: Pointing &amp; Tracking</a></p>
 </blockquote>
 </section>
 <section id="image-results" class="level3">
 <h3 class="anchored" data-anchor-id="image-results">Image Results</h3>
-<p>Molmo2 は画像タスクでも強力な性能を維持しています。</p>
+<p>Molmo2 は画像タスクでも強力な性能を維持している。</p>
 <ul>
 <li><strong>MMMU</strong>: 47.9（Molmo2-8B）</li>
 <li><strong>MathVista</strong>: 63.1</li>
 <li><strong>ChartQA</strong>: 79.5</li>
 <li><strong>AI2D</strong>: 84.5</li>
 </ul>
-<p>ビデオ能力を追加しても、画像タスクの性能を損なっていないことが確認されています。</p>
+<p>ビデオ能力を追加しても、画像タスクの性能を損なっていないことが確認されている。</p>
 </section>
 <section id="ablationsアブレーション" class="level3">
 <h3 class="anchored" data-anchor-id="ablationsアブレーション">Ablations（アブレーション）</h3>
-<p>論文では、以下の要素の影響を検証しています。</p>
+<p>論文では、以下の要素の影響を検証している。</p>
 <ul>
 <li><strong>Bi-directional attention on vision tokens</strong>: 有効（性能向上）</li>
 <li><strong>Token weighting</strong>: 有効（長短出力のバランス改善）</li>
@@ -896,7 +896,7 @@ window.Quarto = {
 </section>
 <section id="関連研究" class="level2">
 <h2 class="anchored" data-anchor-id="関連研究">関連研究</h2>
-<p>Molmo2 は、以下の研究の流れを統合しています。</p>
+<p>Molmo2 は、以下の研究の流れを統合している。</p>
 <ul>
 <li><strong>Vision-Language Models</strong>: GPT-4V, Gemini, LLaVA, InternVL</li>
 <li><strong>Video Understanding</strong>: VideoChat, LLaVA-Video, PLM, Eagle</li>
@@ -904,7 +904,7 @@ window.Quarto = {
 <li><strong>Video Grounding</strong>: Grounding-DINO, SAM-2, Ref-VOS</li>
 <li><strong>Open Data</strong>: PixMo, CoSyn, ShareGPT4Video</li>
 </ul>
-<p>Molmo2 の独自性は、<strong>完全オープン</strong> かつ <strong>ビデオグラウンディング</strong> を実現した点にあります。</p>
+<p>Molmo2 の独自性は、<strong>完全オープン</strong> かつ <strong>ビデオグラウンディング</strong> を実現した点にある。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -934,14 +934,14 @@ window.Quarto = {
 <ul>
 <li><strong>Molmo2-O-7B</strong>: OLMo LLM を使用した唯一の完全オープンモデル（ViT は依然としてプロプライエタリ）</li>
 </ul>
-<p>Molmo2 は、<strong>ビデオグラウンディング</strong> という新しい capability を開拓し、プロプライエタリモデルを含めて最高性能を達成した点で、他モデルと一線を画しています。</p>
+<p>Molmo2 は、<strong>ビデオグラウンディング</strong> という新しい capability を開拓し、プロプライエタリモデルを含めて最高性能を達成した点で、他モデルと一線を画している。</p>
 </div>
 </div>
 </div>
 </section>
 <section id="結論" class="level2">
 <h2 class="anchored" data-anchor-id="結論">結論</h2>
-<p>Molmo2 は、完全オープンな VLM として、以下を達成しました。</p>
+<p>Molmo2 は、完全オープンな VLM として、以下を達成した。</p>
 <ol type="1">
 <li><strong>9つの新規データセット</strong> を構築（プロプライエタリモデルへの依存ゼロ）</li>
 <li><strong>ビデオグラウンディング</strong>（pointing &amp; tracking）を実現</li>
@@ -949,8 +949,8 @@ window.Quarto = {
 <li><strong>キャプション・カウンティング</strong> でプロプライエタリモデルに迫る性能</li>
 <li><strong>完全オープン</strong>（モデル、データ、コード）</li>
 </ol>
-<p>課題として、長尺ビデオ（10+分）でのパフォーマンスは最良のオープンウェイトモデルに及びませんが、これはオープンソースの長尺データ不足が原因です。</p>
-<p>Molmo2 は、オープンソースコミュニティが SOTA の VLM を構築するための強固な基盤を提供します。</p>
+<p>課題として、長尺ビデオ（10+分）でのパフォーマンスは最良のオープンウェイトモデルに及ばないが、これはオープンソースの長尺データ不足が原因である。</p>
+<p>Molmo2 は、オープンソースコミュニティが SOTA の VLM を構築するための強固な基盤を提供する。</p>
 
 
 </section>

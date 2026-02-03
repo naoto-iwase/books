@@ -418,12 +418,12 @@ ul.task-list li input[type="checkbox"] {
 <h1>Long-Context Training</h1>
 <section id="概要" class="level2">
 <h2 class="anchored" data-anchor-id="概要">概要</h2>
-<p>Long-Context Training は、Molmo2 の <strong>Stage 3</strong> として実施される最終的な訓練段階です。Stage 2 の Supervised Fine-Tuning (SFT) と同じデータミックスを使用しながら、<strong>コンテキスト長を大幅に拡張</strong> することで、長尺ビデオや大量の画像を扱う能力を向上させます。</p>
-<p>この段階は、オーバーヘッドが大きいため <strong>短期間のみ実施</strong> されますが、長尺ビデオ理解タスクでの性能向上に重要な役割を果たします。</p>
+<p>Long-Context Training は、Molmo2 の <strong>Stage 3</strong> として実施される最終的な訓練段階である。Stage 2 の Supervised Fine-Tuning (SFT) と同じデータミックスを使用しながら、<strong>コンテキスト長を大幅に拡張</strong> することで、長尺ビデオや大量の画像を扱う能力を向上させる。</p>
+<p>この段階は、オーバーヘッドが大きいため <strong>短期間のみ実施</strong> されるが、長尺ビデオ理解タスクでの性能向上に重要な役割を果たす。</p>
 </section>
 <section id="目的" class="level2">
 <h2 class="anchored" data-anchor-id="目的">目的</h2>
-<p>Long-Context Training の主な目的は以下の通りです。</p>
+<p>Long-Context Training の主な目的は以下の通りである。</p>
 <ol type="1">
 <li><strong>長尺ビデオの理解</strong>: 10分以上の長い動画を処理する能力の向上</li>
 <li><strong>大量フレームの処理</strong>: より多くのフレームを同時に扱うことで、時間的な文脈をより正確に把握</li>
@@ -432,7 +432,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="stage-2-との比較" class="level2">
 <h2 class="anchored" data-anchor-id="stage-2-との比較">Stage 2 との比較</h2>
-<p>Stage 2 (SFT) と Stage 3 (Long-Context Training) の主な違いは以下の表の通りです。</p>
+<p>Stage 2 (SFT) と Stage 3 (Long-Context Training) の主な違いは以下の表の通りである。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 18%">
@@ -497,31 +497,31 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Long-Context Training は <strong>2,000 ステップ</strong> のみ実施されます（Stage 2 の30,000ステップと比較して6.7%）。これは、Context Parallelism による <strong>計算オーバーヘッドが大きい</strong> ためです。</p>
-<p>具体的には:</p>
+<p>Long-Context Training は <strong>2,000 ステップ</strong> のみ実施される（Stage 2 の30,000ステップと比較して6.7%）。これは、Context Parallelism による <strong>計算オーバーヘッドが大きい</strong> ためである。</p>
+<p>具体的には以下の通りである:</p>
 <ul>
 <li>各例が <strong>8 GPU のグループ</strong> で処理される</li>
 <li>Vision encoder と attentional pooling の分散処理が必要</li>
 <li>通常の訓練よりも通信コストが高い</li>
 </ul>
-<p>短期間の訓練でも、長尺ビデオベンチマークでの性能が <strong>有意に向上</strong> することが確認されています（Table 11）。</p>
+<p>短期間の訓練でも、長尺ビデオベンチマークでの性能が <strong>有意に向上</strong> することが確認されている（Table 11）。</p>
 </div>
 </div>
 </section>
 <section id="コンテキスト長の拡張" class="level2">
 <h2 class="anchored" data-anchor-id="コンテキスト長の拡張">コンテキスト長の拡張</h2>
-<p>Stage 3 では、最大シーケンス長を <strong>16,384 → 36,864</strong> トークンに拡張します。これにより、以下のような入力が扱えるようになります。</p>
+<p>Stage 3 では、最大シーケンス長を <strong>16,384 → 36,864</strong> トークンに拡張する。これにより、以下のような入力が扱えるようになる。</p>
 <p><strong>例</strong>:</p>
 <ul>
 <li><strong>長尺ビデオ</strong>: 384 フレーム（2 fps で約3分12秒）+ 字幕</li>
 <li><strong>複雑な QA</strong>: 長いキャプション（平均924語）を含む動画に対する複数ターンの会話</li>
 <li><strong>マルチ画像</strong>: 大量の高解像度画像（複数のクロップ含む）</li>
 </ul>
-<p>シーケンス長の拡張により、packing アルゴリズムは最大 <strong>36,864 トークン</strong> と <strong>384 画像クロップ</strong> を単一のパックシーケンスに詰め込むことができます（Stage 2 では16,384トークン、128クロップが上限）。</p>
+<p>シーケンス長の拡張により、packing アルゴリズムは最大 <strong>36,864 トークン</strong> と <strong>384 画像クロップ</strong> を単一のパックシーケンスに詰め込むことができる（Stage 2 では16,384トークン、128クロップが上限）。</p>
 </section>
 <section id="フレーム数の拡張" class="level2">
 <h2 class="anchored" data-anchor-id="フレーム数の拡張">フレーム数の拡張</h2>
-<p>Stage 3 では、動画の最大フレーム数を <strong>F = 128 → F = 384</strong> に拡張します。</p>
+<p>Stage 3 では、動画の最大フレーム数を <strong>F = 128 → F = 384</strong> に拡張する。</p>
 <p><strong>サンプリング方法</strong>:</p>
 <ul>
 <li><strong>サンプリングレート</strong>: 2 fps（変更なし）</li>
@@ -560,17 +560,17 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>訓練時は F = 384 ですが、推論時には <strong>テストタイムスケーリング</strong> を使用して、さらに多くのフレームを処理することが可能です。</p>
-<p>アブレーション（Table 13）によると、Molmo2-8B（SFT後、Long-Context訓練前）は、推論時に <strong>224 フレーム</strong> で最良の性能を示しました。Long-Context訓練後は、さらに多くのフレームを処理できる可能性があります。</p>
+<p>訓練時は F = 384 であるが、推論時には <strong>テストタイムスケーリング</strong> を使用して、さらに多くのフレームを処理することが可能である。</p>
+<p>アブレーション（Table 13）によると、Molmo2-8B（SFT後、Long-Context訓練前）は、推論時に <strong>224 フレーム</strong> で最良の性能を示した。Long-Context訓練後は、さらに多くのフレームを処理できる可能性がある。</p>
 </div>
 </div>
 </section>
 <section id="context-parallelism-cp" class="level2">
 <h2 class="anchored" data-anchor-id="context-parallelism-cp">Context Parallelism (CP)</h2>
-<p>Long-Context Training では、LLM に対して <strong>Context Parallelism (CP)</strong> を使用します。これは、長いシーケンスを複数の GPU に分散して処理する並列化手法です。</p>
+<p>Long-Context Training では、LLM に対して <strong>Context Parallelism (CP)</strong> を使用する。これは、長いシーケンスを複数の GPU に分散して処理する並列化手法である。</p>
 <section id="ulysses-attention" class="level3">
 <h3 class="anchored" data-anchor-id="ulysses-attention">Ulysses Attention</h3>
-<p>Molmo2 は、CP の実装として <strong>Ulysses attention</strong> を採用しています。</p>
+<p>Molmo2 は、CP の実装として <strong>Ulysses attention</strong> を採用している。</p>
 <p><strong>選択理由</strong>:</p>
 <ul>
 <li><strong>All-gather 操作の柔軟性</strong>: Molmo2 の packing と message tree システムで使用される <strong>カスタムアテンションマスク</strong> に対応可能</li>
@@ -603,7 +603,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="vision-encoder-の分散処理" class="level3">
 <h3 class="anchored" data-anchor-id="vision-encoder-の分散処理">Vision Encoder の分散処理</h3>
-<p>Context Parallelism は LLM に適用されますが、<strong>Vision encoder</strong> と <strong>attentional pooling</strong> も CP グループ全体に分散されます。</p>
+<p>Context Parallelism は LLM に適用されるが、<strong>Vision encoder</strong> と <strong>attentional pooling</strong> も CP グループ全体に分散される。</p>
 <p><strong>分散方法</strong>:</p>
 <ol type="1">
 <li><strong>フレーム分割</strong>: 384 フレームを 8 GPU に分割（各 GPU が48フレームを処理）</li>
@@ -626,8 +626,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>論文では、Vision encoder と attentional pooling の分散処理が <strong>非常に効果的</strong> にモデルのメモリフットプリントを削減したと述べられています。</p>
-<p>384 フレームの処理は膨大なメモリを必要とするため（各フレームが複数のパッチに分割され、ViT で処理される）、この分散処理なしでは訓練が困難でした。</p>
+<p>論文では、Vision encoder と attentional pooling の分散処理が <strong>非常に効果的</strong> にモデルのメモリフットプリントを削減したと述べられている。</p>
+<p>384 フレームの処理は膨大なメモリを必要とするため（各フレームが複数のパッチに分割され、ViT で処理される）、この分散処理なしでは訓練が困難であった。</p>
 </div>
 </div>
 </section>
@@ -636,7 +636,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="訓練の詳細">訓練の詳細</h2>
 <section id="ハイパーパラメータ" class="level3">
 <h3 class="anchored" data-anchor-id="ハイパーパラメータ">ハイパーパラメータ</h3>
-<p>Long-Context Training では、Stage 2 (SFT) と <strong>同じハイパーパラメータ</strong> を使用します（Table 12）。</p>
+<p>Long-Context Training では、Stage 2 (SFT) と <strong>同じハイパーパラメータ</strong> を使用する（Table 12）。</p>
 <ul>
 <li><strong>Optimizer</strong>: AdamW</li>
 <li><strong>Learning rate</strong>: Cosine decay（10% まで減衰）</li>
@@ -677,12 +677,12 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <p><strong>注</strong>: GPU は Nvidia H100 を使用</p>
-<p>Stage 2 (SFT) と比較すると、訓練時間は約40%（4B: 7.5k → 3.2k GPU-hr）です。これは、ステップ数が少ない（2k vs 30k）ためです。</p>
+<p>Stage 2 (SFT) と比較すると、訓練時間は約40%（4B: 7.5k → 3.2k GPU-hr）である。これは、ステップ数が少ない（2k vs 30k）ためである。</p>
 </section>
 </section>
 <section id="アブレーション結果" class="level2">
 <h2 class="anchored" data-anchor-id="アブレーション結果">アブレーション結果</h2>
-<p>Long-Context Training の効果を検証したアブレーション（Table 11）の結果は以下の通りです。</p>
+<p>Long-Context Training の効果を検証したアブレーション（Table 11）の結果は以下の通りである。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -727,14 +727,14 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Long-Context Training は長尺ビデオ理解を向上させますが、<strong>ビデオキャプション</strong> の性能がわずかに低下します。</p>
-<p>これは、長いコンテキストに適応する過程で、短い出力（キャプション）の生成能力が若干犠牲になる可能性を示唆しています。実用上は、タスクに応じて Long-Context Training の有無を選択することが重要です。</p>
+<p>Long-Context Training は長尺ビデオ理解を向上させるが、<strong>ビデオキャプション</strong> の性能がわずかに低下する。</p>
+<p>これは、長いコンテキストに適応する過程で、短い出力（キャプション）の生成能力が若干犠牲になる可能性を示唆している。実用上は、タスクに応じて Long-Context Training の有無を選択することが重要である。</p>
 </div>
 </div>
 </section>
 <section id="長尺ビデオでの課題" class="level2">
 <h2 class="anchored" data-anchor-id="長尺ビデオでの課題">長尺ビデオでの課題</h2>
-<p>Molmo2 は Long-Context Training により長尺ビデオ理解が向上しましたが、最良のオープンウェイトモデル（Eagle2.5-8B など）には及びません。</p>
+<p>Molmo2 は Long-Context Training により長尺ビデオ理解が向上したが、最良のオープンウェイトモデル（Eagle2.5-8B など）には及ばない。</p>
 <p><strong>主な原因</strong>:</p>
 <ol type="1">
 <li><strong>オープンデータの不足</strong>: 10分以上の長尺ビデオのアノテーションデータが極めて少ない</li>
@@ -751,14 +751,14 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>論文では、<strong>オープンソースの長尺ビデオデータ</strong> の不足が主要なボトルネックであると述べられています。</p>
-<p>コミュニティが長尺ビデオのアノテーションデータを構築し、より長期間の Long-Context Training を実施できれば、Molmo2 の長尺ビデオ理解能力はさらに向上する可能性があります。</p>
+<p>論文では、<strong>オープンソースの長尺ビデオデータ</strong> の不足が主要なボトルネックであると述べられている。</p>
+<p>コミュニティが長尺ビデオのアノテーションデータを構築し、より長期間の Long-Context Training を実施できれば、Molmo2 の長尺ビデオ理解能力はさらに向上する可能性がある。</p>
 </div>
 </div>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Long-Context Training（Stage 3）は、Molmo2 の訓練パイプラインの最終段階として、以下を実現します。</p>
+<p>Long-Context Training（Stage 3）は、Molmo2 の訓練パイプラインの最終段階として、以下を実現する。</p>
 <ol type="1">
 <li><strong>コンテキスト長</strong>: 16,384 → 36,864（+125%）</li>
 <li><strong>フレーム数</strong>: F = 128 → F = 384（+200%）</li>
@@ -766,8 +766,8 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Vision encoder 分散</strong>: フレーム処理を CP グループ全体に分散してメモリ削減</li>
 <li><strong>短期間訓練</strong>: わずか2,000ステップ（オーバーヘッドのため）</li>
 </ol>
-<p>この短期間の訓練でも、長尺ビデオ QA で <strong>+3.0 ポイント</strong> の性能向上を達成しており、Long-Context Training の有効性が示されています。ただし、ビデオキャプションの性能がわずかに低下するトレードオフも確認されています。</p>
-<p>今後、オープンソースの長尺ビデオデータが充実し、より長期間の Long-Context Training が可能になれば、Molmo2 の長尺ビデオ理解能力はさらに向上する可能性があります。</p>
+<p>この短期間の訓練でも、長尺ビデオ QA で <strong>+3.0 ポイント</strong> の性能向上を達成しており、Long-Context Training の有効性が示されている。ただし、ビデオキャプションの性能がわずかに低下するトレードオフも確認されている。</p>
+<p>今後、オープンソースの長尺ビデオデータが充実し、より長期間の Long-Context Training が可能になれば、Molmo2 の長尺ビデオ理解能力はさらに向上する可能性がある。</p>
 
 
 </section>

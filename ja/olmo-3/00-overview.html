@@ -459,7 +459,7 @@ ul.task-list li input[type="checkbox"] {
 <h1>Olmo 3 Technical Report まとめ</h1>
 <section id="概要" class="level2">
 <h2 class="anchored" data-anchor-id="概要">概要</h2>
-<p>Olmo 3 は、Allen Institute for AI (AI2) が開発した 7B および 32B パラメータスケールの完全オープンな言語モデルファミリーです。このリリースは、モデルの全ライフサイクル（すべてのステージ、チェックポイント、データポイント、依存関係）を含む「モデルフロー (Model Flow)」全体を公開しています。</p>
+<p>Olmo 3 は、Allen Institute for AI (AI2) が開発した 7B および 32B パラメータスケールの完全オープンな言語モデルファミリーである。このリリースは、モデルの全ライフサイクル（すべてのステージ、チェックポイント、データポイント、依存関係）を含む「モデルフロー (Model Flow)」全体を公開している。</p>
 <p><strong>主な特徴</strong>:</p>
 <ul>
 <li><strong>完全オープン</strong>: 学習データ、コード、中間チェックポイントをすべて公開</li>
@@ -477,7 +477,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="モデルフロー-model-flow" class="level2">
 <h2 class="anchored" data-anchor-id="モデルフロー-model-flow">モデルフロー (Model Flow)</h2>
-<p>Olmo 3 の開発は、<strong>Base Model Training</strong>（基盤モデル訓練）と <strong>Post-training</strong>（後訓練）の 2 つの主要ステージに分かれています。</p>
+<p>Olmo 3 の開発は、<strong>Base Model Training</strong>（基盤モデル訓練）と <strong>Post-training</strong>（後訓練）の 2 つの主要ステージに分かれている。</p>
 <pre><code>┌───────────────────────────────────────────────────────────────┐
 │                    Base Model Training                        │
 ├───────────────────────────────────────────────────────────────┤
@@ -510,7 +510,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="base-model-training">Base Model Training</h2>
 <section id="stage-1-pretraining" class="level3">
 <h3 class="anchored" data-anchor-id="stage-1-pretraining">Stage 1: Pretraining</h3>
-<p>Olmo 3 Base は、<strong>Dolma 3 Mix</strong> と呼ばれる 5.9 兆トークンの多様なデータで事前学習されます。</p>
+<p>Olmo 3 Base は、<strong>Dolma 3 Mix</strong> と呼ばれる 5.9 兆トークンの多様なデータで事前学習される。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/olmo-3/01-dolma3-dataset.html">Dolma 3 データセット</a></p>
 </blockquote>
@@ -540,7 +540,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="stage-2-midtraining" class="level3">
 <h3 class="anchored" data-anchor-id="stage-2-midtraining">Stage 2: Midtraining</h3>
-<p>100 億トークンの <strong>Dolma 3 Dolmino Mix</strong> で中間訓練を実施します。このステージの目的は、コード、数学、一般知識 QA などの重要な能力を強化することです。</p>
+<p>100 億トークンの <strong>Dolma 3 Dolmino Mix</strong> で中間訓練を実施する。このステージの目的は、コード、数学、一般知識 QA などの重要な能力を強化することである。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/olmo-3/03-midtraining.html">Midtraining（中間訓練）</a></p>
 </blockquote>
@@ -560,7 +560,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="stage-3-long-context-extension" class="level3">
 <h3 class="anchored" data-anchor-id="stage-3-long-context-extension">Stage 3: Long-context Extension</h3>
-<p>Olmo 3 は、最大 <strong>65K トークン</strong>のコンテキストをサポートする長文脈能力を持ちます。7B モデルは 50B トークン、32B モデルは 100B トークンの <strong>Dolma 3 Longmino Mix</strong> で拡張訓練されます。</p>
+<p>Olmo 3 は、最大 <strong>65K トークン</strong>のコンテキストをサポートする長文脈能力を持つ。7B モデルは 50B トークン、32B モデルは 100B トークンの <strong>Dolma 3 Longmino Mix</strong> で拡張訓練される。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/olmo-3/04-long-context-extension.html">Long-context Extension（長文脈拡張）</a></p>
 </blockquote>
@@ -576,11 +576,11 @@ ul.task-list li input[type="checkbox"] {
 <li>8K トークン以上: 22.3M 文書（640B トークン）</li>
 <li>32K トークン以上: 4.5M 文書（380B トークン）</li>
 </ul>
-<p>これは、長文脈研究のための最大のオープン利用可能なコレクションです。</p>
+<p>これは、長文脈研究のための最大のオープン利用可能なコレクションである。</p>
 </section>
 <section id="base-model-の結果" class="level3">
 <h3 class="anchored" data-anchor-id="base-model-の結果">Base Model の結果</h3>
-<p>Olmo 3 Base は、32B パラメータスケールで <strong>最強の完全オープンモデル</strong>です：</p>
+<p>Olmo 3 Base は、32B パラメータスケールで <strong>最強の完全オープンモデル</strong>である：</p>
 <ul>
 <li><strong>完全オープンモデル</strong>: Stanford Marin 32B、Apertus 70B を上回る</li>
 <li><strong>数学とコード</strong>: 他の完全オープン 32B モデルに対して 2 桁の改善</li>
@@ -590,10 +590,10 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="post-training" class="level2">
 <h2 class="anchored" data-anchor-id="post-training">Post-training</h2>
-<p>Base モデルから 3 つのバリエーションを開発します。</p>
+<p>Base モデルから 3 つのバリエーションを開発する。</p>
 <section id="olmo-3-think-思考型モデル" class="level3">
 <h3 class="anchored" data-anchor-id="olmo-3-think-思考型モデル">Olmo 3 Think: 思考型モデル</h3>
-<p>Olmo 3 Think は、最終回答を生成する前に<strong>段階的推論</strong>を行い、中間的な思考トレースを生成するように訓練されています。</p>
+<p>Olmo 3 Think は、最終回答を生成する前に<strong>段階的推論</strong>を行い、中間的な思考トレースを生成するように訓練されている。</p>
 <p><strong>訓練パイプライン</strong>:</p>
 <ol type="1">
 <li><p><strong>SFT (Supervised Finetuning)</strong>: Dolci Think SFT で思考トレースを学習</p></li>
@@ -603,7 +603,7 @@ ul.task-list li input[type="checkbox"] {
 </blockquote></li>
 <li><p><strong>RLVR (Reinforcement Learning with Verifiable Rewards)</strong>: OlmoRL による強化学習</p>
 <blockquote class="blockquote">
-<p>詳細: <a href="10-olmrl-grpo.qmd">OlmoRL / GRPO</a></p>
+<p>詳細: <a href="../../ja/olmo-3/10-olmorl-grpo.html">OlmoRL / GRPO</a></p>
 </blockquote></li>
 </ol>
 <blockquote class="blockquote">
@@ -670,7 +670,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="olmo-3-instruct-指示追従型モデル" class="level3">
 <h3 class="anchored" data-anchor-id="olmo-3-instruct-指示追従型モデル">Olmo 3 Instruct: 指示追従型モデル</h3>
-<p>Olmo 3 Instruct は、内部的な思考トレースを生成せずに、効率的で有用な応答を生成するように訓練されています。</p>
+<p>Olmo 3 Instruct は、内部的な思考トレースを生成せずに、効率的で有用な応答を生成するように訓練されている。</p>
 <p><strong>特徴</strong>:</p>
 <ul>
 <li>簡潔で直接的な応答</li>
@@ -691,7 +691,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="olmo-3-rl-zero-rl-from-base" class="level3">
 <h3 class="anchored" data-anchor-id="olmo-3-rl-zero-rl-from-base">Olmo 3 RL-Zero: RL from Base</h3>
-<p>Olmo 3 RL-Zero は、Base モデルから直接 RL で訓練したモデルです。</p>
+<p>Olmo 3 RL-Zero は、Base モデルから直接 RL で訓練したモデルである。</p>
 <p><strong>目的</strong>:</p>
 <ul>
 <li>事前学習データが RL パフォーマンスに与える影響を研究可能にする</li>
@@ -713,7 +713,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="訓練コストとタイムライン" class="level2">
 <h2 class="anchored" data-anchor-id="訓練コストとタイムライン">訓練コストとタイムライン</h2>
-<p>Olmo 3 Think 32B の訓練には、<strong>1024 台の H100 GPU</strong> を使用して約 <strong>56 日</strong>かかりました。</p>
+<p>Olmo 3 Think 32B の訓練には、<strong>1024 台の H100 GPU</strong> を使用して約 <strong>56 日</strong>かかった。</p>
 <p><strong>内訳</strong>:</p>
 <ul>
 <li><strong>Pretraining</strong>: 約 47 日（Midtraining と Long-context Extension を含む）</li>
@@ -723,7 +723,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="オープンアーティファクト" class="level2">
 <h2 class="anchored" data-anchor-id="オープンアーティファクト">オープンアーティファクト</h2>
-<p>Olmo 3 は、すべての中間チェックポイントと最終モデルを公開しています。</p>
+<p>Olmo 3 は、すべての中間チェックポイントと最終モデルを公開している。</p>
 <p><strong>公開内容</strong>:</p>
 <ol type="1">
 <li><strong>モデル</strong>:
@@ -772,9 +772,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Olmo 3 は、完全オープンな AI 研究と開発を推進するための包括的なリリースです。モデルの最終的な重みだけでなく、開発プロセス全体を透明化し、研究者がモデル開発のあらゆる段階で介入・カスタマイズできるようにしています。</p>
+<p>Olmo 3 は、完全オープンな AI 研究と開発を推進するための包括的なリリースである。モデルの最終的な重みだけでなく、開発プロセス全体を透明化し、研究者がモデル開発のあらゆる段階で介入・カスタマイズできるようにしている。</p>
 <p><strong>コア理念</strong>: 真にオープンソース AI を推進するには、最終的なモデルだけでなく、そこに至る「道筋」全体を透明かつアクセス可能にする必要がある。</p>
-<p><strong>フラッグシップモデル</strong>: Olmo 3.1 Think 32B は、推論ベンチマークスイートで Qwen 3 32B に迫りながら、6 分の 1 の訓練トークン数で達成し、すべての訓練データと思考チェーンをトレース可能にしています。</p>
+<p><strong>フラッグシップモデル</strong>: Olmo 3.1 Think 32B は、推論ベンチマークスイートで Qwen 3 32B に迫りながら、6 分の 1 の訓練トークン数で達成し、すべての訓練データと思考チェーンをトレース可能にしている。</p>
 
 
 </section>

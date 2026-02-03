@@ -474,12 +474,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Video Grounding: Pointing &amp; Tracking</h1>
 <section id="video-grounding-とは" class="level2">
 <h2 class="anchored" data-anchor-id="video-grounding-とは">Video Grounding とは</h2>
-<p><strong>Video Grounding（ビデオグラウンディング）</strong> は、モデルがビデオ内の特定のオブジェクトやイベントを <strong>時空間的に正確に指し示す（grounding）</strong> 能力です。従来の Vision-Language Model (VLM) は、「このビデオには何がありますか？」という質問に回答できても、「赤いブロックが何回掴まれましたか？それぞれどこですか？」という質問に対して正確な時刻と位置を返すことはできませんでした。</p>
-<p>Molmo2 は、この gap を埋めるために、<strong>Video Pointing</strong> と <strong>Video Tracking</strong> という2つの grounding 機能を実装しています。</p>
+<p><strong>Video Grounding（ビデオグラウンディング）</strong> は、モデルがビデオ内の特定のオブジェクトやイベントを <strong>時空間的に正確に指し示す（grounding）</strong> 能力である。従来の Vision-Language Model (VLM) は、「このビデオには何がありますか？」という質問に回答できても、「赤いブロックが何回掴まれましたか？それぞれどこですか？」という質問に対して正確な時刻と位置を返すことはできなかった。</p>
+<p>Molmo2 は、この gap を埋めるために、<strong>Video Pointing</strong> と <strong>Video Tracking</strong> という2つの grounding 機能を実装している。</p>
 <section id="動機" class="level3">
 <h3 class="anchored" data-anchor-id="動機">動機</h3>
-<p>画像におけるグラウンディング（pointing）は既に標準的な機能となっており、Molmo2 の前身である Molmo1 や GPT-4V、Gemini などでサポートされています。しかし、ビデオにおけるグラウンディングは一部のプロプライエタリシステムでのみ限定的にサポートされており、オープンソースでは未開拓の領域でした。</p>
-<p>ビデオグラウンディングは、以下のような実用的なユースケースで重要です。</p>
+<p>画像におけるグラウンディング（pointing）は既に標準的な機能となっており、Molmo2 の前身である Molmo1 や GPT-4V、Gemini などでサポートされている。しかし、ビデオにおけるグラウンディングは一部のプロプライエタリシステムでのみ限定的にサポートされており、オープンソースでは未開拓の領域であった。</p>
+<p>ビデオグラウンディングは、以下のような実用的なユースケースで重要である。</p>
 <ul>
 <li><strong>ロボティクス</strong>: 「ロボットが赤いブロックを何回掴んだか？」といった質問に対して、各掴みイベントの時空間座標を返す</li>
 <li><strong>ビデオ検索</strong>: 「カップがいつテーブルから落ちたか？」という質問に対してカップの軌跡（track）を返す</li>
@@ -489,10 +489,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="video-pointing-vs-video-tracking" class="level2">
 <h2 class="anchored" data-anchor-id="video-pointing-vs-video-tracking">Video Pointing vs Video Tracking</h2>
-<p>Molmo2 は、2種類のビデオグラウンディング機能を提供します。</p>
+<p>Molmo2 は、2種類のビデオグラウンディング機能を提供する。</p>
 <section id="video-pointing" class="level3">
 <h3 class="anchored" data-anchor-id="video-pointing">Video Pointing</h3>
-<p><strong>Video Pointing</strong> は、ビデオ内の特定のフレームにおける特定のオブジェクトやイベントの <strong>位置を点（points）で示す</strong> タスクです。複数フレームにわたる場合もありますが、各フレームは独立して扱われます。</p>
+<p><strong>Video Pointing</strong> は、ビデオ内の特定のフレームにおける特定のオブジェクトやイベントの <strong>位置を点（points）で示す</strong> タスクである。複数フレームにわたる場合もあるが、各フレームは独立して扱われる。</p>
 <p><strong>例</strong>:</p>
 <ul>
 <li>質問: 「滝をポイントして」</li>
@@ -507,7 +507,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="video-tracking" class="level3">
 <h3 class="anchored" data-anchor-id="video-tracking">Video Tracking</h3>
-<p><strong>Video Tracking</strong> は、ビデオ内の特定のオブジェクトを <strong>時間を通して追跡（track）</strong> するタスクです。同一のオブジェクトが複数フレームにわたって移動する場合、そのオブジェクトの軌跡を一貫して記録します。</p>
+<p><strong>Video Tracking</strong> は、ビデオ内の特定のオブジェクトを <strong>時間を通して追跡（track）</strong> するタスクである。同一のオブジェクトが複数フレームにわたって移動する場合、そのオブジェクトの軌跡を一貫して記録する。</p>
 <p><strong>例</strong>:</p>
 <ul>
 <li>質問: 「赤い車を追跡して」</li>
@@ -533,14 +533,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Pointing</strong>: フレームごとに独立した位置情報（カウンティング重視）</li>
 <li><strong>Tracking</strong>: オブジェクトの時間的な一貫性（軌跡重視）</li>
 </ul>
-<p>実用上、Pointing は「いつどこにあるか」を知りたい場合に、Tracking は「どう動いたか」を知りたい場合に適しています。</p>
+<p>実用上、Pointing は「いつどこにあるか」を知りたい場合に、Tracking は「どう動いたか」を知りたい場合に適している。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="molmo2-videopoint-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="molmo2-videopoint-データセット">Molmo2-VideoPoint データセット</h2>
-<p><strong>Molmo2-VideoPoint</strong> は、ビデオ内のオブジェクトやイベントをポイントするための人手アノテーションデータセットです。</p>
+<p><strong>Molmo2-VideoPoint</strong> は、ビデオ内のオブジェクトやイベントをポイントするための人手アノテーションデータセットである。</p>
 <section id="基本統計" class="level3">
 <h3 class="anchored" data-anchor-id="基本統計">基本統計</h3>
 <ul>
@@ -552,7 +552,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="つのカテゴリ" class="level3">
 <h3 class="anchored" data-anchor-id="つのカテゴリ">8つのカテゴリ</h3>
-<p>Molmo2-VideoPoint は、以下の8つの多様なカテゴリをカバーしています。</p>
+<p>Molmo2-VideoPoint は、以下の8つの多様なカテゴリをカバーしている。</p>
 <ol type="1">
 <li><strong>Objects（オブジェクト）</strong>: 一般的な物体（「車」「コップ」など）</li>
 <li><strong>Animals（動物）</strong>: 動物の検出とカウンティング</li>
@@ -573,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>カテゴリ8の <strong>Visual artifacts/anomalies</strong> は、AI生成動画における品質評価のために設計されています。約25種類の text-to-video (T2V) モデルで生成された10k動画を使用し、消失する被写体（Vanishing Subject）、物理的な不整合（Physical Incongruity）、時間的な歪み（Temporal Dysmorphia）などの異常を検出する能力を学習します。</p>
+<p>カテゴリ8の <strong>Visual artifacts/anomalies</strong> は、AI生成動画における品質評価のために設計されている。約25種類の text-to-video (T2V) モデルで生成された10k動画を使用し、消失する被写体（Vanishing Subject）、物理的な不整合（Physical Incongruity）、時間的な歪み（Temporal Dysmorphia）などの異常を検出する能力を学習する。</p>
 </div>
 </div>
 </section>
@@ -600,7 +600,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="molmo2-videotrack-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="molmo2-videotrack-データセット">Molmo2-VideoTrack データセット</h2>
-<p><strong>Molmo2-VideoTrack</strong> は、複雑な自然言語クエリに対応したオブジェクトトラッキングデータセットです。</p>
+<p><strong>Molmo2-VideoTrack</strong> は、複雑な自然言語クエリに対応したオブジェクトトラッキングデータセットである。</p>
 <section id="基本統計-1" class="level3">
 <h3 class="anchored" data-anchor-id="基本統計-1">基本統計</h3>
 <ul>
@@ -614,7 +614,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="データソース" class="level3">
 <h3 class="anchored" data-anchor-id="データソース">データソース</h3>
-<p>Molmo2-VideoTrack は、既存のセグメンテーションおよびバウンディングボックストラッキングデータセットを基に、人手で複雑なテキストクエリを追加したものです。</p>
+<p>Molmo2-VideoTrack は、既存のセグメンテーションおよびバウンディングボックストラッキングデータセットを基に、人手で複雑なテキストクエリを追加したものである。</p>
 <p><strong>セグメンテーションベース</strong>（一般的なオブジェクトトラッキング）:</p>
 <ul>
 <li>SAM-V, VIPSeg, MOSE, MOSEv2</li>
@@ -637,7 +637,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>バウンディングボックスベースのデータセットでは、中心点がオブジェクト上にない可能性があるため、SAM 2 を使用して各バウンディングボックスをセグメンテーションマスクに変換しました。</p>
+<p>バウンディングボックスベースのデータセットでは、中心点がオブジェクト上にない可能性があるため、SAM 2 を使用して各バウンディングボックスをセグメンテーションマスクに変換した。</p>
 <p><strong>変換プロセス</strong>:</p>
 <ol type="1">
 <li>最初のバウンディングボックスを SAM 2 にプロンプトとして入力</li>
@@ -645,13 +645,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>IoU が 0.5 未満のトラックは除外</li>
 <li>生成されたマスクから中心付近の点をサンプリング</li>
 </ol>
-<p>これにより、信頼性の高い点ベースのトラッキングアノテーションを得られます。</p>
+<p>これにより、信頼性の高い点ベースのトラッキングアノテーションを得られる。</p>
 </div>
 </div>
 </section>
 <section id="データ収集パイプライン-1" class="level3">
 <h3 class="anchored" data-anchor-id="データ収集パイプライン-1">データ収集パイプライン</h3>
-<p>Molmo2-VideoTrack の収集は、Ref-VOS（Referring Video Object Segmentation）のアプローチに従っています。</p>
+<p>Molmo2-VideoTrack の収集は、Ref-VOS（Referring Video Object Segmentation）のアプローチに従っている。</p>
 <ol type="1">
 <li><strong>既存トラックの表示</strong>: アノテーターにセグメンテーションまたはバウンディングボックスのトラックを表示</li>
 <li><strong>クエリ作成</strong>: アノテーターがオブジェクトのサブセットに適用される <strong>非自明な</strong> テキストクエリを作成
@@ -666,7 +666,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="カテゴリ分布" class="level3">
 <h3 class="anchored" data-anchor-id="カテゴリ分布">カテゴリ分布</h3>
-<p>Molmo2-VideoTrack は、多様なドメインをカバーしています。</p>
+<p>Molmo2-VideoTrack は、多様なドメインをカバーしている。</p>
 <ul>
 <li><strong>一般的なオブジェクト</strong>: 日常的な物体（セグメンテーションデータセットから）</li>
 <li><strong>スポーツ</strong>: サッカー選手、チームメンバー、競技者</li>
@@ -675,15 +675,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>UAV</strong>: ドローン映像における追跡</li>
 <li><strong>人物</strong>: 歩行者、ダンサー</li>
 </ul>
-<p>複数オブジェクトの追跡が主な焦点であり、クエリの多くは複数のオブジェクトを同時に記述します（平均3.31オブジェクト/クエリ）。</p>
+<p>複数オブジェクトの追跡が主な焦点であり、クエリの多くは複数のオブジェクトを同時に記述する（平均3.31オブジェクト/クエリ）。</p>
 </section>
 </section>
 <section id="academic-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="academic-データセット">Academic データセット</h2>
-<p>Molmo2 は、既存のオープンソースデータセットを Pointing と Tracking の形式に変換した <strong>Academic データセット</strong> も使用しています。</p>
+<p>Molmo2 は、既存のオープンソースデータセットを Pointing と Tracking の形式に変換した <strong>Academic データセット</strong> も使用している。</p>
 <section id="academicvideopoint" class="level3">
 <h3 class="anchored" data-anchor-id="academicvideopoint">AcademicVideoPoint</h3>
-<p>既存のオブジェクトトラッキングアノテーションを <strong>49k のポインティング・カウンティング QA</strong> に変換しました。</p>
+<p>既存のオブジェクトトラッキングアノテーションを <strong>49k のポインティング・カウンティング QA</strong> に変換した。</p>
 <p><strong>ソースデータセット</strong>（6つ）:</p>
 <ul>
 <li>MeViS, ReVOS, LV-VIS, OVIS, BURST, Ref-DAVIS17</li>
@@ -697,7 +697,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="academicvideotrack" class="level3">
 <h3 class="anchored" data-anchor-id="academicvideotrack">AcademicVideoTrack</h3>
-<p>既存のビデオオブジェクトセグメンテーション（VOS）およびトラッキングデータセットを変換しました。</p>
+<p>既存のビデオオブジェクトセグメンテーション（VOS）およびトラッキングデータセットを変換した。</p>
 <p><strong>セグメンテーションベース</strong>（7つの Ref-VOS データセット）:</p>
 <ul>
 <li>MeViS, ReVOS, LV-VIS, OVIS, BURST, Ref-Youtube-VOS, Ref-DAVIS17</li>
@@ -706,7 +706,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>TrackingNet, VastTrack, GOT-10k, LaSOT, TNL2K, WebUAV, WebUOT, LVOS V1/V2, UW-COT220, TNLLT, YouTube-VIS, MoCA-Video</li>
 </ul>
-<p>SAM 2 を使用してバウンディングボックスをセグメンテーションマスクに変換し、点ベースのトラッキングタスクを生成しました。</p>
+<p>SAM 2 を使用してバウンディングボックスをセグメンテーションマスクに変換し、点ベースのトラッキングタスクを生成した。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -717,17 +717,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>AcademicVideoTrack は、トレーニングデータの大部分を占めており、130k のクエリと 800k の例（トークン数ベース）を提供しています。これに対して、Molmo2-VideoTrack は 8k のクエリですが、より複雑で多様なテキストクエリを含んでいます。</p>
+<p>AcademicVideoTrack は、トレーニングデータの大部分を占めており、130k のクエリと 800k の例（トークン数ベース）を提供している。これに対して、Molmo2-VideoTrack は 8k のクエリであるが、より複雑で多様なテキストクエリを含んでいる。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="評価結果-プロプライエタリモデルを上回る性能" class="level2">
 <h2 class="anchored" data-anchor-id="評価結果-プロプライエタリモデルを上回る性能">評価結果: プロプライエタリモデルを上回る性能</h2>
-<p>Molmo2 は、ビデオグラウンディングにおいて <strong>プロプライエタリモデルを含めて最高水準</strong> の性能を達成しています。</p>
+<p>Molmo2 は、ビデオグラウンディングにおいて <strong>プロプライエタリモデルを含めて最高水準</strong> の性能を達成している。</p>
 <section id="video-counting-pointing" class="level3">
 <h3 class="anchored" data-anchor-id="video-counting-pointing">Video Counting &amp; Pointing</h3>
-<p>以下の表は、BURST-VideoCount（VC）、Molmo2-VideoCount（Molmo2-VC）、Molmo2-VideoPoint（Molmo2-VP）における性能を示しています。</p>
+<p>以下の表は、BURST-VideoCount（VC）、Molmo2-VideoCount（Molmo2-VC）、Molmo2-VideoPoint（Molmo2-VP）における性能を示している。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 5%">
@@ -909,7 +909,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Molmo2-VP</strong>: Molmo2-4B は F1 Score 39.9 で、Gemini 3 Pro（20.0）の <strong>約2倍</strong> の性能</li>
 <li><strong>Qwen3-VL との比較</strong>: Qwen3-VL はビデオポインティングをほぼサポートしていない（F1 Score 0.0-1.5）</li>
 </ul>
-<p>Molmo2 は、オープンウェイトモデルとしてだけでなく、<strong>プロプライエタリモデルを含めても最高水準</strong> のビデオポインティング性能を達成しています。</p>
+<p>Molmo2 は、オープンウェイトモデルとしてだけでなく、<strong>プロプライエタリモデルを含めても最高水準</strong> のビデオポインティング性能を達成している。</p>
 </div>
 </div>
 <p><strong>評価指標の説明</strong>:</p>
@@ -921,7 +921,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="video-tracking-1" class="level3">
 <h3 class="anchored" data-anchor-id="video-tracking-1">Video Tracking</h3>
-<p>以下の表は、主要なビデオトラッキングベンチマークにおける性能を示しています。</p>
+<p>以下の表は、主要なビデオトラッキングベンチマークにおける性能を示している。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 7%">
@@ -1074,7 +1074,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>VideoLISA は Ref-VOS に特化したモデルであり、一部のベンチマーク（MeViS valid-u, Ref-YT-VOS, Ref-Davis）で Molmo2 と同等またはそれ以上の性能を示しています。しかし、Molmo2 は <strong>汎用的なビデオ理解モデル</strong> として、ビデオ QA、キャプション、カウンティングなど幅広いタスクをサポートしている点が異なります。</p>
+<p>VideoLISA は Ref-VOS に特化したモデルであり、一部のベンチマーク（MeViS valid-u, Ref-YT-VOS, Ref-Davis）で Molmo2 と同等またはそれ以上の性能を示している。しかし、Molmo2 は <strong>汎用的なビデオ理解モデル</strong> として、ビデオ QA、キャプション、カウンティングなど幅広いタスクをサポートしている点が異なる。</p>
 </div>
 </div>
 <p><strong>評価指標の説明</strong>:</p>
@@ -1092,7 +1092,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="pointing-フォーマット-plain-text-coordinates" class="level2">
 <h2 class="anchored" data-anchor-id="pointing-フォーマット-plain-text-coordinates">Pointing フォーマット: Plain-Text Coordinates</h2>
-<p>Molmo2 は、ビデオグラウンディングの出力に <strong>プレーンテキスト座標</strong> を使用しています。これは、特別なトークンや外部ツールを使わずに、LLM のテキスト生成能力だけでグラウンディングを実現するアプローチです。</p>
+<p>Molmo2 は、ビデオグラウンディングの出力に <strong>プレーンテキスト座標</strong> を使用している。これは、特別なトークンや外部ツールを使わずに、LLM のテキスト生成能力だけでグラウンディングを実現するアプローチである。</p>
 <section id="フォーマット例" class="level3">
 <h3 class="anchored" data-anchor-id="フォーマット例">フォーマット例</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">points</span><span class="ot"> coords=</span><span class="st">"t^1 count_1 x_1 y_1 t^2 count_2 x_2 y_2 t^3 count_3 x_3 y_3"</span>&gt;</span>
@@ -1108,14 +1108,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="トラッキングの場合" class="level3">
 <h3 class="anchored" data-anchor-id="トラッキングの場合">トラッキングの場合</h3>
-<p>トラッキングでは、オブジェクトごとに一意の ID（<code>count_i</code>）を割り当て、複数フレームにわたって同じ ID を維持します。</p>
+<p>トラッキングでは、オブジェクトごとに一意の ID（<code>count_i</code>）を割り当て、複数フレームにわたって同じ ID を維持する。</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">points</span><span class="ot"> coords=</span><span class="st">"t^1 1 0.45 0.32 t^2 1 0.48 0.35 t^3 1 0.51 0.38"</span>&gt;</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>red car</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">points</span>&gt;</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">points</span><span class="ot"> coords=</span><span class="st">"t^1 2 0.62 0.55 t^2 2 0.65 0.57 t^3 2 0.68 0.59"</span>&gt;</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>blue car</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">points</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>この例では、<code>1</code> が赤い車、<code>2</code> が青い車を示しており、各フレーム（<code>t^1</code>, <code>t^2</code>, <code>t^3</code>）での位置が記録されています。</p>
+<p>この例では、<code>1</code> が赤い車、<code>2</code> が青い車を示しており、各フレーム（<code>t^1</code>, <code>t^2</code>, <code>t^3</code>）での位置が記録されている。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1132,14 +1132,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>スケーラビリティ</strong>: 複数オブジェクト、複数フレームに自然に拡張可能</li>
 <li><strong>人間可読性</strong>: デバッグや分析が容易</li>
 </ul>
-<p>一方で、座標の精度は LLM のテキスト生成精度に依存するため、非常に高精度な座標が必要な場合には専用のヘッドを追加するアプローチ（例: Grounding-DINO）の方が有利な場合もあります。</p>
+<p>一方で、座標の精度は LLM のテキスト生成精度に依存するため、非常に高精度な座標が必要な場合には専用のヘッドを追加するアプローチ（例: Grounding-DINO）の方が有利な場合もある。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Molmo2 は、<strong>Video Grounding</strong> という新しい capability を完全オープンなモデルとして実現しました。</p>
+<p>Molmo2 は、<strong>Video Grounding</strong> という新しい capability を完全オープンなモデルとして実現した。</p>
 <p><strong>主要な成果</strong>:</p>
 <ol type="1">
 <li><strong>2つのグラウンディング機能</strong>:
@@ -1168,7 +1168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>LLM の生成能力を直接活用</li>
 </ul></li>
 </ol>
-<p>Molmo2 のビデオグラウンディング機能は、ロボティクス、ビデオ検索、生成動画の品質評価など、幅広い実用的なアプリケーションへの道を開きます。</p>
+<p>Molmo2 のビデオグラウンディング機能は、ロボティクス、ビデオ検索、生成動画の品質評価など、幅広い実用的なアプリケーションへの道を開く。</p>
 
 
 </section>

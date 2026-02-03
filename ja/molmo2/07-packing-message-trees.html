@@ -413,10 +413,10 @@ ul.task-list li input[type="checkbox"] {
 <h1>Packing &amp; Message Trees</h1>
 <section id="packing-とは" class="level2">
 <h2 class="anchored" data-anchor-id="packing-とは">Packing とは</h2>
-<p><strong>Packing</strong> は、複数の短い訓練例を1つの長いシーケンスにマージして、バッチ作成時の無駄な padding を避ける技術です。訓練例のトークン数は様々で、数百トークン（純粋なテキストや小さい画像）から16,000トークン以上（字幕付き動画や長コンテキスト訓練中の長い動画）まで幅広く分布しています。</p>
+<p><strong>Packing</strong> は、複数の短い訓練例を1つの長いシーケンスにマージして、バッチ作成時の無駄な padding を避ける技術である。訓練例のトークン数は様々で、数百トークン（純粋なテキストや小さい画像）から16,000トークン以上（字幕付き動画や長コンテキスト訓練中の長い動画）まで幅広く分布している。</p>
 <section id="vision-language-モデルでの課題" class="level3">
 <h3 class="anchored" data-anchor-id="vision-language-モデルでの課題">Vision-Language モデルでの課題</h3>
-<p>VLM における Packing は、以下の理由により非自明な課題となります:</p>
+<p>VLM における Packing は、以下の理由により非自明な課題となる:</p>
 <ul>
 <li><strong>二重のパッキング要求</strong>: ViT のクロップと LLM のトークンの両方を効率的にパックする必要がある</li>
 <li><strong>モデル多様性</strong>: 画像・動画をトークンに変換する異なるアプローチを持つモデルをサポートする必要がある</li>
@@ -424,7 +424,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="molmo2-のオンザフライパッキングアルゴリズム" class="level3">
 <h3 class="anchored" data-anchor-id="molmo2-のオンザフライパッキングアルゴリズム">Molmo2 のオンザフライパッキングアルゴリズム</h3>
-<p>Molmo2 では、小規模なメモリ内の例のプールから最大効率のパックシーケンスを構築する <strong>オンザフライパッキングアルゴリズム</strong> を開発しました。このアルゴリズムは標準的な PyTorch データローダーに統合可能です。</p>
+<p>Molmo2 では、小規模なメモリ内の例のプールから最大効率のパックシーケンスを構築する <strong>オンザフライパッキングアルゴリズム</strong> を開発した。このアルゴリズムは標準的な PyTorch データローダーに統合可能である。</p>
 <div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -435,17 +435,17 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>SFT 時には、平均 <strong>3.8 個の例</strong> を <strong>16,348 トークンのシーケンス</strong> に詰め込むことができ、<strong>15倍の訓練効率</strong> を達成しています。</p>
+<p>SFT 時には、平均 <strong>3.8 個の例</strong> を <strong>16,348 トークンのシーケンス</strong> に詰め込むことができ、<strong>15倍の訓練効率</strong> を達成している。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="message-trees-とは" class="level2">
 <h2 class="anchored" data-anchor-id="message-trees-とは">Message Trees とは</h2>
-<p><strong>Message Trees</strong> は、複数のアノテーションを持つ動画や画像をエンコードする手法です。1つの視覚入力に対して複数の異なるアノテーション（質問応答ペア、キャプション、ポインティングなど）を効率的に処理できます。</p>
+<p><strong>Message Trees</strong> は、複数のアノテーションを持つ動画や画像をエンコードする手法である。1つの視覚入力に対して複数の異なるアノテーション（質問応答ペア、キャプション、ポインティングなど）を効率的に処理できる。</p>
 <section id="message-trees-の構造" class="level3">
 <h3 class="anchored" data-anchor-id="message-trees-の構造">Message Trees の構造</h3>
-<p>Message Trees では、以下のような木構造でデータを表現します:</p>
+<p>Message Trees では、以下のような木構造でデータを表現する:</p>
 <pre><code>Visual Input (Root)
 ├─ Annotation 1 (Branch 1)
 ├─ Annotation 2 (Branch 2)
@@ -468,13 +468,13 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>訓練データ内の例は、平均して <strong>4つのアノテーション</strong> を持っています。</p>
+<p>訓練データ内の例は、平均して <strong>4つのアノテーション</strong> を持っている。</p>
 </div>
 </div>
 </section>
 <section id="アテンションマスクの実装" class="level3">
 <h3 class="anchored" data-anchor-id="アテンションマスクの実装">アテンションマスクの実装</h3>
-<p>Message Trees では、ブランチ間の独立性を保つために <strong>カスタムアテンションマスク</strong> を使用します。これにより、異なるアノテーション（ブランチ）が互いにアテンションすることを防ぎます。</p>
+<p>Message Trees では、ブランチ間の独立性を保つために <strong>カスタムアテンションマスク</strong> を使用する。これにより、異なるアノテーション（ブランチ）が互いにアテンションすることを防ぐ。</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-message-tree-attention" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -507,18 +507,18 @@ Figure&nbsp;1: Message Trees のアテンション構造
 </div>
 </div>
 </div>
-<p>各ブランチは視覚入力にはアテンションできますが、他のブランチには <strong>クロスアテンションできません</strong>。詳細なアテンションマスクのパターンは、元論文の Figure 3 を参照してください。</p>
+<p>各ブランチは視覚入力にはアテンションできるが、他のブランチには <strong>クロスアテンションできない</strong>。詳細なアテンションマスクのパターンは、元論文の Figure 3 を参照されたい。</p>
 </section>
 </section>
 <section id="packing-と-message-trees-の相乗効果" class="level2">
 <h2 class="anchored" data-anchor-id="packing-と-message-trees-の相乗効果">Packing と Message Trees の相乗効果</h2>
-<p>Packing と Message Trees を組み合わせることで、Molmo2 は以下を実現しています:</p>
+<p>Packing と Message Trees を組み合わせることで、Molmo2 は以下を実現している:</p>
 <ol type="1">
 <li><strong>高密度の訓練データ利用</strong>: 1つの視覚入力に対する複数のアノテーションを効率的に活用</li>
 <li><strong>最小限のパディング</strong>: 異なる長さの例を効率的に詰め込み、GPU メモリを有効活用</li>
 <li><strong>高速な訓練</strong>: 15倍の効率化により、大規模データでの訓練を加速</li>
 </ol>
-<p>この2つの技術は、Molmo2 の効率的な訓練における重要な基盤となっています。</p>
+<p>この2つの技術は、Molmo2 の効率的な訓練における重要な基盤となっている。</p>
 
 
 </section>

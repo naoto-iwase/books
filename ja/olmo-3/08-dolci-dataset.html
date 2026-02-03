@@ -472,10 +472,10 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="dolci-post-training-データスイート" class="level1">
 <h1>Dolci: Post-training データスイート</h1>
-<p>Dolci (Dolma Instruct) は、Olmo 3 の Post-training（後訓練）に使用される包括的なデータスイートです。Think（思考型）、Instruct（指示追従型）、RL-Zero（Base から直接 RL）という 3 つの異なるモデルバリエーションをサポートするため、複数のサブセットから構成されています。</p>
+<p>Dolci (Dolma Instruct) は、Olmo 3 の Post-training（後訓練）に使用される包括的なデータスイートである。Think（思考型）、Instruct（指示追従型）、RL-Zero（Base から直接 RL）という 3 つの異なるモデルバリエーションをサポートするため、複数のサブセットから構成されている。</p>
 <section id="概要と目的" class="level2">
 <h2 class="anchored" data-anchor-id="概要と目的">概要と目的</h2>
-<p>Dolci は、Olmo 3 Base モデルを特定のタスクに特化させるための高品質なデータセットです。事前学習で獲得した幅広い知識を、実用的な能力（数学的推論、コーディング、指示追従、チャット）に変換することを目的としています。</p>
+<p>Dolci は、Olmo 3 Base モデルを特定のタスクに特化させるための高品質なデータセットである。事前学習で獲得した幅広い知識を、実用的な能力（数学的推論、コーディング、指示追従、チャット）に変換することを目的としている。</p>
 <p><strong>Dolci の主な特徴</strong>:</p>
 <ul>
 <li><strong>完全オープン</strong>: すべてのデータソースとキュレーションパイプラインを公開</li>
@@ -486,7 +486,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-dolci-subsets" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolci-subsets">3 つのサブセット</h2>
-<p>Dolci は、3 つの主要なサブセットから構成されています。</p>
+<p>Dolci は、3 つの主要なサブセットから構成されている。</p>
 <pre><code>┌──────────────────────────────────────────────────────────────┐
 │                     Dolci Data Suite                         │
 ├──────────────────────────────────────────────────────────────┤
@@ -506,14 +506,14 @@ ul.task-list li input[type="checkbox"] {
 │    └─&gt; IF (30K prompts)                                      │
 │    └─&gt; General Mix (30K prompts)                             │
 └──────────────────────────────────────────────────────────────┘</code></pre>
-<p>各サブセットは、異なるモデルバリエーションの訓練パイプラインに対応しています。</p>
+<p>各サブセットは、異なるモデルバリエーションの訓練パイプラインに対応している。</p>
 <p><strong>Dolci Think</strong>: 段階的推論を行う思考型モデル用</p>
 <p><strong>Dolci Instruct</strong>: 簡潔で直接的な応答を生成するモデル用</p>
 <p><strong>Dolci RL-Zero</strong>: Base モデルから直接 RL で訓練するモデル用</p>
 </section>
 <section id="sec-dolci-think" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolci-think">Dolci Think: 思考型モデルのデータ</h2>
-<p>Dolci Think は、最終回答を生成する前に段階的推論を行う思考型モデル（Olmo 3 Think）を訓練するためのデータセットです。</p>
+<p>Dolci Think は、最終回答を生成する前に段階的推論を行う思考型モデル（Olmo 3 Think）を訓練するためのデータセットである。</p>
 <section id="dolci-think-sft-合成思考トレース" class="level3">
 <h3 class="anchored" data-anchor-id="dolci-think-sft-合成思考トレース">Dolci Think SFT: 合成思考トレース</h3>
 <p><strong>規模</strong>: 約 194 万サンプル</p>
@@ -565,7 +565,7 @@ Table&nbsp;1: Dolci Think SFT のデータソース構成
 </figure>
 </div>
 <p><strong>データ生成手法</strong>:</p>
-<p>Dolci Think SFT のデータは、既存のプロンプトに対して強力なモデルで思考トレースを生成することで作成されています。</p>
+<p>Dolci Think SFT のデータは、既存のプロンプトに対して強力なモデルで思考トレースを生成することで作成されている。</p>
 <p><strong>使用モデル</strong>:</p>
 <ul>
 <li><strong>Math / Code</strong>: QwQ-32B（思考型モデル）</li>
@@ -584,7 +584,7 @@ Table&nbsp;1: Dolci Think SFT のデータソース構成
 <p><strong>規模</strong>: 約 18.7 万ペア</p>
 <p><strong>目的</strong>: 思考トレースの品質を向上させる</p>
 <p><strong>Delta Learning の原理</strong>:</p>
-<p>DPO（Direct Preference Optimization）で重要なのは、選択（chosen）と棄却（rejected）の「品質差（デルタ）」です。Dolci Think DPO では、強いモデルと弱いモデルのペアを使用して、明確な品質差を持つ選好データを作成しています。</p>
+<p>DPO（Direct Preference Optimization）で重要なのは、選択（chosen）と棄却（rejected）の「品質差（デルタ）」である。Dolci Think DPO では、強いモデルと弱いモデルのペアを使用して、明確な品質差を持つ選好データを作成している。</p>
 <p><strong>データ生成設定</strong>:</p>
 <div id="tbl-delta-learning-think" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -614,19 +614,19 @@ Table&nbsp;2: Delta Learning のモデルペア
 </figure>
 </div>
 <p><strong>主要な知見</strong>:</p>
-<p>SFT では改善しないデータでも、DPO では大幅に改善可能です。</p>
+<p>SFT では改善しないデータでも、DPO では大幅に改善可能である。</p>
 <ul>
 <li>Qwen3-32B の出力で SFT すると性能低下</li>
 <li>同じデータを弱いモデルとペアにして DPO すると大幅改善</li>
 </ul>
-<p>これは、「絶対的な品質」よりも「相対的な品質差」が学習に重要であることを示しています。</p>
+<p>これは、「絶対的な品質」よりも「相対的な品質差」が学習に重要であることを示している。</p>
 </section>
 <section id="dolci-think-rl-挑戦的なプロンプト" class="level3">
 <h3 class="anchored" data-anchor-id="dolci-think-rl-挑戦的なプロンプト">Dolci Think RL: 挑戦的なプロンプト</h3>
 <p><strong>規模</strong>: 約 4 万プロンプト</p>
 <p><strong>目的</strong>: RLVR（Reinforcement Learning with Verifiable Rewards）による性能向上</p>
 <p><strong>特徴</strong>:</p>
-<p>Dolci Think RL は、思考型モデルが苦手とする挑戦的なプロンプトを集めたデータセットです。</p>
+<p>Dolci Think RL は、思考型モデルが苦手とする挑戦的なプロンプトを集めたデータセットである。</p>
 <p><strong>ドメイン</strong>:</p>
 <ul>
 <li><strong>Math</strong>: AIME（アメリカ数学招待試験）レベルの高難度問題</li>
@@ -637,7 +637,7 @@ Table&nbsp;2: Delta Learning のモデルペア
 </section>
 <section id="sec-dolci-instruct" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolci-instruct">Dolci Instruct: 指示追従型モデルのデータ</h2>
-<p>Dolci Instruct は、思考トレースを生成せずに、簡潔で直接的な応答を生成するモデル（Olmo 3 Instruct）を訓練するためのデータセットです。</p>
+<p>Dolci Instruct は、思考トレースを生成せずに、簡潔で直接的な応答を生成するモデル（Olmo 3 Instruct）を訓練するためのデータセットである。</p>
 <section id="dolci-instruct-sft-function-calling-対応データ" class="level3">
 <h3 class="anchored" data-anchor-id="dolci-instruct-sft-function-calling-対応データ">Dolci Instruct SFT: Function-calling 対応データ</h3>
 <p><strong>規模</strong>: 約 54.4 万サンプル</p>
@@ -696,9 +696,9 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 <p><strong>目的</strong>: 簡潔性とユーザビリティの向上</p>
 <p><strong>主要な改善点</strong>:</p>
 <p><strong>Multi-turn preferences（複数ターン選好データ）</strong>:</p>
-<p>合成会話を生成し、複数ターンにわたる一貫した応答を学習します。</p>
+<p>合成会話を生成し、複数ターンにわたる一貫した応答を学習する。</p>
 <p><strong>Length control（応答長制御）</strong>:</p>
-<p>Chosen と Rejected の長さ差を 100 トークン以下に制限することで、冗長性を抑えています。</p>
+<p>Chosen と Rejected の長さ差を 100 トークン以下に制限することで、冗長性を抑えている。</p>
 <ul>
 <li>モデルが単に「長い応答」を学習するのを防ぐ</li>
 <li>ユーザビリティを重視した簡潔な応答を促進</li>
@@ -719,7 +719,7 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 </section>
 <section id="sec-dolci-rl-zero" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolci-rl-zero">Dolci RL-Zero: Base から直接 RL</h2>
-<p>Dolci RL-Zero は、Base モデルから SFT/DPO を経由せずに、直接 RL で訓練するための特別なデータセットです。</p>
+<p>Dolci RL-Zero は、Base モデルから SFT/DPO を経由せずに、直接 RL で訓練するための特別なデータセットである。</p>
 <section id="目的と重要性" class="level3">
 <h3 class="anchored" data-anchor-id="目的と重要性">目的と重要性</h3>
 <p><strong>研究的価値</strong>:</p>
@@ -728,12 +728,12 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 <li>完全にオープンな RL ベンチマークを提供</li>
 </ul>
 <p><strong>既存の課題</strong>:</p>
-<p>従来のオープンウェイトモデル（Llama 3、Qwen 2.5 など）は事前学習データを公開していないため、RL 研究が制限されていました。</p>
-<p>Dolci RL-Zero により、データリークの影響を排除した明確なベンチマークが可能になります。</p>
+<p>従来のオープンウェイトモデル（Llama 3、Qwen 2.5 など）は事前学習データを公開していないため、RL 研究が制限されていた。</p>
+<p>Dolci RL-Zero により、データリークの影響を排除した明確なベンチマークが可能になる。</p>
 </section>
 <section id="つのドメイン" class="level3">
 <h3 class="anchored" data-anchor-id="つのドメイン">4 つのドメイン</h3>
-<p>Dolci RL-Zero は、4 つの異なるドメインで構成されています。</p>
+<p>Dolci RL-Zero は、4 つの異なるドメインで構成されている。</p>
 <p><strong>Math（数学）</strong>:</p>
 <ul>
 <li><strong>規模</strong>: 3 万プロンプト</li>
@@ -761,18 +761,18 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 </section>
 <section id="decontamination評価データ汚染除去" class="level3">
 <h3 class="anchored" data-anchor-id="decontamination評価データ汚染除去">Decontamination（評価データ汚染除去）</h3>
-<p>Dolci RL-Zero の全データは、評価ベンチマークとの重複を排除するため、厳格な Decontamination 処理が施されています。</p>
+<p>Dolci RL-Zero の全データは、評価ベンチマークとの重複を排除するため、厳格な Decontamination 処理が施されている。</p>
 <p><strong>手法</strong>: decon パッケージによる 2 フェーズ処理</p>
 <ol type="1">
 <li><strong>検出フェーズ</strong>: 8-gram マッチングで重複を検出（閾値 50%）</li>
 <li><strong>クラスタ拡張フェーズ</strong>: 類似サンプルのクラスタ全体を除去</li>
 </ol>
-<p>これにより、RL 訓練データとベンチマークデータの完全な分離を保証しています。</p>
+<p>これにより、RL 訓練データとベンチマークデータの完全な分離を保証している。</p>
 </section>
 </section>
 <section id="sec-dolci-pipeline" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolci-pipeline">データキュレーションパイプライン</h2>
-<p>Dolci のデータキュレーションは、以下のパイプラインで実施されます。</p>
+<p>Dolci のデータキュレーションは、以下のパイプラインで実施される。</p>
 <pre><code>┌──────────────────────────────────────────────────────────────┐
 │              Dolci Data Curation Pipeline                    │
 ├──────────────────────────────────────────────────────────────┤
@@ -805,30 +805,30 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 <section id="パイプラインの主要ステップ" class="level3">
 <h3 class="anchored" data-anchor-id="パイプラインの主要ステップ">パイプラインの主要ステップ</h3>
 <p><strong>Step 1: Source Selection（ソース選択）</strong>:</p>
-<p>公開データセットと強力なモデルによる生成データを収集します。</p>
+<p>公開データセットと強力なモデルによる生成データを収集する。</p>
 <p><strong>Step 2: Heuristic Filtering（ヒューリスティックフィルタリング）</strong>:</p>
-<p>明らかな低品質データを除去します。</p>
+<p>明らかな低品質データを除去する。</p>
 <ul>
 <li>不完全な思考トレース</li>
 <li>ドメイン固有エラー（数式の誤り、コード構文エラー）</li>
 <li>過度の繰り返し</li>
 </ul>
 <p><strong>Step 3: Topic Filtering（トピックフィルタリング）</strong>:</p>
-<p>OpenAI taxonomy を使用して、トピック外のサンプルを除去します。</p>
+<p>OpenAI taxonomy を使用して、トピック外のサンプルを除去する。</p>
 <p><strong>Step 4: Difficulty Filtering（難易度フィルタリング）</strong>:</p>
-<p>RL 用に挑戦的なプロンプトを選択し、難易度分布をバランスします。</p>
+<p>RL 用に挑戦的なプロンプトを選択し、難易度分布をバランスする。</p>
 <p><strong>Step 5: Data Mixing（データミキシング）</strong>:</p>
-<p>ドメイン分布をバランスし、ターゲットタスクに最適化されたミックスを作成します。</p>
+<p>ドメイン分布をバランスし、ターゲットタスクに最適化されたミックスを作成する。</p>
 <p><strong>Step 6: Decontamination（評価データ汚染除去）</strong>:</p>
-<p>評価ベンチマークとの重複を完全に排除します。</p>
+<p>評価ベンチマークとの重複を完全に排除する。</p>
 </section>
 </section>
 <section id="sec-dolci-features" class="level2">
 <h2 class="anchored" data-anchor-id="sec-dolci-features">主要な特徴</h2>
-<p>Dolci データスイートは、以下の特徴を持ちます。</p>
+<p>Dolci データスイートは、以下の特徴を持つ。</p>
 <section id="完全オープン" class="level3">
 <h3 class="anchored" data-anchor-id="完全オープン">完全オープン</h3>
-<p>すべてのデータソース、キュレーションパイプライン、処理コードを公開しています。</p>
+<p>すべてのデータソース、キュレーションパイプライン、処理コードを公開している。</p>
 <p><strong>公開内容</strong>:</p>
 <ul>
 <li>元のデータソースへの参照</li>
@@ -839,7 +839,7 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 </section>
 <section id="高品質" class="level3">
 <h3 class="anchored" data-anchor-id="高品質">高品質</h3>
-<p>強力なモデルによる生成と厳格なフィルタリングにより、高品質を実現しています。</p>
+<p>強力なモデルによる生成と厳格なフィルタリングにより、高品質を実現している。</p>
 <p><strong>品質保証の仕組み</strong>:</p>
 <ul>
 <li>モデル生成: QwQ-32B、DeepSeek R1 などの最先端モデルを使用</li>
@@ -849,7 +849,7 @@ Table&nbsp;3: Think と Instruct の SFT データの比較
 </section>
 <section id="多様なドメインカバレッジ" class="level3">
 <h3 class="anchored" data-anchor-id="多様なドメインカバレッジ">多様なドメインカバレッジ</h3>
-<p>Math、Code、Chat、Instruction Following、Safety など、幅広いドメインをカバーしています。</p>
+<p>Math、Code、Chat、Instruction Following、Safety など、幅広いドメインをカバーしている。</p>
 <p><strong>ドメイン分布</strong>:</p>
 <div id="tbl-dolci-domain-coverage" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -905,7 +905,7 @@ Table&nbsp;4: Dolci のドメインカバレッジ
 </section>
 <section id="段階的訓練サポート" class="level3">
 <h3 class="anchored" data-anchor-id="段階的訓練サポート">段階的訓練サポート</h3>
-<p>SFT、DPO、RL の各ステージに最適化されたデータを提供しています。</p>
+<p>SFT、DPO、RL の各ステージに最適化されたデータを提供している。</p>
 <p><strong>訓練パイプライン</strong>:</p>
 <pre><code>Base Model
     ↓
@@ -916,7 +916,7 @@ Table&nbsp;4: Dolci のドメインカバレッジ
   RL (Dolci Think/Instruct RL)
     ↓
 Final Model</code></pre>
-<p>各ステージでデータの種類が異なります。</p>
+<p>各ステージでデータの種類が異なる。</p>
 <ul>
 <li><strong>SFT</strong>: 高品質な入力-出力ペア</li>
 <li><strong>DPO</strong>: 品質差のある選好ペア</li>
@@ -934,9 +934,9 @@ Final Model</code></pre>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Delta Learning は、Dolci DPO データセットの作成に使用される重要な手法です。</p>
+<p>Delta Learning は、Dolci DPO データセットの作成に使用される重要な手法である。</p>
 <p><strong>核心的洞察</strong>:</p>
-<p>DPO で重要なのは、選択（chosen）と棄却（rejected）の「品質差（デルタ）」です。絶対的な品質よりも、相対的な品質差が学習に重要です。</p>
+<p>DPO で重要なのは、選択（chosen）と棄却（rejected）の「品質差（デルタ）」である。絶対的な品質よりも、相対的な品質差が学習に重要である。</p>
 <p><strong>実験結果</strong>:</p>
 <table class="caption-top table">
 <thead>
@@ -964,9 +964,9 @@ Final Model</code></pre>
 </tr>
 </tbody>
 </table>
-<p>同じ Qwen3-32B の出力でも、SFT では性能が低下するのに対し、弱いモデルとペアにして DPO すると大幅に改善します。</p>
+<p>同じ Qwen3-32B の出力でも、SFT では性能が低下するのに対し、弱いモデルとペアにして DPO すると大幅に改善する。</p>
 <p><strong>応用</strong>:</p>
-<p>この知見は、Dolci Think DPO と Dolci Instruct DPO の両方で活用されています。</p>
+<p>この知見は、Dolci Think DPO と Dolci Instruct DPO の両方で活用されている。</p>
 </div>
 </div>
 </div>
@@ -974,7 +974,7 @@ Final Model</code></pre>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Dolci は、Olmo 3 の Post-training に使用される包括的なデータスイートです。Think、Instruct、RL-Zero という 3 つの異なるモデルバリエーションをサポートし、SFT、DPO、RL の各訓練ステージに最適化されたデータを提供しています。</p>
+<p>Dolci は、Olmo 3 の Post-training に使用される包括的なデータスイートである。Think、Instruct、RL-Zero という 3 つの異なるモデルバリエーションをサポートし、SFT、DPO、RL の各訓練ステージに最適化されたデータを提供している。</p>
 <p><strong>主な貢献</strong>:</p>
 <ul>
 <li><strong>完全オープン</strong>: すべてのデータソースとパイプラインを公開</li>
@@ -983,7 +983,7 @@ Final Model</code></pre>
 <li><strong>段階的訓練</strong>: SFT、DPO、RL に最適化</li>
 <li><strong>研究価値</strong>: RL-Zero により完全オープンな RL ベンチマークを提供</li>
 </ul>
-<p>Dolci は、完全にオープンな Post-training データセットとして、研究者が再現性の高い研究を行い、任意のステージから介入・カスタマイズできるようにしています。</p>
+<p>Dolci は、完全にオープンな Post-training データセットとして、研究者が再現性の高い研究を行い、任意のステージから介入・カスタマイズできるようにしている。</p>
 
 
 </section>

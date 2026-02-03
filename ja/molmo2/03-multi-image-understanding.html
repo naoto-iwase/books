@@ -409,7 +409,7 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="multi-image-understanding" class="level1">
 <h1>Multi-Image Understanding</h1>
-<p>Multi-Image Understanding は、複数の画像を同時に処理し、それらの関連性や違いを理解する能力です。従来の単一画像処理では各画像を独立して扱うのに対し、Multi-Image Understanding では複数の画像間の関係性を捉えることができます。</p>
+<p>Multi-Image Understanding は、複数の画像を同時に処理し、それらの関連性や違いを理解する能力である。従来の単一画像処理では各画像を独立して扱うのに対し、Multi-Image Understanding では複数の画像間の関係性を捉えることができる。</p>
 <section id="単一画像処理との違い" class="level2">
 <h2 class="anchored" data-anchor-id="単一画像処理との違い">単一画像処理との違い</h2>
 <p><strong>単一画像処理</strong>:</p>
@@ -427,31 +427,31 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="molmo2-multiimageqa-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="molmo2-multiimageqa-データセット">Molmo2-MultiImageQA データセット</h2>
-<p>Molmo2-MultiImageQA は、意味的に関連する画像セットに対する質問応答データセットです。</p>
+<p>Molmo2-MultiImageQA は、意味的に関連する画像セットに対する質問応答データセットである。</p>
 <p><strong>データセット規模</strong>:</p>
 <ul>
 <li>45,000 画像セット（96,000 ユニーク画像から構成）</li>
 <li>72,000 QA ペア</li>
 <li>1セットあたり 2〜5 枚の画像（平均 2.73 枚）</li>
 </ul>
-<p><strong>収集方法</strong>: 人手によるアノテーションで構築されており、以下のプロセスで作成されました。</p>
+<p><strong>収集方法</strong>: 人手によるアノテーションで構築されており、以下のプロセスで作成された。</p>
 <ol type="1">
 <li>PixMoCap で訓練されたモデルで各画像のキャプションを生成</li>
 <li>キャプションの文レベルの類似度に基づいて画像をグルーピング</li>
 <li>アノテーターが各セットに対して質問を作成</li>
 <li>Claude Sonnet 4.5 との反復ループで回答を改善</li>
 </ol>
-<p>このアプローチにより、実世界でのマルチイメージクエリをサポートする高品質なデータセットが構築されました。</p>
+<p>このアプローチにより、実世界でのマルチイメージクエリをサポートする高品質なデータセットが構築された。</p>
 </section>
 <section id="molmo2-multiimagepoint-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="molmo2-multiimagepoint-データセット">Molmo2-MultiImagePoint データセット</h2>
-<p>Molmo2-MultiImagePoint は、複数画像にわたるポインティングとカウンティングのデータセットです。</p>
+<p>Molmo2-MultiImagePoint は、複数画像にわたるポインティングとカウンティングのデータセットである。</p>
 <p><strong>データセット規模</strong>:</p>
 <ul>
 <li>470,000 以上のポインティング・カウンティング例</li>
 <li>1セットあたり 2〜5 枚の画像（平均 3.24 枚）</li>
 </ul>
-<p><strong>収集方法</strong>: 合成的に構築されており、以下のパイプラインで作成されました。</p>
+<p><strong>収集方法</strong>: 合成的に構築されており、以下のパイプラインで作成された。</p>
 <section id="データ収集パイプライン" class="level3">
 <h3 class="anchored" data-anchor-id="データ収集パイプライン">データ収集パイプライン</h3>
 <pre><code>┌─────────────────────────────────────────────────────────────┐
@@ -489,27 +489,27 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Canonical Label は、画像セット内の複数の人手アノテーションを統合した標準的な記述です。例えば、「waterfall」「滝」「瀑布」などの異なる表現を「waterfall」という単一の canonical label に統合します。</p>
-<p>ただし、トレーニング時には常に canonical label を使用するのではなく、元のアノテーションからも確率的にサンプリングすることで、多様な表現に対応できるモデルを構築しています。</p>
+<p>Canonical Label は、画像セット内の複数の人手アノテーションを統合した標準的な記述である。例えば、「waterfall」「滝」「瀑布」などの異なる表現を「waterfall」という単一の canonical label に統合する。</p>
+<p>ただし、トレーニング時には常に canonical label を使用するのではなく、元のアノテーションからも確率的にサンプリングすることで、多様な表現に対応できるモデルを構築している。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="molmo2-synmultiimageqa-データセット" class="level2">
 <h2 class="anchored" data-anchor-id="molmo2-synmultiimageqa-データセット">Molmo2-SynMultiImageQA データセット</h2>
-<p>Molmo2-SynMultiImageQA は、テキストリッチな画像に特化した合成マルチイメージデータセットです。</p>
+<p>Molmo2-SynMultiImageQA は、テキストリッチな画像に特化した合成マルチイメージデータセットである。</p>
 <p><strong>データセット規模</strong>:</p>
 <ul>
 <li>188,000 例の合成マルチイメージ QA</li>
 </ul>
-<p><strong>収集方法</strong>: CoSyn [172] を拡張して構築されました。CoSyn は、チャート、表、文書などのテキストリッチな画像に対する質問応答を合成的に生成するフレームワークです。</p>
+<p><strong>収集方法</strong>: CoSyn [172] を拡張して構築された。CoSyn は、チャート、表、文書などのテキストリッチな画像に対する質問応答を合成的に生成するフレームワークである。</p>
 <p><strong>対象画像タイプ</strong>:</p>
 <ul>
 <li>チャート（charts）</li>
 <li>表（tables）</li>
 <li>文書（documents）</li>
 </ul>
-<p>これらのテキストリッチな画像は、文書理解や複数文書間の比較など、実用的なタスクに直結する重要なデータです。</p>
+<p>これらのテキストリッチな画像は、文書理解や複数文書間の比較など、実用的なタスクに直結する重要なデータである。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -587,12 +587,12 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="multi-image-understanding-の重要性" class="level2">
 <h2 class="anchored" data-anchor-id="multi-image-understanding-の重要性">Multi-Image Understanding の重要性</h2>
-<p>Multi-Image Understanding は、単一画像処理では不可能だった以下のタスクを実現します。</p>
-<p><strong>情報の統合</strong>: 複数の情報源（画像）から情報を統合し、包括的な理解を提供します。</p>
-<p><strong>比較・対照</strong>: 画像間の共通点や相違点を明確に識別できます。</p>
-<p><strong>文書処理</strong>: 複数ページの文書や、複数の関連文書を横断した理解が可能になります。</p>
-<p><strong>現実世界への適用</strong>: 実際のアプリケーションでは、複数の画像を扱うシナリオが頻繁に発生します（例: ECサイトの商品画像、医療画像の時系列比較、監視カメラの複数アングルなど）。</p>
-<p>Molmo2 は、これらの3つのデータセットを活用することで、オープンソースモデルの中で最高水準の Multi-Image Understanding 能力を実現しています。</p>
+<p>Multi-Image Understanding は、単一画像処理では不可能だった以下のタスクを実現する。</p>
+<p><strong>情報の統合</strong>: 複数の情報源（画像）から情報を統合し、包括的な理解を提供する。</p>
+<p><strong>比較・対照</strong>: 画像間の共通点や相違点を明確に識別できる。</p>
+<p><strong>文書処理</strong>: 複数ページの文書や、複数の関連文書を横断した理解が可能になる。</p>
+<p><strong>現実世界への適用</strong>: 実際のアプリケーションでは、複数の画像を扱うシナリオが頻繁に発生する（例: ECサイトの商品画像、医療画像の時系列比較、監視カメラの複数アングルなど）。</p>
+<p>Molmo2 は、これらの3つのデータセットを活用することで、オープンソースモデルの中で最高水準の Multi-Image Understanding 能力を実現している。</p>
 
 
 </section>

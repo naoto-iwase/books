@@ -444,14 +444,14 @@ window.Quarto = {
 
 <section id="infinite-width-limit" class="level1">
 <h1>Infinite Width Limit</h1>
-<p><strong>無限幅極限（Infinite Width Limit）</strong> は、ニューラルネットワークの各層の幅 <span class="math inline">\(n\)</span> を無限大に取る極限操作です。この極限下では、ネットワークの挙動が劇的に簡単化される一方で、深層学習の重要な性質の一部が失われます。</p>
+<p><strong>無限幅極限（Infinite Width Limit）</strong> は、ニューラルネットワークの各層の幅 <span class="math inline">\(n\)</span> を無限大に取る極限操作である。この極限下では、ネットワークの挙動が劇的に簡単化される一方で、深層学習の重要な性質の一部が失われる。</p>
 <section id="無限幅極限の定義" class="level2">
 <h2 class="anchored" data-anchor-id="無限幅極限の定義">無限幅極限の定義</h2>
 <p>ニューラルネットワークの層 <span class="math inline">\(\ell\)</span> における幅 <span class="math inline">\(n_\ell\)</span> を無限大に取る極限:</p>
 <p><span class="math display">\[
 n_\ell \to \infty \quad \text{for all layers } \ell
 \]</span></p>
-<p>この極限下で、ネットワークの出力分布は以下のようなシンプルな <strong>ガウス過程（Gaussian Process）</strong> に収束します:</p>
+<p>この極限下で、ネットワークの出力分布は以下のようなシンプルな <strong>ガウス過程（Gaussian Process）</strong> に収束する:</p>
 <p><span class="math display">\[
 p\left(z^{(L)}_D \mid H\right) = \frac{1}{\sqrt{|2\pi K|^{n_L}}} \exp\left(-\frac{1}{2} \sum_{i=1}^{n_L} \sum_{\delta_1, \delta_2 \in D} K^{\delta_1 \delta_2} z^{(L)}_{i;\delta_1} z^{(L)}_{i;\delta_2}\right)
 \]</span></p>
@@ -464,7 +464,7 @@ p\left(z^{(L)}_D \mid H\right) = \frac{1}{\sqrt{|2\pi K|^{n_L}}} \exp\left(-\fra
 </section>
 <section id="gaussian-process-への収束" class="level2">
 <h2 class="anchored" data-anchor-id="gaussian-process-への収束">Gaussian Process への収束</h2>
-<p>無限幅極限下では、各ニューロンの出力が独立になり、中心極限定理により出力分布がガウス分布に収束します。このとき:</p>
+<p>無限幅極限下では、各ニューロンの出力が独立になり、中心極限定理により出力分布がガウス分布に収束する。このとき:</p>
 <ul>
 <li><strong>出力成分間が独立</strong>: 異なるニューロン <span class="math inline">\(i\)</span> と <span class="math inline">\(j\)</span> の出力 <span class="math inline">\(z^{(L)}_i\)</span> と <span class="math inline">\(z^{(L)}_j\)</span> は独立</li>
 <li><strong>カーネルのみで決まる</strong>: 分布の形はカーネル <span class="math inline">\(K(x_{\delta_1}, x_{\delta_2})\)</span> のみで完全に決定される</li>
@@ -482,32 +482,32 @@ p\left(z^{(L)}_D \mid H\right) = \frac{1}{\sqrt{|2\pi K|^{n_L}}} \exp\left(-\fra
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>無限幅ニューラルネットワークは <strong>Neural Network Gaussian Process (NNGP)</strong> と呼ばれるガウス過程に収束します。このカーネル <span class="math inline">\(K(x, x')\)</span> は、以下の再帰的な式で計算できます（ReLU 活性化の場合）:</p>
+<p>無限幅ニューラルネットワークは <strong>Neural Network Gaussian Process (NNGP)</strong> と呼ばれるガウス過程に収束する。このカーネル <span class="math inline">\(K(x, x')\)</span> は、以下の再帰的な式で計算できる（ReLU 活性化の場合）:</p>
 <p><span class="math display">\[
 K^{(\ell+1)}(x, x') = \sigma_W^2 \mathbb{E}_{\phi \sim \mathcal{N}(0, \Sigma^{(\ell)})} \left[\phi(z^{(\ell)}(x)) \phi(z^{(\ell)}(x'))\right] + \sigma_b^2
 \]</span></p>
-<p>ここで <span class="math inline">\(\Sigma^{(\ell)}\)</span> は層 <span class="math inline">\(\ell\)</span> の共分散行列です。この再帰式により、深層ネットワークのカーネルを層ごとに順次計算できます。</p>
+<p>ここで <span class="math inline">\(\Sigma^{(\ell)}\)</span> は層 <span class="math inline">\(\ell\)</span> の共分散行列である。この再帰式により、深層ネットワークのカーネルを層ごとに順次計算できる。</p>
 </div>
 </div>
 </div>
 </section>
 <section id="ntk-の固定化" class="level2">
 <h2 class="anchored" data-anchor-id="ntk-の固定化">NTK の固定化</h2>
-<p>無限幅極限のもう一つの重要な帰結は、<strong>Neural Tangent Kernel (NTK)</strong> が訓練中に <strong>固定される</strong> ことです。</p>
+<p>無限幅極限のもう一つの重要な帰結は、<strong>Neural Tangent Kernel (NTK)</strong> が訓練中に <strong>固定される</strong> ことである。</p>
 <section id="ntk-とは" class="level3">
 <h3 class="anchored" data-anchor-id="ntk-とは">NTK とは</h3>
-<p>NTK は、ネットワークの出力 <span class="math inline">\(z^{(L)}_i(x)\)</span> のパラメータ <span class="math inline">\(\theta\)</span> に関する勾配の内積として定義されます:</p>
+<p>NTK は、ネットワークの出力 <span class="math inline">\(z^{(L)}_i(x)\)</span> のパラメータ <span class="math inline">\(\theta\)</span> に関する勾配の内積として定義される:</p>
 <p><span class="math display">\[
 \Theta^{(L)}_{\delta_1 \delta_2} = \frac{1}{n_L} \sum_{i=1}^{n_L} \mathbb{E}\left[\frac{\partial z^{(L)}_i(x_{\delta_1})}{\partial \theta} \cdot \frac{\partial z^{(L)}_i(x_{\delta_2})}{\partial \theta}\right]
 \]</span></p>
 </section>
 <section id="無限幅での固定化" class="level3">
 <h3 class="anchored" data-anchor-id="無限幅での固定化">無限幅での固定化</h3>
-<p>無限幅極限では、訓練中に NTK が初期値 <span class="math inline">\(\Theta^{(L)}_{\delta_1 \delta_2}(t=0)\)</span> から変化しません:</p>
+<p>無限幅極限では、訓練中に NTK が初期値 <span class="math inline">\(\Theta^{(L)}_{\delta_1 \delta_2}(t=0)\)</span> から変化しない:</p>
 <p><span class="math display">\[
 \Theta^{(L)}_{\delta_1 \delta_2}(t) = \Theta^{(L)}_{\delta_1 \delta_2}(0) + O\left(\frac{1}{n}\right)
 \]</span></p>
-<p>この固定化は以下を意味します:</p>
+<p>この固定化は以下を意味する:</p>
 <ul>
 <li><strong>線形化された学習</strong>: ネットワークは初期化点周りの線形近似で学習</li>
 <li><strong>カーネル法との等価性</strong>: 無限幅ネットワークは固定カーネルを使うカーネル法と等価</li>
@@ -517,25 +517,25 @@ K^{(\ell+1)}(x, x') = \sigma_W^2 \mathbb{E}_{\phi \sim \mathcal{N}(0, \Sigma^{(\
 </section>
 <section id="表現学習が起こらない理由" class="level2">
 <h2 class="anchored" data-anchor-id="表現学習が起こらない理由">表現学習が起こらない理由</h2>
-<p>無限幅極限下では、<strong>表現学習（Representation Learning）</strong> が完全に失われます。これは第6.3.3節で示される重要な結果です。</p>
+<p>無限幅極限下では、<strong>表現学習（Representation Learning）</strong> が完全に失われる。これは第6.3.3節で示される重要な結果である。</p>
 <section id="表現学習の定義" class="level3">
 <h3 class="anchored" data-anchor-id="表現学習の定義">表現学習の定義</h3>
-<p>表現学習とは、隠れ層の表現 <span class="math inline">\(z^{(\ell)}_D\)</span> が訓練データ <span class="math inline">\(y_A\)</span> の観測によって更新されることを指します。ベイズの定理により、事後分布を考えると:</p>
+<p>表現学習とは、隠れ層の表現 <span class="math inline">\(z^{(\ell)}_D\)</span> が訓練データ <span class="math inline">\(y_A\)</span> の観測によって更新されることを指す。ベイズの定理により、事後分布を考えると:</p>
 <p><span class="math display">\[
 p\left(z^{(L-1)}_D \mid y_A\right) = \frac{p\left(y_A \mid z^{(L-1)}_D\right) p\left(z^{(L-1)}_D\right)}{p(y_A)}
 \]</span></p>
 </section>
 <section id="無限幅での結果" class="level3">
 <h3 class="anchored" data-anchor-id="無限幅での結果">無限幅での結果</h3>
-<p>無限幅極限では、尤度が前の層の表現に依存しなくなります:</p>
+<p>無限幅極限では、尤度が前の層の表現に依存しなくなる:</p>
 <p><span class="math display">\[
 p\left(y_A \mid z^{(L-1)}_D\right) = p(y_A)
 \]</span></p>
-<p>その結果、<strong>事後分布が事前分布と一致</strong> します:</p>
+<p>その結果、<strong>事後分布が事前分布と一致</strong> する:</p>
 <p><span class="math display">\[
 p\left(z^{(L-1)}_D \mid y_A\right) = p\left(z^{(L-1)}_D\right)
 \]</span></p>
-<p>これは以下を意味します:</p>
+<p>これは以下を意味する:</p>
 <ul>
 <li><strong>観測が無意味</strong>: 訓練データ <span class="math inline">\(y_A\)</span> を観測しても、隠れ層の表現は更新されない</li>
 <li><strong>層間相関の欠如</strong>: 異なる層 <span class="math inline">\(z^{(\ell)}_D\)</span> と <span class="math inline">\(z^{(\ell+1)}_D\)</span> の間に相関がない</li>
@@ -551,15 +551,15 @@ p\left(z^{(L-1)}_D \mid y_A\right) = p\left(z^{(L-1)}_D\right)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>無限幅極限では、各層のニューロンが完全に独立になるため、層間の情報伝達が平均値（カーネル）のみで行われます。個々のニューロンの活性パターンが隠れ層の表現を形成できないため、表現学習が起こりません。</p>
-<p>この問題は、<strong>有限幅ネットワーク</strong> に戻ることで解決されます（第6.4節）。</p>
+<p>無限幅極限では、各層のニューロンが完全に独立になるため、層間の情報伝達が平均値（カーネル）のみで行われる。個々のニューロンの活性パターンが隠れ層の表現を形成できないため、表現学習が起こらない。</p>
+<p>この問題は、<strong>有限幅ネットワーク</strong> に戻ることで解決される（第6.4節）。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="有限幅との対比" class="level2">
 <h2 class="anchored" data-anchor-id="有限幅との対比">有限幅との対比</h2>
-<p>無限幅極限と有限幅ネットワークの主要な違いを表にまとめます:</p>
+<p>無限幅極限と有限幅ネットワークの主要な違いを表にまとめる:</p>
 <div id="tbl-infinite-vs-finite" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-infinite-vs-finite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -615,11 +615,11 @@ Table&nbsp;1: 無限幅極限と有限幅ネットワークの比較
 </div>
 </figure>
 </div>
-<p><a href="#tbl-infinite-vs-finite" class="quarto-xref">Table&nbsp;1</a> に示すように、有限幅ネットワークは <span class="math inline">\(O(1/n)\)</span> の相関により表現学習が可能になります。</p>
+<p><a href="#tbl-infinite-vs-finite" class="quarto-xref">Table&nbsp;1</a> に示すように、有限幅ネットワークは <span class="math inline">\(O(1/n)\)</span> の相関により表現学習が可能になる。</p>
 </section>
 <section id="chapter-6.3-の要点" class="level2">
 <h2 class="anchored" data-anchor-id="chapter-6.3-の要点">Chapter 6.3 の要点</h2>
-<p>Chapter 6.3 では、無限幅極限下でのベイズ学習について3つの重要な教訓を示しています:</p>
+<p>Chapter 6.3 では、無限幅極限下でのベイズ学習について3つの重要な教訓を示している:</p>
 <ol type="1">
 <li><p><strong>臨界性の証拠（§6.3.1）</strong>:</p>
 <ul>
@@ -649,7 +649,7 @@ Table&nbsp;1: 無限幅極限と有限幅ネットワークの比較
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>単一入力の場合、証拠は以下のように書けます:</p>
+<p>単一入力の場合、証拠は以下のように書ける:</p>
 <p><span class="math display">\[
 p(y \mid H) = \frac{1}{\sqrt{2\pi K}^{n_L}} \exp\left(-\frac{1}{2K} \sum_{i=1}^{n_L} y_i^2\right)
 \]</span></p>
@@ -658,21 +658,21 @@ p(y \mid H) = \frac{1}{\sqrt{2\pi K}^{n_L}} \exp\left(-\frac{1}{2K} \sum_{i=1}^{
 <li><span class="math inline">\(K \to 0\)</span> の場合: 証拠は指数関数的にゼロに収束（ゼロ出力のみ予測）</li>
 <li><span class="math inline">\(K = O(1)\)</span> の場合: 証拠が最大化される（臨界性が最適）</li>
 </ul>
-<p>二入力の場合、証拠を最大化するには <span class="math inline">\(K^{[0]} \approx Y^{[0]}/n_L = O(1)\)</span> かつ <span class="math inline">\(K^{[2]} \approx Y^{[2]}/n_L = O(1)\)</span> が必要で、これは並行感受率条件 <span class="math inline">\(\chi_\parallel(K^*) = 1\)</span> と垂直感受率条件 <span class="math inline">\(\chi_\perp(K^*) = 1\)</span> の両方を満たす臨界性に対応します。</p>
+<p>二入力の場合、証拠を最大化するには <span class="math inline">\(K^{[0]} \approx Y^{[0]}/n_L = O(1)\)</span> かつ <span class="math inline">\(K^{[2]} \approx Y^{[2]}/n_L = O(1)\)</span> が必要で、これは並行感受率条件 <span class="math inline">\(\chi_\parallel(K^*) = 1\)</span> と垂直感受率条件 <span class="math inline">\(\chi_\perp(K^*) = 1\)</span> の両方を満たす臨界性に対応する。</p>
 </div>
 </div>
 </div>
 </section>
 <section id="実用的な含意" class="level2">
 <h2 class="anchored" data-anchor-id="実用的な含意">実用的な含意</h2>
-<p>無限幅極限の研究は、以下の理由で重要です:</p>
+<p>無限幅極限の研究は、以下の理由で重要である:</p>
 <ul>
 <li><strong>理論的ベンチマーク</strong>: 実際の有限幅ネットワークの挙動を理解するための基準点</li>
 <li><strong>幅の重要性</strong>: なぜ実用的なネットワークで適度な幅が必要かを説明</li>
 <li><strong>初期化の設計</strong>: 臨界性条件は実際の初期化スキーム（He初期化など）の理論的根拠を提供</li>
 <li><strong>特徴学習の必要性</strong>: カーネル法を超えた深層学習の本質的価値を明確化</li>
 </ul>
-<p>実際の深層学習では、<strong>有限幅ネットワーク</strong> を使用することで無限幅極限の制約を回避し、真の表現学習と特徴学習を実現します。第6.4節と第11章では、有限幅効果がどのように表現学習を可能にするかが詳述されます。</p>
+<p>実際の深層学習では、<strong>有限幅ネットワーク</strong> を使用することで無限幅極限の制約を回避し、真の表現学習と特徴学習を実現する。第6.4節と第11章では、有限幅効果がどのように表現学習を可能にするかが詳述される。</p>
 
 
 </section>

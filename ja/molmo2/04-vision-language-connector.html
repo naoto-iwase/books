@@ -424,7 +424,7 @@ ul.task-list li input[type="checkbox"] {
 <h1>Vision-Language Connector</h1>
 <section id="概要" class="level2">
 <h2 class="anchored" data-anchor-id="概要">概要</h2>
-<p>Vision-Language Connector は、Vision Transformer (ViT) が抽出した視覚特徴を、Large Language Model (LLM) が処理できる形式に変換する重要なモジュールです。Molmo2 では、標準的な VLM アーキテクチャ <span class="citation" data-cites="Clark2024Molmo">[@Clark2024Molmo]</span> に従い、画像とビデオの両方を統一的に処理できる設計を採用しています。</p>
+<p>Vision-Language Connector は、Vision Transformer (ViT) が抽出した視覚特徴を、Large Language Model (LLM) が処理できる形式に変換する重要なモジュールである。Molmo2 では、標準的な VLM アーキテクチャ <span class="citation" data-cites="Clark2024Molmo">[@Clark2024Molmo]</span> に従い、画像とビデオの両方を統一的に処理できる設計を採用している。</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-connector-flow" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -460,12 +460,12 @@ Figure&nbsp;1: Vision-Language Connector のデータフロー
 <h2 class="anchored" data-anchor-id="アーキテクチャの詳細">アーキテクチャの詳細</h2>
 <section id="多層特徴の使用" class="level3">
 <h3 class="anchored" data-anchor-id="多層特徴の使用">多層特徴の使用</h3>
-<p>Molmo2 の Vision-Language Connector は、ViT の単一層ではなく、<strong>複数の層から特徴を抽出</strong> します。</p>
+<p>Molmo2 の Vision-Language Connector は、ViT の単一層ではなく、<strong>複数の層から特徴を抽出</strong> する。</p>
 <ul>
 <li><strong>Third-to-last layer（最終層から3番目）</strong>: 高レベルのセマンティック特徴</li>
 <li><strong>Ninth-from-last layer（最終層から9番目）</strong>: 中レベルの特徴</li>
 </ul>
-<p>この設計は、先行研究の Molmo <span class="citation" data-cites="Clark2024Molmo">[@Clark2024Molmo]</span> に従っており、異なる抽象度の視覚情報を組み合わせることで、より豊かな表現を実現しています。</p>
+<p>この設計は、先行研究の Molmo <span class="citation" data-cites="Clark2024Molmo">[@Clark2024Molmo]</span> に従っており、異なる抽象度の視覚情報を組み合わせることで、より豊かな表現を実現している。</p>
 <pre><code>ViT Layer Structure:
 ┌─────────────────────────────────┐
 │  Layer 0 (Input)                │
@@ -481,7 +481,7 @@ Figure&nbsp;1: Vision-Language Connector のデータフロー
 </section>
 <section id="attention-pooling" class="level3">
 <h3 class="anchored" data-anchor-id="attention-pooling">Attention Pooling</h3>
-<p>パッチレベルの特徴を削減するために、<strong>Attention Pooling</strong> を使用します。パッチの平均をクエリとし、各パッチ窓を単一のベクトルに集約します。</p>
+<p>パッチレベルの特徴を削減するために、<strong>Attention Pooling</strong> を使用する。パッチの平均をクエリとし、各パッチ窓を単一のベクトルに集約する。</p>
 <section id="画像の場合-22-pooling" class="level4">
 <h4 class="anchored" data-anchor-id="画像の場合-22-pooling">画像の場合: 2×2 Pooling</h4>
 <pre><code>Input Patches (4×4 example):
@@ -508,7 +508,7 @@ Token count: 16 → 4 (1/4 reduction)</code></pre>
 </section>
 <section id="ビデオフレームの場合-33-pooling" class="level4">
 <h4 class="anchored" data-anchor-id="ビデオフレームの場合-33-pooling">ビデオフレームの場合: 3×3 Pooling</h4>
-<p>ビデオではフレーム数が多いため、<strong>3×3 の窓</strong> を使用してトークン数をさらに削減します。</p>
+<p>ビデオではフレーム数が多いため、<strong>3×3 の窓</strong> を使用してトークン数をさらに削減する。</p>
 <pre><code>Input Patches (9×9 example):
 ┌───┬───┬───┬───┬───┬───┬───┬───┬───┐
 │P₁ │P₂ │P₃ │P₄ │P₅ │P₆ │P₇ │P₈ │P₉ │
@@ -528,7 +528,7 @@ Token count: 81 → 9 (1/9 reduction)</code></pre>
 </section>
 <section id="shared-mlp-projection" class="level3">
 <h3 class="anchored" data-anchor-id="shared-mlp-projection">Shared MLP Projection</h3>
-<p>最後に、プールされた特徴は <strong>Shared MLP</strong> によって投影されます。この MLP は画像とビデオフレームで <strong>パラメータを共有</strong> しており、統一的な視覚表現を学習します。</p>
+<p>最後に、プールされた特徴は <strong>Shared MLP</strong> によって投影される。この MLP は画像とビデオフレームで <strong>パラメータを共有</strong> しており、統一的な視覚表現を学習する。</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-connector-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -563,13 +563,13 @@ Figure&nbsp;2: Vision-Language Connector のアーキテクチャ
 <h2 class="anchored" data-anchor-id="cropping-戦略">Cropping 戦略</h2>
 <section id="画像の-cropping" class="level3">
 <h3 class="anchored" data-anchor-id="画像の-cropping">画像の Cropping</h3>
-<p>Molmo2 は、<strong>Multi-crop</strong> 戦略を採用しています。</p>
+<p>Molmo2 は、<strong>Multi-crop</strong> 戦略を採用している。</p>
 <ul>
 <li><strong>1つのダウンスケール済み全体クロップ</strong> + <strong>最大 K 個のオーバーラップタイルクロップ</strong></li>
 <li>トレーニング時: <strong>K = 8</strong></li>
 <li>推論時: <strong>K = 24</strong>（高解像度処理）</li>
 </ul>
-<p>K 個のクロップでタイル化できない画像は、ダウンスケールされます。</p>
+<p>K 個のクロップでタイル化できない画像は、ダウンスケールされる。</p>
 <pre><code>Original Image:
 ┌─────────────────────────────────┐
 │                                 │
@@ -597,14 +597,14 @@ Downscaled Crop + K Overlapping Crops:
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Multi-crop 画像の場合、<strong>Column tokens</strong> を LLM への入力に含めます。これにより、画像のアスペクト比情報を LLM に伝達できます。</p>
-<p>単一クロップ画像（常に正方形）には Column tokens を含めません。</p>
+<p>Multi-crop 画像の場合、<strong>Column tokens</strong> を LLM への入力に含める。これにより、画像のアスペクト比情報を LLM に伝達できる。</p>
+<p>単一クロップ画像（常に正方形）には Column tokens を含めない。</p>
 </div>
 </div>
 </section>
 <section id="ビデオの-cropping" class="level3">
 <h3 class="anchored" data-anchor-id="ビデオの-cropping">ビデオの Cropping</h3>
-<p>ビデオの場合、計算コストを削減するために以下の戦略を取ります。</p>
+<p>ビデオの場合、計算コストを削減するために以下の戦略を取る。</p>
 <ul>
 <li><strong>サンプリングレート: S = 2 fps</strong>（2秒ごとに1フレーム）</li>
 <li>各フレームは単一クロップとして処理（必要に応じてダウンスケール）</li>
@@ -629,15 +629,15 @@ If video length &gt; F/S seconds:
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>ビデオの <strong>最終フレーム</strong> は常に含まれます。これは、多くのビデオプレイヤーが再生終了後に最終フレームを表示するため、ユーザーにとって特別な重要性を持つ可能性があるためです。</p>
+<p>ビデオの <strong>最終フレーム</strong> は常に含まれる。これは、多くのビデオプレイヤーが再生終了後に最終フレームを表示するため、ユーザーにとって特別な重要性を持つ可能性があるためである。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="bi-directional-attention" class="level2">
 <h2 class="anchored" data-anchor-id="bi-directional-attention">Bi-directional Attention</h2>
-<p>Molmo2 では、LLM が視覚トークンを処理する際に、<strong>画像トークン同士が相互に attend できる</strong> ように設計されています <span class="citation" data-cites="Miao2024LongVU Wu2024DoubleLLaVA">[@Miao2024LongVU; @Wu2024DoubleLLaVA]</span>。</p>
-<p>通常の LLM では、因果的マスク（causal mask）により、各トークンは自分より前のトークンにしか注意を向けられません。しかし、Molmo2 では、視覚トークンに対して <strong>bi-directional attention</strong> を許可しています。</p>
+<p>Molmo2 では、LLM が視覚トークンを処理する際に、<strong>画像トークン同士が相互に attend できる</strong> ように設計されている <span class="citation" data-cites="Miao2024LongVU Wu2024DoubleLLaVA">[@Miao2024LongVU; @Wu2024DoubleLLaVA]</span>。</p>
+<p>通常の LLM では、因果的マスク（causal mask）により、各トークンは自分より前のトークンにしか注意を向けられない。しかし、Molmo2 では、視覚トークンに対して <strong>bi-directional attention</strong> を許可している。</p>
 <pre><code>Standard Causal Attention:
   T₁  T₂  T₃  T₄
 T₁ ●   ×   ×   ×
@@ -654,7 +654,7 @@ T₁ ●   ●   ●   ●   ×
 T₂ ●   ●   ●   ●   ●
 
 V: Vision tokens, T: Text tokens</code></pre>
-<p>これにより、異なるフレームや異なる画像からの視覚トークンが相互に情報を交換でき、時空間的な関係を学習できます。</p>
+<p>これにより、異なるフレームや異なる画像からの視覚トークンが相互に情報を交換でき、時空間的な関係を学習できる。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -665,14 +665,14 @@ V: Vision tokens, T: Text tokens</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>アブレーション研究により、視覚トークンへの Bi-directional attention が <strong>性能を向上させる</strong> ことが確認されています。</p>
-<p>特に、ビデオトラッキングやマルチイメージ理解など、複数のフレーム/画像間の関係を捉える必要があるタスクで有効です。</p>
+<p>アブレーション研究により、視覚トークンへの Bi-directional attention が <strong>性能を向上させる</strong> ことが確認されている。</p>
+<p>特に、ビデオトラッキングやマルチイメージ理解など、複数のフレーム/画像間の関係を捉える必要があるタスクで有効である。</p>
 </div>
 </div>
 </section>
 <section id="llm-への入力フォーマット" class="level2">
 <h2 class="anchored" data-anchor-id="llm-への入力フォーマット">LLM への入力フォーマット</h2>
-<p>Vision-Language Connector によって生成された視覚トークンは、以下の形式で LLM に入力されます。</p>
+<p>Vision-Language Connector によって生成された視覚トークンは、以下の形式で LLM に入力される。</p>
 <section id="ビデオの場合" class="level3">
 <h3 class="anchored" data-anchor-id="ビデオの場合">ビデオの場合</h3>
 <pre><code>&lt;image_start&gt; [Visual Tokens for Frame₁] &lt;timestamp&gt;0.5s&lt;/timestamp&gt;
@@ -705,7 +705,7 @@ V: Vision tokens, T: Text tokens</code></pre>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Molmo2 の Vision-Language Connector は、以下の特徴を持ちます。</p>
+<p>Molmo2 の Vision-Language Connector は、以下の特徴を持つ。</p>
 <ol type="1">
 <li><strong>Multi-layer features</strong>: ViT の複数層（3rd-to-last, 9th-from-last）から特徴を抽出</li>
 <li><strong>Adaptive pooling</strong>: 画像には 2×2、ビデオフレームには 3×3 の Attention Pooling</li>
@@ -715,7 +715,7 @@ V: Vision tokens, T: Text tokens</code></pre>
 <li><strong>Bi-directional attention</strong>: 視覚トークン間の相互作用を許可（性能向上）</li>
 <li><strong>Column tokens</strong>: Multi-crop 画像のアスペクト比情報を伝達</li>
 </ol>
-<p>この設計により、Molmo2 は画像とビデオを統一的に処理しながら、計算効率と表現力のバランスを実現しています。</p>
+<p>この設計により、Molmo2 は画像とビデオを統一的に処理しながら、計算効率と表現力のバランスを実現している。</p>
 </section>
 <section id="参考文献" class="level2">
 <h2 class="anchored" data-anchor-id="参考文献">参考文献</h2>

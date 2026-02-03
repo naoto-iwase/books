@@ -521,7 +521,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="タスククラスタリング">タスククラスタリング</h3>
 <p>類似した能力を評価する複数のタスクを集約することで、評価の信頼性を向上させる。</p>
 <p>個別のタスクではノイズが大きくても、同じ能力を測定する複数のタスクの結果を統合することで、より安定した評価指標が得られる。これにより、モデルの特定の能力（例: 推論能力、言語理解能力）を正確に測定できる。</p>
-<p>タスククラスタリングのメリット。</p>
+<p>タスククラスタリングのメリットである。</p>
 <ul>
 <li>単一タスクのノイズを平均化</li>
 <li>能力の多面的な評価</li>
@@ -532,7 +532,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="プロキシメトリック">プロキシメトリック</h3>
 <p>小規模モデルに適した評価指標を導入する。</p>
 <p>従来の正答率ベースの評価では、小規模モデルの能力を捉えきれない。プロキシメトリックは、正答/誤答の二値ではなく、モデルの出力分布や確信度などを考慮した連続的な指標を用いる。</p>
-<p>代表的なプロキシメトリック。</p>
+<p>代表的なプロキシメトリックである。</p>
 <ul>
 <li><strong>Masked Perplexity</strong>: 特定のトークンに対するモデルの予測確率を測定</li>
 <li><strong>Probability-based metrics</strong>: 正解選択肢への確率割り当てを評価</li>
@@ -544,7 +544,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="シグナルノイズ比の改善">シグナルノイズ比の改善</h3>
 <p>評価タスクのシグナルノイズ比を分析し、信頼性の高いタスクのみを選定する。</p>
 <p>すべてのタスクが等しく有用というわけではない。OlmoBaseEval では、各タスクのシグナルノイズ比を測定し、小規模モデルでも安定した結果を示すタスクを優先的に採用する。</p>
-<p>シグナルノイズ比の分析手法。</p>
+<p>シグナルノイズ比の分析手法である。</p>
 <ul>
 <li>複数のモデルサイズでの評価結果の一貫性を確認</li>
 <li>同一モデルの複数回評価での分散を測定</li>
@@ -585,7 +585,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="mt-mbpp">MT MBPP</h3>
 <p>多言語プログラミングベンチマーク（17言語対応）。</p>
 <p>MBPP（Mostly Basic Programming Problems）を17の自然言語に翻訳したベンチマーク。モデルの多言語理解能力とコーディング能力を同時に評価する。</p>
-<p>対応言語の例。</p>
+<p>対応言語の例である。</p>
 <ul>
 <li>ヨーロッパ言語: 英語、スペイン語、フランス語、ドイツ語</li>
 <li>アジア言語: 日本語、中国語、韓国語、ヒンディー語</li>
@@ -597,7 +597,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 class="anchored" data-anchor-id="masked-perplexity">Masked Perplexity</h3>
 <p>マスクされたトークンの予測精度を測定する評価手法。</p>
 <p>特定の重要なトークン（名詞、動詞など）をマスクし、モデルがそれらをどの程度正確に予測できるかを評価する。この手法は、小規模モデルでも連続的なスコアを提供し、学習の進捗を細かく追跡できる。</p>
-<p>Masked Perplexity の特徴。</p>
+<p>Masked Perplexity の特徴である。</p>
 <ul>
 <li>連続的なスコアリング（二値判定ではない）</li>
 <li>文脈理解能力の直接的な測定</li>
@@ -650,7 +650,7 @@ ul.task-list li input[type="checkbox"] {
 | OlmoBaseEval: 10 GPU hours       |
 | Reduction: 90%                   |
 +----------------------------------+</code></pre>
-<p>効率化の要因。</p>
+<p>効率化の要因である。</p>
 <ul>
 <li>タスク数の最適化（重複の排除）</li>
 <li>プロキシメトリックによる評価時間短縮</li>

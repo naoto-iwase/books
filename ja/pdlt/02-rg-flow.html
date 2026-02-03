@@ -445,10 +445,10 @@ window.Quarto = {
 
 <section id="rg-flow" class="level1">
 <h1>RG Flow</h1>
-<p>Renormalization Group Flow (繰り込み群フロー, RG Flow) は、深層ニューラルネットワークにおける層ごとの表現の変化を理解するための理論的枠組みです。物理学における繰り込み群の概念を深層学習に応用し、ネットワークが入力データから出力へと情報を段階的に変換していく過程を形式化します。</p>
+<p>Renormalization Group Flow (繰り込み群フロー, RG Flow) は、深層ニューラルネットワークにおける層ごとの表現の変化を理解するための理論的枠組みである。物理学における繰り込み群の概念を深層学習に応用し、ネットワークが入力データから出力へと情報を段階的に変換していく過程を形式化する。</p>
 <section id="繰り込み群とは" class="level2">
 <h2 class="anchored" data-anchor-id="繰り込み群とは">繰り込み群とは</h2>
-<p>繰り込み群 (Renormalization Group, RG) は元々物理学で発展した概念で、スケールの異なる階層において系の振る舞いがどのように変化するかを記述する手法です。微視的な自由度を積分消去 (marginalize out) することで、より粗視化された有効理論を導出します。</p>
+<p>繰り込み群 (Renormalization Group, RG) は元々物理学で発展した概念で、スケールの異なる階層において系の振る舞いがどのように変化するかを記述する手法である。微視的な自由度を積分消去 (marginalize out) することで、より粗視化された有効理論を導出する。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -461,7 +461,7 @@ window.Quarto = {
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>物理学では、繰り込み群は複雑な相互作用系を理解するための強力な手法として確立されています。</p>
+<p>物理学では、繰り込み群は複雑な相互作用系を理解するための強力な手法として確立されている。</p>
 <p><strong>基本的なアイデア</strong>:</p>
 <ul>
 <li>微視的スケールから巨視的スケールへと観測スケールを変化させる</li>
@@ -473,14 +473,14 @@ window.Quarto = {
 <li><strong>物理学</strong>: 微視的スケール → 巨視的スケール</li>
 <li><strong>深層学習</strong>: 入力層 → 隠れ層 → 出力層</li>
 </ul>
-<p>どちらも、細かい情報を段階的に粗視化し、より高次の抽象的な記述へと変換していくプロセスです。</p>
+<p>どちらも、細かい情報を段階的に粗視化し、より高次の抽象的な記述へと変換していくプロセスである。</p>
 </div>
 </div>
 </div>
 </section>
 <section id="深層学習における-rg-flow" class="level2">
 <h2 class="anchored" data-anchor-id="深層学習における-rg-flow">深層学習における RG Flow</h2>
-<p>深層ニューラルネットワークでは、RG Flow は以下のプロセスを形式化します。</p>
+<p>深層ニューラルネットワークでは、RG Flow は以下のプロセスを形式化する。</p>
 <p><strong>層ごとの変換</strong>:</p>
 <pre><code>┌──────────────────────────────────────────────────┐
 │  Layer l -&gt; Layer l+1                            │
@@ -489,18 +489,18 @@ window.Quarto = {
 │                                                  │
 │  Distribution p(z^(l)) -&gt; p(z^(l+1))             │
 └──────────────────────────────────────────────────┘</code></pre>
-<p>各層において、前層の preactivation（活性化前の値）の分布を積分消去し、次層の preactivation の分布を導出します。このプロセスは、物理学における繰り込み変換に対応します。</p>
+<p>各層において、前層の preactivation（活性化前の値）の分布を積分消去し、次層の preactivation の分布を導出する。このプロセスは、物理学における繰り込み変換に対応する。</p>
 </section>
 <section id="preactivation-の-rg-flow" class="level2">
 <h2 class="anchored" data-anchor-id="preactivation-の-rg-flow">Preactivation の RG Flow</h2>
 <section id="第1層-ガウス分布" class="level3">
 <h3 class="anchored" data-anchor-id="第1層-ガウス分布">第1層: ガウス分布</h3>
-<p>初期化時、第1層の preactivation は<strong>ガウス分布</strong>に従います (Chapter 4.1)。</p>
+<p>初期化時、第1層の preactivation は<strong>ガウス分布</strong>に従う (Chapter 4.1)。</p>
 <p><strong>定義</strong>:</p>
 <p><span class="math display">\[
 z^{(1)}_{i;\alpha} = b^{(1)}_i + \sum_{j=1}^{n_0} W^{(1)}_{ij} x_{j;\alpha}
 \]</span></p>
-<p>ここで、バイアス <span class="math inline">\(b^{(1)}\)</span> と重み <span class="math inline">\(W^{(1)}\)</span> は独立なガウス分布から初期化されます。</p>
+<p>ここで、バイアス <span class="math inline">\(b^{(1)}\)</span> と重み <span class="math inline">\(W^{(1)}\)</span> は独立なガウス分布から初期化される。</p>
 <p><strong>分布</strong>:</p>
 <p><span class="math display">\[
 p(z^{(1)} | \mathcal{D}) = \frac{1}{Z} e^{-S(z^{(1)})}
@@ -509,7 +509,7 @@ p(z^{(1)} | \mathcal{D}) = \frac{1}{Z} e^{-S(z^{(1)})}
 <p><span class="math display">\[
 S(z^{(1)}) = \frac{1}{2} \sum_{i=1}^{n_1} \sum_{\alpha_1, \alpha_2 \in \mathcal{D}} G^{\alpha_1 \alpha_2}_{(1)} z^{(1)}_{i;\alpha_1} z^{(1)}_{i;\alpha_2}
 \]</span></p>
-<p><span class="math inline">\(G^{(1)}_{\alpha_1 \alpha_2}\)</span> は第1層の計量 (metric) で、サンプル間の相関を表します。</p>
+<p><span class="math inline">\(G^{(1)}_{\alpha_1 \alpha_2}\)</span> は第1層の計量 (metric) で、サンプル間の相関を表す。</p>
 <p><strong>重要な性質</strong>:</p>
 <ul>
 <li>すべての奇数次相関関数がゼロ</li>
@@ -519,7 +519,7 @@ S(z^{(1)}) = \frac{1}{2} \sum_{i=1}^{n_1} \sum_{\alpha_1, \alpha_2 \in \mathcal{
 </section>
 <section id="第2層-非ガウス性の出現" class="level3">
 <h3 class="anchored" data-anchor-id="第2層-非ガウス性の出現">第2層: 非ガウス性の出現</h3>
-<p>第2層では、<strong>非ガウス性</strong> (non-Gaussianity) が出現します (Chapter 4.2)。活性化関数が非線形であるため、4次連結相関関数が非ゼロになります。</p>
+<p>第2層では、<strong>非ガウス性</strong> (non-Gaussianity) が出現する (Chapter 4.2)。活性化関数が非線形であるため、4次連結相関関数が非ゼロになる。</p>
 <p><strong>分布の変化</strong>:</p>
 <p><span class="math display">\[
 p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(2)}) + O(1/n^2) \right)
@@ -530,19 +530,19 @@ p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(
 <li><span class="math inline">\(S_4\)</span>: 4次作用（非ガウス補正、<span class="math inline">\(O(1/n)\)</span> で抑制）</li>
 </ul>
 <p><strong>Large-<span class="math inline">\(n\)</span> expansion</strong>:</p>
-<p>ネットワーク幅 <span class="math inline">\(n\)</span> が大きいとき、非ガウス性は <span class="math inline">\(1/n\)</span> で抑制されます。この性質により、有限幅ネットワークの振る舞いを体系的に展開できます。</p>
+<p>ネットワーク幅 <span class="math inline">\(n\)</span> が大きいとき、非ガウス性は <span class="math inline">\(1/n\)</span> で抑制される。この性質により、有限幅ネットワークの振る舞いを体系的に展開できる。</p>
 </section>
 <section id="深い層-非ガウス性の蓄積" class="level3">
 <h3 class="anchored" data-anchor-id="深い層-非ガウス性の蓄積">深い層: 非ガウス性の蓄積</h3>
-<p>第3層以降、非ガウス性は層ごとに蓄積していきます (Chapter 4.3)。</p>
+<p>第3層以降、非ガウス性は層ごとに蓄積していく (Chapter 4.3)。</p>
 <p><strong>再帰的構造</strong>:</p>
-<p>各層 <span class="math inline">\(\ell\)</span> から層 <span class="math inline">\(\ell+1\)</span> への遷移は、以下の2つの寄与を含みます。</p>
+<p>各層 <span class="math inline">\(\ell\)</span> から層 <span class="math inline">\(\ell+1\)</span> への遷移は、以下の2つの寄与を含む。</p>
 <ul>
 <li>第 <span class="math inline">\(\ell\)</span> 層から<strong>継承された</strong>非ガウス性</li>
 <li>第 <span class="math inline">\(\ell\)</span> 層から第 <span class="math inline">\(\ell+1\)</span> 層への遷移で<strong>新たに生成された</strong>非ガウス性</li>
 </ul>
 <p><strong>深さと幅の比</strong>:</p>
-<p>非ガウス性の蓄積は、深さ <span class="math inline">\(L\)</span> と幅 <span class="math inline">\(n\)</span> の比 <span class="math inline">\(L/n\)</span> によって特徴づけられます。ネットワークが well-behaved であるためには、この比が適切に制御される必要があります (depth-to-width ratio)。</p>
+<p>非ガウス性の蓄積は、深さ <span class="math inline">\(L\)</span> と幅 <span class="math inline">\(n\)</span> の比 <span class="math inline">\(L/n\)</span> によって特徴づけられる。ネットワークが well-behaved であるためには、この比が適切に制御される必要がある (depth-to-width ratio)。</p>
 <p><strong>流れの図示</strong>:</p>
 <pre class="mermaid"><code>graph LR
     A[Layer 1&lt;br/&gt;Gaussian] --&gt; B[Layer 2&lt;br/&gt;Weak non-Gaussian]
@@ -556,18 +556,18 @@ p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(
 </section>
 <section id="ntk-の-rg-flow" class="level2">
 <h2 class="anchored" data-anchor-id="ntk-の-rg-flow">NTK の RG Flow</h2>
-<p>Neural Tangent Kernel (NTK) もまた、層ごとに「流れ」ます (Chapter 8)。NTK は勾配降下法による学習のダイナミクスを支配する量です。</p>
+<p>Neural Tangent Kernel (NTK) もまた、層ごとに「流れ」る (Chapter 8)。NTK は勾配降下法による学習のダイナミクスを支配する量である。</p>
 <section id="第-ell-層の-ntk" class="level3">
 <h3 class="anchored" data-anchor-id="第-ell-層の-ntk">第 <span class="math inline">\(\ell\)</span> 層の NTK</h3>
 <p><strong>定義</strong>:</p>
 <p><span class="math display">\[
 \hat{H}^{(\ell)}_{i_1 i_2; \alpha_1 \alpha_2} \equiv \sum_{\mu, \nu} \lambda^{\mu\nu} \frac{dz^{(\ell)}_{i_1;\alpha_1}}{d\theta^\mu} \frac{dz^{(\ell)}_{i_2;\alpha_2}}{d\theta^\nu}
 \]</span></p>
-<p>ここで、<span class="math inline">\(\lambda^{\mu\nu}\)</span> は学習率テンソル、<span class="math inline">\(\theta^\mu\)</span> はモデルパラメータです。</p>
+<p>ここで、<span class="math inline">\(\lambda^{\mu\nu}\)</span> は学習率テンソル、<span class="math inline">\(\theta^\mu\)</span> はモデルパラメータである。</p>
 </section>
 <section id="ntk-の再帰式" class="level3">
 <h3 class="anchored" data-anchor-id="ntk-の再帰式">NTK の再帰式</h3>
-<p>第 <span class="math inline">\(\ell\)</span> 層の NTK から第 <span class="math inline">\(\ell+1\)</span> 層の NTK への遷移は、以下の再帰式で記述されます (Chapter 8.0)。</p>
+<p>第 <span class="math inline">\(\ell\)</span> 層の NTK から第 <span class="math inline">\(\ell+1\)</span> 層の NTK への遷移は、以下の再帰式で記述される (Chapter 8.0)。</p>
 <p><strong>Forward equation</strong>:</p>
 <p><span class="math display">\[
 \hat{H}^{(\ell+1)}_{i_1 i_2; \alpha_1 \alpha_2} = \delta_{i_1 i_2} \left( \lambda^{(\ell+1)}_b + \lambda^{(\ell+1)}_W V^{(\ell)}_{\alpha_1 \alpha_2} \right) + \sum_{j_1, j_2} \frac{dz^{(\ell+1)}_{i_1;\alpha_1}}{dz^{(\ell)}_{j_1;\alpha_1}} \frac{dz^{(\ell+1)}_{i_2;\alpha_2}}{dz^{(\ell)}_{j_2;\alpha_2}} \hat{H}^{(\ell)}_{j_1 j_2; \alpha_1 \alpha_2}
@@ -580,16 +580,16 @@ p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(
 </section>
 <section id="ntk-の統計的性質" class="level3">
 <h3 class="anchored" data-anchor-id="ntk-の統計的性質">NTK の統計的性質</h3>
-<p>初期化時、NTK は確率的な量です (Chapter 8.1-8.3)。</p>
+<p>初期化時、NTK は確率的な量である (Chapter 8.1-8.3)。</p>
 <p><strong>第1層</strong>: NTK は<strong>決定論的</strong>（ゆらぎなし）</p>
 <p><strong>第2層</strong>: NTK に<strong>ゆらぎ</strong>が出現</p>
 <p><strong>深い層</strong>: NTK のゆらぎが蓄積</p>
-<p>Preactivation の RG Flow と完全に並行して、NTK の統計も再帰的に計算できます。</p>
+<p>Preactivation の RG Flow と完全に並行して、NTK の統計も再帰的に計算できる。</p>
 </section>
 </section>
 <section id="rg-flow-の意義" class="level2">
 <h2 class="anchored" data-anchor-id="rg-flow-の意義">RG Flow の意義</h2>
-<p>RG Flow の定式化により、以下が可能になります。</p>
+<p>RG Flow の定式化により、以下が可能になる。</p>
 <p><strong>理論的洞察</strong>:</p>
 <ul>
 <li>ネットワークの深さ <span class="math inline">\(L\)</span> と幅 <span class="math inline">\(n\)</span> の役割の明確化</li>
@@ -612,20 +612,20 @@ p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>RG Flow は、深層ニューラルネットワークがデータの表現を段階的に抽象化していくプロセスを、厳密な数学的枠組みで記述します。</p>
+<p>RG Flow は、深層ニューラルネットワークがデータの表現を段階的に抽象化していくプロセスを、厳密な数学的枠組みで記述する。</p>
 <p><strong>直感的理解</strong>:</p>
 <ul>
 <li><strong>入力層</strong>: 細粒度の生データ</li>
 <li><strong>隠れ層</strong>: 中間的な特徴表現（段階的に抽象化）</li>
 <li><strong>出力層</strong>: 粗視化された最終表現</li>
 </ul>
-<p>このプロセスは、物理学における微視的記述から巨視的記述への移行と本質的に同じ構造を持っています。</p>
+<p>このプロセスは、物理学における微視的記述から巨視的記述への移行と本質的に同じ構造を持っている。</p>
 </div>
 </div>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p>Renormalization Group Flow は、深層学習の理論的理解において中心的な役割を果たします。</p>
+<p>Renormalization Group Flow は、深層学習の理論的理解において中心的な役割を果たす。</p>
 <p><strong>主要な結果</strong>:</p>
 <ul>
 <li>第1層はガウス分布、第2層以降で非ガウス性が出現・蓄積</li>
@@ -639,7 +639,7 @@ p(z^{(2)} | \mathcal{D}) \approx \frac{1}{Z} \exp\left( -S_2(z^{(2)}) - S_4(z^{(
 <li>NTK の統計を用いて学習ダイナミクスを理解 (Chapter 9, 10)</li>
 <li>表現学習の出現条件を明らかにする (Chapter 11)</li>
 </ul>
-<p>RG Flow は、深層学習の「有効理論」(effective theory) を構築するための基盤となる概念です。</p>
+<p>RG Flow は、深層学習の「有効理論」(effective theory) を構築するための基盤となる概念である。</p>
 
 
 </section>

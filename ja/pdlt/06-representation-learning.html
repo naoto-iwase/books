@@ -454,21 +454,21 @@ window.Quarto = {
 
 <section id="representation-learning" class="level1">
 <h1>Representation Learning</h1>
-<p><strong>Representation Learning</strong>（表現学習）は、ニューラルネットワークが学習を通じて内部表現を変化させ、タスクに適した特徴を獲得する現象です。深層学習理論において、表現学習の有無は無限幅と有限幅のニューラルネットワークを決定的に区別する重要な性質です。</p>
+<p><strong>Representation Learning</strong>（表現学習）は、ニューラルネットワークが学習を通じて内部表現を変化させ、タスクに適した特徴を獲得する現象である。深層学習理論において、表現学習の有無は無限幅と有限幅のニューラルネットワークを決定的に区別する重要な性質である。</p>
 <section id="無限幅での表現学習の欠如" class="level2">
 <h2 class="anchored" data-anchor-id="無限幅での表現学習の欠如">無限幅での表現学習の欠如</h2>
-<p>無限幅のニューラルネットワークでは、表現学習が発生しません。Chapter 6.3.3 および Chapter 10.1.2 で示されるように、無限幅極限では以下の二つの制約が生じます。</p>
+<p>無限幅のニューラルネットワークでは、表現学習が発生しない。Chapter 6.3.3 および Chapter 10.1.2 で示されるように、無限幅極限では以下の二つの制約が生じる。</p>
 <section id="no-wiring配線なし" class="level3">
 <h3 class="anchored" data-anchor-id="no-wiring配線なし">No Wiring（配線なし）</h3>
-<p>無限幅では、ネットワーク出力の各成分が独立に更新されます。例えば MSE 損失の場合、<span class="math inline">\(i\)</span> 番目の出力 <span class="math inline">\(z^{(L)}_i\)</span> の更新は <span class="math inline">\(i\)</span> 番目の誤差因子のみに依存します。</p>
+<p>無限幅では、ネットワーク出力の各成分が独立に更新される。例えば MSE 損失の場合、<span class="math inline">\(i\)</span> 番目の出力 <span class="math inline">\(z^{(L)}_i\)</span> の更新は <span class="math inline">\(i\)</span> 番目の誤差因子のみに依存する。</p>
 <p><span class="math display">\[
 d\bar{z}^{(L)}_{i;\delta} = -\eta \sum_{\tilde{\alpha} \in \mathcal{A}} \Theta^{(L)}_{\delta\tilde{\alpha}} \epsilon_{i;\tilde{\alpha}}
 \]</span></p>
-<p>これにより、出力成分間の相関を学習することができません。</p>
+<p>これにより、出力成分間の相関を学習することができない。</p>
 </section>
 <section id="no-representation-learning表現学習なし" class="level3">
 <h3 class="anchored" data-anchor-id="no-representation-learning表現学習なし">No Representation Learning（表現学習なし）</h3>
-<p>最終隠れ層 <span class="math inline">\(L-1\)</span> の事前活性化 <span class="math inline">\(z^{(L-1)}_j\)</span> の更新分布を解析すると、その平均と分散はともに <span class="math inline">\(1/n\)</span> で抑制されます。</p>
+<p>最終隠れ層 <span class="math inline">\(L-1\)</span> の事前活性化 <span class="math inline">\(z^{(L-1)}_j\)</span> の更新分布を解析すると、その平均と分散はともに <span class="math inline">\(1/n\)</span> で抑制される。</p>
 <p><strong>更新の平均</strong>:</p>
 <p><span class="math display">\[
 \mathbb{E}\left[ d\bar{z}^{(L-1)}_{j;\delta} \right] = O(1/n)
@@ -477,7 +477,7 @@ d\bar{z}^{(L)}_{i;\delta} = -\eta \sum_{\tilde{\alpha} \in \mathcal{A}} \Theta^{
 <p><span class="math display">\[
 \text{Cov}\left[ d\bar{z}^{(L-1)}_{j_1;\delta_1}, d\bar{z}^{(L-1)}_{j_2;\delta_2} \right] = O(1/n)
 \]</span></p>
-<p>無限幅極限（<span class="math inline">\(n \to \infty\)</span>）では、これらの量はゼロに漸近します。したがって、学習前後で隠れ層の分布は変化せず、<strong>表現学習が発生しません</strong>。</p>
+<p>無限幅極限（<span class="math inline">\(n \to \infty\)</span>）では、これらの量はゼロに漸近する。したがって、学習前後で隠れ層の分布は変化せず、<strong>表現学習が発生しない</strong>。</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -488,29 +488,29 @@ d\bar{z}^{(L)}_{i;\delta} = -\eta \sum_{\tilde{\alpha} \in \mathcal{A}} \Theta^{
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>無限幅ニューラルネットワークは、本質的に<strong>線形モデル</strong>および<strong>カーネル法</strong>と等価です（Chapter 10.4）。これらは以下の制約を持ちます。</p>
+<p>無限幅ニューラルネットワークは、本質的に<strong>線形モデル</strong>および<strong>カーネル法</strong>と等価である（Chapter 10.4）。これらは以下の制約を持つ。</p>
 <ul>
 <li>固定された特徴表現（frozen features）</li>
 <li>線形な関数近似</li>
 <li>カーネルトリックに基づく予測</li>
 </ul>
-<p>実用的な深層学習モデルの柔軟性と表現力を理解するには、有限幅への拡張が不可欠です。</p>
+<p>実用的な深層学習モデルの柔軟性と表現力を理解するには、有限幅への拡張が不可欠である。</p>
 </div>
 </div>
 </section>
 </section>
 <section id="有限幅での表現学習の発生" class="level2">
 <h2 class="anchored" data-anchor-id="有限幅での表現学習の発生">有限幅での表現学習の発生</h2>
-<p>有限幅のニューラルネットワークでは、表現学習が発生します。Chapter 6.4 および Chapter 11 で詳述されるように、有限幅では<strong>非ガウス相互作用</strong>が表現学習を可能にします。</p>
+<p>有限幅のニューラルネットワークでは、表現学習が発生する。Chapter 6.4 および Chapter 11 で詳述されるように、有限幅では<strong>非ガウス相互作用</strong>が表現学習を可能にする。</p>
 <section id="hebbian-learningヘブ学習" class="level3">
 <h3 class="anchored" data-anchor-id="hebbian-learningヘブ学習">Hebbian Learning（ヘブ学習）</h3>
-<p>有限幅ニューラルネットワークは、神経連想（neural association）に対する帰納的バイアスを自動的に持ちます。これは Donald Hebb の古典的原理に基づきます。</p>
+<p>有限幅ニューラルネットワークは、神経連想（neural association）に対する帰納的バイアスを自動的に持つ。これは Donald Hebb の古典的原理に基づく。</p>
 <blockquote class="blockquote">
 <p>Any two cells or systems of cells that are repeatedly active at the same time will tend to become “associated,” so that activity in one facilitates activity in the other.</p>
 <p>— Donald Hebb, <em>The Organization of Behavior</em> (1949)</p>
 </blockquote>
-<p>有限幅では、ニューロン間の非ガウス相互作用により、一つの事前活性化 <span class="math inline">\(z^{(\ell)}_1\)</span> が別の事前活性化 <span class="math inline">\(z^{(\ell)}_2\)</span> に影響を与えます。この影響は条件付き分布 <span class="math inline">\(p(z^{(\ell)}_2 | \hat{z}^{(\ell)}_1)\)</span> で表現されます。</p>
-<p>無限幅では <span class="math inline">\(p(z^{(\ell)}_2 | \hat{z}^{(\ell)}_1) = p(z^{(\ell)}_2)\)</span> となり、ニューロン間に関連性はありません。しかし有限幅では、この条件付き分布が事前分布から逸脱し、<strong>ヘブ学習</strong>が自然に生じます。</p>
+<p>有限幅では、ニューロン間の非ガウス相互作用により、一つの事前活性化 <span class="math inline">\(z^{(\ell)}_1\)</span> が別の事前活性化 <span class="math inline">\(z^{(\ell)}_2\)</span> に影響を与える。この影響は条件付き分布 <span class="math inline">\(p(z^{(\ell)}_2 | \hat{z}^{(\ell)}_1)\)</span> で表現される。</p>
+<p>無限幅では <span class="math inline">\(p(z^{(\ell)}_2 | \hat{z}^{(\ell)}_1) = p(z^{(\ell)}_2)\)</span> となり、ニューロン間に関連性はない。しかし有限幅では、この条件付き分布が事前分布から逸脱し、<strong>ヘブ学習</strong>が自然に生じる。</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -523,53 +523,53 @@ d\bar{z}^{(L)}_{i;\delta} = -\eta \sum_{\tilde{\alpha} \in \mathcal{A}} \Theta^{
 </div>
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>ヘブ学習は、もともと生物学的ニューロンのシナプス可塑性を説明するために提案されました。「同時に発火するニューロンは結合する（Cells that fire together, wire together）」という原則は、以下の神経科学的現象と関連します。</p>
+<p>ヘブ学習は、もともと生物学的ニューロンのシナプス可塑性を説明するために提案された。「同時に発火するニューロンは結合する（Cells that fire together, wire together）」という原則は、以下の神経科学的現象と関連する。</p>
 <ul>
 <li><strong>Long-Term Potentiation (LTP)</strong>: シナプス結合の長期的な強化</li>
 <li><strong>Spike-Timing-Dependent Plasticity (STDP)</strong>: スパイクのタイミングに依存した可塑性</li>
 <li><strong>Neural Association</strong>: 記憶と学習における神経回路の形成</li>
 </ul>
-<p>人工ニューラルネットワークにおいても、有限幅でこの原理が自然に現れることは、生物学的妥当性の観点から興味深い性質です。</p>
+<p>人工ニューラルネットワークにおいても、有限幅でこの原理が自然に現れることは、生物学的妥当性の観点から興味深い性質である。</p>
 </div>
 </div>
 </div>
 </section>
 <section id="lets-wire-together配線の生成" class="level3">
 <h3 class="anchored" data-anchor-id="lets-wire-together配線の生成">Let’s Wire Together（配線の生成）</h3>
-<p>有限幅では、学習によって出力成分間の相関が生成されます。Chapter 6.4.2 で示されるように、ベイズ事後分布の平均 <span class="math inline">\(p(z^{(L)}_B | y_A)\)</span> を計算すると、層内のニューロン相互作用により非自明な相関が生じます。</p>
+<p>有限幅では、学習によって出力成分間の相関が生成される。Chapter 6.4.2 で示されるように、ベイズ事後分布の平均 <span class="math inline">\(p(z^{(L)}_B | y_A)\)</span> を計算すると、層内のニューロン相互作用により非自明な相関が生じる。</p>
 </section>
 <section id="presence-of-representation-learning表現学習の存在" class="level3">
 <h3 class="anchored" data-anchor-id="presence-of-representation-learning表現学習の存在">Presence of Representation Learning（表現学習の存在）</h3>
-<p>最終隠れ層の事前活性化の事後分布 <span class="math inline">\(p(z^{(L-1)}_B | y_A)\)</span> は、事前分布からの<strong>非ゼロのシフト</strong>を示します。これは層間相互作用により生じ、有限幅における表現学習の存在を示します（Chapter 6.4.3）。</p>
+<p>最終隠れ層の事前活性化の事後分布 <span class="math inline">\(p(z^{(L-1)}_B | y_A)\)</span> は、事前分布からの<strong>非ゼロのシフト</strong>を示す。これは層間相互作用により生じ、有限幅における表現学習の存在を示す（Chapter 6.4.3）。</p>
 </section>
 </section>
 <section id="dntk-の役割" class="level2">
 <h2 class="anchored" data-anchor-id="dntk-の役割">dNTK の役割</h2>
-<p><strong>Differential of the Neural Tangent Kernel (dNTK)</strong> は、表現学習を定量化する中心的な量です（Chapter 11）。</p>
+<p><strong>Differential of the Neural Tangent Kernel (dNTK)</strong> は、表現学習を定量化する中心的な量である（Chapter 11）。</p>
 <section id="dntk-の定義" class="level3">
 <h3 class="anchored" data-anchor-id="dntk-の定義">dNTK の定義</h3>
-<p>dNTK は、NTK の訓練データに対する微分として定義されます（Chapter 11.1）。</p>
+<p>dNTK は、NTK の訓練データに対する微分として定義される（Chapter 11.1）。</p>
 </section>
 <section id="rg-flow-of-the-dntk" class="level3">
 <h3 class="anchored" data-anchor-id="rg-flow-of-the-dntk">RG Flow of the dNTK</h3>
-<p>Chapter 11.2 では、dNTK の再帰方程式（Renormalization Group flow）が導出されます。</p>
-<p><strong>第1層</strong>: dNTK はゼロです（11.2.1）。</p>
-<p><strong>第2層</strong>: dNTK が非ゼロになります（11.2.2）。</p>
-<p><strong>深い層</strong>: dNTK は層とともに成長します（11.2.3）。</p>
-<p>この成長は、深いネットワークほど表現学習能力が高いことを示唆します。</p>
+<p>Chapter 11.2 では、dNTK の再帰方程式（Renormalization Group flow）が導出される。</p>
+<p><strong>第1層</strong>: dNTK はゼロである（11.2.1）。</p>
+<p><strong>第2層</strong>: dNTK が非ゼロになる（11.2.2）。</p>
+<p><strong>深い層</strong>: dNTK は層とともに成長する（11.2.3）。</p>
+<p>この成長は、深いネットワークほど表現学習能力が高いことを示唆する。</p>
 </section>
 <section id="effective-theory-of-the-dntk" class="level3">
 <h3 class="anchored" data-anchor-id="effective-theory-of-the-dntk">Effective Theory of the dNTK</h3>
-<p>Chapter 11.3 では、dNTK の臨界解析が行われます。</p>
+<p>Chapter 11.3 では、dNTK の臨界解析が行われる。</p>
 <p><strong>Scale-Invariant Universality Class</strong> (11.3.1):</p>
-<p>ReLU などのスケール不変活性化関数に対して、dNTK は特定の臨界指数で成長します。</p>
+<p>ReLU などのスケール不変活性化関数に対して、dNTK は特定の臨界指数で成長する。</p>
 <p><strong><span class="math inline">\(K^* = 0\)</span> Universality Class</strong> (11.3.2):</p>
-<p>tanh や sin などの活性化関数に対して、異なる臨界挙動を示します。</p>
+<p>tanh や sin などの活性化関数に対して、異なる臨界挙動を示す。</p>
 </section>
 </section>
 <section id="無限幅と有限幅の比較" class="level2">
 <h2 class="anchored" data-anchor-id="無限幅と有限幅の比較">無限幅と有限幅の比較</h2>
-<p>以下の表は、無限幅と有限幅におけるニューラルネットワークの性質を比較します。</p>
+<p>以下の表は、無限幅と有限幅におけるニューラルネットワークの性質を比較する。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -626,41 +626,41 @@ d\bar{z}^{(L)}_{i;\delta} = -\eta \sum_{\tilde{\alpha} \in \mathcal{A}} \Theta^{
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Chapter 11.4 では、有限幅ニューラルネットワークを<strong>非線形モデル</strong>および<strong>Nearly-Kernel Methods</strong>として解釈する枠組みが提示されます（11.4.1, 11.4.2）。</p>
+<p>Chapter 11.4 では、有限幅ニューラルネットワークを<strong>非線形モデル</strong>および<strong>Nearly-Kernel Methods</strong>として解釈する枠組みが提示される（11.4.1, 11.4.2）。</p>
 <ul>
 <li><strong>無限幅</strong>: カーネル法（Kernel Methods） — 固定カーネルに基づく線形予測</li>
 <li><strong>有限幅</strong>: Nearly-Kernel Methods — カーネルが学習中に微小に進化</li>
 </ul>
-<p>有限幅ネットワークは「ほぼカーネル法」として動作しますが、dNTK による微小な非線形性が表現学習を可能にします（11.4.3）。</p>
+<p>有限幅ネットワークは「ほぼカーネル法」として動作するが、dNTK による微小な非線形性が表現学習を可能にする（11.4.3）。</p>
 </div>
 </div>
 </section>
 <section id="表現学習の重要性" class="level2">
 <h2 class="anchored" data-anchor-id="表現学習の重要性">表現学習の重要性</h2>
-<p>表現学習は、深層学習が従来の機械学習手法を凌駕する主要な理由の一つです。</p>
+<p>表現学習は、深層学習が従来の機械学習手法を凌駕する主要な理由の一つである。</p>
 <section id="タスク適応性" class="level3">
 <h3 class="anchored" data-anchor-id="タスク適応性">タスク適応性</h3>
-<p>有限幅ネットワークは、訓練データに基づいて内部表現を調整し、タスクに特化した特徴を学習します。</p>
+<p>有限幅ネットワークは、訓練データに基づいて内部表現を調整し、タスクに特化した特徴を学習する。</p>
 </section>
 <section id="階層的特徴抽出" class="level3">
 <h3 class="anchored" data-anchor-id="階層的特徴抽出">階層的特徴抽出</h3>
-<p>深い層ほど抽象的な特徴を学習し、浅い層は低レベルの特徴を捉えます。dNTK の深さ依存性はこの性質を反映します。</p>
+<p>深い層ほど抽象的な特徴を学習し、浅い層は低レベルの特徴を捉える。dNTK の深さ依存性はこの性質を反映する。</p>
 </section>
 <section id="汎化性能の向上" class="level3">
 <h3 class="anchored" data-anchor-id="汎化性能の向上">汎化性能の向上</h3>
-<p>適切な表現を学習することで、訓練データに見られないパターンにも対応できる汎化能力が向上します。</p>
+<p>適切な表現を学習することで、訓練データに見られないパターンにも対応できる汎化能力が向上する。</p>
 </section>
 </section>
 <section id="まとめ" class="level2">
 <h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
-<p><strong>Representation Learning（表現学習）</strong> は、深層学習理論における中心的概念です。</p>
+<p><strong>Representation Learning（表現学習）</strong> は、深層学習理論における中心的概念である。</p>
 <ul>
 <li><strong>無限幅</strong>: 表現学習は発生せず、ネットワークはカーネル法に帰着（Chapter 6.3, 10）</li>
 <li><strong>有限幅</strong>: Hebbian learning により表現学習が発生（Chapter 6.4）</li>
 <li><strong>dNTK</strong>: 表現学習を定量化する重要な量（Chapter 11）</li>
 <li><strong>理論的意義</strong>: 実用的な深層学習モデルの理解には有限幅理論が不可欠</li>
 </ul>
-<p>表現学習の理解は、深層ニューラルネットワークがなぜ強力なのかを説明する鍵となります。</p>
+<p>表現学習の理解は、深層ニューラルネットワークがなぜ強力なのかを説明する鍵となる。</p>
 
 
 </section>
