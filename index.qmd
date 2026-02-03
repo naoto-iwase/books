@@ -25,6 +25,8 @@ listing:
 
 Machine learning research notes.
 
+Chat with AI 💬 about any page content.
+
 ::: {.panel-tabset}
 
 ## 日本語 (Japanese)

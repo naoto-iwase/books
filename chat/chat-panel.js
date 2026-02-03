@@ -218,6 +218,14 @@
     session.page = getPageDisplay();
     session.updated = Date.now();
 
+    // Update title from first user message if still using default title
+    if (session.title === i18n.ja.newSession || session.title === i18n.en.newSession) {
+      const firstUserMsg = messages.find(m => m.role === 'user');
+      if (firstUserMsg) {
+        session.title = firstUserMsg.content.substring(0, 30).trim();
+      }
+    }
+
     saveSessions();
     updateSessionDisplay();
   }
