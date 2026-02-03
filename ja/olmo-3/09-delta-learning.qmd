@@ -1,10 +1,10 @@
 # Delta Learning: 選好調整の新手法
 
-Delta Learning は、Preference tuning（選好調整）における新しいアプローチです。本手法は、SFT（Supervised Fine-Tuning）モデルと Base モデルの「差分」を活用することで、高品質な contrastive data を生成し、DPO（Direct Preference Optimization）の効果を最大化します。
+Delta Learning は、Preference tuning（選好調整）における新しいアプローチである。本手法は、SFT（Supervised Fine-Tuning）モデルと Base モデルの「差分」を活用することで、高品質な contrastive data を生成し、DPO（Direct Preference Optimization）の効果を最大化する。
 
 ## 基本原理
 
-Delta Learning の核心は、モデル間の能力差を明示的に捉えることにあります。
+Delta Learning の核心は、モデル間の能力差を明示的に捉えることにある。
 
 ```
 +------------------------------------------------------------------+
@@ -21,17 +21,17 @@ Delta Learning の核心は、モデル間の能力差を明示的に捉える�
 
 ### モデル間の差分
 
-SFT モデルは、Base モデルに対して以下の能力を獲得しています。
+SFT モデルは、Base モデルに対して以下の能力を獲得している。
 
 - より構造化された推論プロセス
 - 段階的な問題解決アプローチ
 - タスク固有の知識の適用
 
-Delta Learning は、この「獲得された能力」を優先応答（Preferred response）の生成に活用します。
+Delta Learning は、この「獲得された能力」を優先応答（Preferred response）の生成に活用する。
 
 ## Dolci Think DPO での適用
 
-Dolci Think では、Delta Learning を用いて推論能力の向上を図ります（Section 4.3）。
+Dolci Think では、Delta Learning を用いて推論能力の向上を図る（Section 4.3）。
 
 ### 合成データの生成
 
@@ -64,17 +64,17 @@ Dolci Think では、Delta Learning を用いて推論能力の向上を図り�
 
 ### 品質フィルタリング
 
-生成されたペアに対して、以下の基準でフィルタリングを実施します。
+生成されたペアに対して、以下の基準でフィルタリングを実施する。
 
 - Preferred 応答が正答を含む
 - Dispreferred 応答が誤答または不完全
 - 両応答間に明確な品質差が存在
 
-この結果、約 1M の高品質な preference pair が作成されました。
+この結果、約 1M の高品質な preference pair が作成された。
 
 ## Dolci Instruct DPO での適用
 
-Dolci Instruct では、Delta Learning を multi-turn 対話の最適化に使用します（Section 5.3）。
+Dolci Instruct では、Delta Learning を multi-turn 対話の最適化に使用する（Section 5.3）。
 
 ### Multi-turn Preference Data
 
@@ -98,7 +98,7 @@ Dolci Instruct では、Delta Learning を multi-turn 対話の最適化に使�
 
 ### 応答長の最適化
 
-Delta Learning により、以下の改善が実現されます。
+Delta Learning により、以下の改善が実現される。
 
 - **簡潔さの維持**: 不要な冗長性を排除
 - **情報密度の向上**: 重要な情報を効率的に伝達
@@ -106,15 +106,15 @@ Delta Learning により、以下の改善が実現されます。
 
 ### 実装の詳細
 
-約 500K の multi-turn プロンプトから preference pair を生成し、応答品質の向上を図ります。
+約 500K の multi-turn プロンプトから preference pair を生成し、応答品質の向上を図る。
 
 ## 効果と利点
 
-Delta Learning による Preference tuning は、複数の利点をもたらします。
+Delta Learning による Preference tuning は、複数の利点をもたらす。
 
 ### SFT を超える性能
 
-DPO による追加の最適化により、SFT 単独では到達できない性能レベルを実現します。
+DPO による追加の最適化により、SFT 単独では到達できない性能レベルを実現する。
 
 ```
 +------------------------------------------------------------------+
@@ -131,7 +131,7 @@ DPO による追加の最適化により、SFT 単独では到達できない性
 
 ### RL への準備（Priming for RL）
 
-Delta Learning による DPO は、将来の Reinforcement Learning の基盤となります。
+Delta Learning による DPO は、将来の Reinforcement Learning の基盤となる。
 
 - **報酬モデルとの整合性**: 人間の選好との alignment を改善
 - **探索の効率化**: より良い初期方策を提供
@@ -139,7 +139,7 @@ Delta Learning による DPO は、将来の Reinforcement Learning の基盤と
 
 ### 推論能力の向上
 
-Dolci Think での適用により、以下の改善が確認されました。
+Dolci Think での適用により、以下の改善が確認された。
 
 - 複雑な問題に対する段階的アプローチの強化
 - 推論の深さと正確性の向上
@@ -167,12 +167,12 @@ Dolci Think での適用により、以下の改善が確認されました。
 - **品質保証**: モデル間の能力差により、明確な contrastive signal を生成
 - **柔軟性**: 異なるタスクやドメインに容易に適用可能
 
-Delta Learning は、SFT で獲得した能力を最大限に活用し、効率的かつ効果的な preference tuning を実現します。
+Delta Learning は、SFT で獲得した能力を最大限に活用し、効率的かつ効果的な preference tuning を実現する。
 :::
 
 ## まとめ
 
-Delta Learning は、OLMo2 3B の preference tuning において中心的な役割を果たします。
+Delta Learning は、OLMo2 3B の preference tuning において中心的な役割を果たす。
 
 **主要なポイント**:
 
@@ -181,4 +181,4 @@ Delta Learning は、OLMo2 3B の preference tuning において中心的な役�
 - 推論能力と応答品質の両面で性能向上
 - スケーラブルで cost-effective な手法
 
-この手法により、Dolci Think と Dolci Instruct は、それぞれの領域で最先端の性能を達成しています。
+この手法により、Dolci Think と Dolci Instruct は、それぞれの領域で最先端の性能を達成している。
