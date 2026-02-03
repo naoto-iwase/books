@@ -2411,8 +2411,8 @@
     ]
   },
   {
-    "objectID": "ja/pdlt/01-effective-theory.html#本書における有効理論の具体的な適用",
-    "href": "ja/pdlt/01-effective-theory.html#本書における有効理論の具体的な適用",
+    "objectID": "ja/pdlt/01-effective-theory.html#原著における有効理論の具体的な適用",
+    "href": "ja/pdlt/01-effective-theory.html#原著における有効理論の具体的な適用",
     "title": "Effective Theory Approach",
     "section": "",
     "text": "PDLT では、以下のような具体的な方法で有効理論アプローチを適用する:\n\n\nニューラルネットワークのパラメータ \\(\\theta\\) を、確率分布 \\(p(\\theta)\\) からサンプリングされたランダム変数として扱う。\n初期化時には、パラメータは単純な確率分布（例: ガウス分布）からサンプリングされる:\n\\[\np(\\theta) = \\mathcal{N}(0, \\sigma^2 I)\n\\]\nこの確率的な初期化により、ネットワークが計算する関数 \\(f(x; \\theta)\\) も確率分布を持つ:\n\\[\np(\\theta) \\rightarrow p(f)\n\\]\n\n\n\n深層ニューラルネットワークでは、各ニューロンは多数の入力信号を受け取る。幅 \\(n\\) が大きいとき、中心極限定理により、各ニューロンの preactivation はガウス分布に近づく。\nこのガウス性は、統計力学におけるガウス積分やWick の定理などの強力な計算手法を適用可能にする。\n\n\n\n入力層から出力層に向かって信号が伝播する過程を、繰り込み群フロー（Renormalization Group Flow）として捉える。\n各層で、preactivation の分布がどのように変化するかを追跡し、その effective theory を構築する:\n┌──────────────────────────────────────────────────────┐\n│                                                      │\n│  Input Layer                                         │\n│       |                                              │\n│       v                                              │\n│  Layer 1: Gaussian distribution                      │\n│       |                                              │\n│       v                                              │\n│  Layer 2: Slightly non-Gaussian                      │\n│       |                                              │\n│       v                                              │\n│  Layer 3: Accumulation of non-Gaussianity            │\n│       |                                              │\n│       v                                              │\n│  Output Layer                                        │\n│                                                      │\n└──────────────────────────────────────────────────────┘\nこの RG Flow の解析により、深層ネットワークにおける臨界性（Criticality）や普遍性クラス（Universality Classes）が理解できる。\n\n\n\n無限幅極限 \\(n \\to \\infty\\) では、ニューラルネットワークは完全なガウス過程に収束し、解析が容易になる。しかし、この極限では表現学習（Representation Learning）が起こらず、実際の深層学習を記述できない。\nそこで、PDLT では有限幅の摂動論（1/n expansion）を用いる:\n\\[\np(f^*) = p^{\\{0\\}}(f^*) + \\frac{1}{n} p^{\\{1\\}}(f^*) + O\\left(\\frac{1}{n^2}\\right)\n\\]\nここで:\n\n\\(p^{\\{0\\}}(f^*)\\): 無限幅極限（ガウス過程）\n\\(\\frac{1}{n} p^{\\{1\\}}(f^*)\\): 有限幅の第一補正（表現学習を含む）\n\nこの摂動論により、実際の深層ニューラルネットワークの振る舞いを理論的に記述できる。\n\n\n\n訓練中のネットワークの dynamics を記述するために、Neural Tangent Kernel (NTK) を導入する。\n無限幅極限では NTK は訓練中に固定され、ネットワークは線形モデルとして振る舞う。しかし、有限幅では NTK が変化し、これが表現学習を可能にする。\nNTK の変化量は \\(1/n\\) のオーダーで、深さ \\(L\\) とともに蓄積される:\n\\[\n\\text{NTK change} \\sim \\frac{L}{n} = r\n\\]\nここで、\\(r = L/n\\) はアスペクト比（Aspect Ratio）と呼ばれ、有効理論の適用可能性を決定する重要なパラメータである。",
@@ -2435,8 +2435,8 @@
     ]
   },
   {
-    "objectID": "ja/pdlt/01-effective-theory.html#本書の構成との関連",
-    "href": "ja/pdlt/01-effective-theory.html#本書の構成との関連",
+    "objectID": "ja/pdlt/01-effective-theory.html#原著の構成との関連",
+    "href": "ja/pdlt/01-effective-theory.html#原著の構成との関連",
     "title": "Effective Theory Approach",
     "section": "",
     "text": "PDLT は、この有効理論アプローチを以下のように展開する:\nPart 1: 初期化時の理論（Chapters 0-5）:\n初期化されたニューラルネットワークの統計的性質を解析し、臨界性や普遍性クラスを理解する。\nPart 2: 学習の理論（Chapters 6-11）:\n訓練プロセスを有効理論で記述し、無限幅極限と有限幅の違い、表現学習のメカニズムを明らかにする。\nAppendices:\n情報理論的な視点や、ResNets への拡張を議論する。\nこの構成により、読者は段階的に有効理論の手法を習得し、最終的には実際の深層学習システムの理論的理解に到達できる。",
