@@ -177,6 +177,7 @@ ja/olmo-3/
 - **表の作成**: Pipe tables や List tables で複雑な表を作成し、`@tbl-name` で参照
 - **ダイアグラム**: Mermaid や Graphviz でフローチャート・シーケンス図を作成
 - **クロスリファレンス**: `@fig-`, `@tbl-`, `@sec-`, `@eq-` による統一的な参照システム
+- **数式**: KaTeX（LaTeX 記法）を使用（`$x^2$` でインライン、`$$\sum_{i=1}^{n}$$` でディスプレイ）
 
 > **詳細**: `references/cross-references.md`, `references/figures.md`, `references/tables.md`, `references/diagrams.md` を参照してください。
 
