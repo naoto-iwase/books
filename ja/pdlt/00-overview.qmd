@@ -137,31 +137,37 @@ NTK は訓練中に固定され、ネットワークは線形モデルとして�
 ### Part 1: 初期化時の理論 (Chapters 0-5)
 
 **Chapter 0: Initialization**
+
 - Effective Theory Approach の導入
 - 深層学習における理論の必要性
 
 **Chapter 1: Pretraining**
+
 - Gaussian integrals
 - 確率論と統計の数学的基礎
 - Nearly-Gaussian distributions
 
 **Chapter 2: Neural Networks**
+
 - 関数近似としてのニューラルネットワーク
 - 活性化関数
 - アンサンブル
 
 **Chapter 3: Effective Theory of Deep Linear Networks at Initialization**
+
 - Deep linear networks の解析
 - Criticality の導入
 - Fluctuations と Chaos
 
 **Chapter 4: RG Flow of Preactivations**
+
 - 第1層: Gaussian 分布
 - 第2層: Non-Gaussianity の発生
 - 深層: Non-Gaussianity の蓄積
 - Marginalization rules
 
 **Chapter 5: Effective Theory of Preactivations at Initialization**
+
 - Kernel の criticality 解析
 - 普遍性クラスの分類
 - Fluctuations の解析
@@ -169,34 +175,41 @@ NTK は訓練中に固定され、ネットワークは線形モデルとして�
 ### Part 2: 学習の理論 (Chapters 6-11)
 
 **Chapter 6: Bayesian Learning**
+
 - ベイズ推論とニューラルネットワーク
 - 無限幅での推論（表現学習なし）
 - 有限幅での推論（Hebbian learning、表現学習あり）
 
 **Chapter 7: Gradient-Based Learning**
+
 - 教師あり学習
 - 勾配降下法と関数近似
 
 **Chapter 8: RG Flow of the Neural Tangent Kernel**
+
 - NTK の forward equation
 - 層ごとの NTK の発展
 - NTK の平均と分散
 
 **Chapter 9: Effective Theory of the NTK at Initialization**
+
 - NTK の criticality 解析
 - 普遍性クラスごとの NTK の性質
 
 **Chapter 10: Kernel Learning**
+
 - 無限幅ネットワークの線形モデルとしての性質
 - Generalization と bias-variance tradeoff
 - Kernel methods との関連
 
 **Chapter 11: Representation Learning**
+
 - NTK の微分 (dNTK)
 - 有限幅ネットワークの非線形性
 - Nearly-kernel methods
 
 **Chapter ∞: The End of Training**
+
 - 有限幅での訓練
 - 多数ステップの勾配降下
 - 有限幅での予測
@@ -204,11 +217,13 @@ NTK は訓練中に固定され、ネットワークは線形モデルとして�
 ### Appendices
 
 **Appendix A: Information in Deep Learning**
+
 - Entropy と mutual information
 - 無限幅での情報理論的解析
 - 有限幅での最適アスペクト比
 
 **Appendix B: Residual Learning**
+
 - Residual networks (ResNets) への拡張
 - Residual MLP の criticality 解析
 
