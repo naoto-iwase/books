@@ -912,7 +912,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Molmo2 は、オープンウェイトモデルとしてだけでなく、<strong>プロプライエタリモデルを含めても最高水準</strong> のビデオポインティング性能を達成しています。</p>
 </div>
 </div>
-<p><strong>評価指標の説明</strong>: - <strong>Accuracy</strong>: 完全一致 - <strong>Close Accuracy</strong>: 誤差が <code>Δ = 1 + ⌊0.05 × gt⌋</code> 以内であれば正解（カウント数が多いほど許容誤差が大きい） - <strong>F1, Recall, Precision</strong>: 生成された点が ground-truth マスク内にあるかを評価</p>
+<p><strong>評価指標の説明</strong>:</p>
+<ul>
+<li><strong>Accuracy</strong>: 完全一致</li>
+<li><strong>Close Accuracy</strong>: 誤差が <code>Δ = 1 + ⌊0.05 × gt⌋</code> 以内であれば正解（カウント数が多いほど許容誤差が大きい）</li>
+<li><strong>F1, Recall, Precision</strong>: 生成された点が ground-truth マスク内にあるかを評価</li>
+</ul>
 </section>
 <section id="video-tracking-1" class="level3">
 <h3 class="anchored" data-anchor-id="video-tracking-1">Video Tracking</h3>
@@ -1072,7 +1077,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>VideoLISA は Ref-VOS に特化したモデルであり、一部のベンチマーク（MeViS valid-u, Ref-YT-VOS, Ref-Davis）で Molmo2 と同等またはそれ以上の性能を示しています。しかし、Molmo2 は <strong>汎用的なビデオ理解モデル</strong> として、ビデオ QA、キャプション、カウンティングなど幅広いタスクをサポートしている点が異なります。</p>
 </div>
 </div>
-<p><strong>評価指標の説明</strong>: - <strong>J&amp;F</strong>: セグメンテーションマスクの品質を測る指標（Jaccard Index と Contour Accuracy の平均） - <strong>F1, HOTA</strong>: オブジェクトトラッキングの精度を測る指標</p>
+<p><strong>評価指標の説明</strong>:</p>
+<ul>
+<li><strong>J&amp;F</strong>: セグメンテーションマスクの品質を測る指標（Jaccard Index と Contour Accuracy の平均）</li>
+<li><strong>F1, HOTA</strong>: オブジェクトトラッキングの精度を測る指標</li>
+</ul>
 <p><strong>主要な結果</strong>:</p>
 <ul>
 <li><strong>MeViS</strong>: Molmo2-4B は J&amp;F 56.2 で、Gemini 3 Pro（42.5）を <strong>13.7ポイント上回る</strong></li>
