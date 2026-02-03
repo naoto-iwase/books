@@ -3,7 +3,7 @@ title: "Olmo 3"
 description: "完全オープンな言語・思考型モデル（7B/32B）"
 date: "2026-02-02"
 author: "Naoto Iwase"
-categories: [Machine Learning, LLM, Transformer, Open Source, Reasoning]
+categories: [LLM, Reasoning]
 image: "images/olmo-3.png"
 ---
 

@@ -1,9 +1,9 @@
 ---
 title: "Molmo2"
-description: "完全オープンな Vision-Language Model で、ビデオグラウンディング（pointing & tracking）を実現"
+description: "完全オープンな Vision-Language Model で、ビデオグラウンディングを実現"
 date: "2026-02-03"
 author: "Naoto Iwase"
-categories: [Machine Learning, VLM, Video Language Model, Multimodal, Grounding]
+categories: [VLM, Multimodal]
 image: "images/molmo2.png"
 ---
 

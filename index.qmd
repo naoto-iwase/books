@@ -7,19 +7,19 @@ listing:
     contents: "ja/*/index.qmd"
     sort: "date desc"
     type: default
-    categories: false
+    categories: true
     sort-ui: false
     filter-ui: true
-    fields: [image, date, title, author, description]
+    fields: [image, date, title, author, categories, description]
     page-size: 25
   - id: listing-en
     contents: "en/*/index.qmd"
     sort: "date desc"
     type: default
-    categories: false
+    categories: true
     sort-ui: false
     filter-ui: false
-    fields: [image, date, title, author, description]
+    fields: [image, date, title, author, categories, description]
     page-size: 25
 ---
 

@@ -3,7 +3,7 @@ title: "The Principles of Deep Learning Theory"
 description: "物理学の有効理論アプローチによる深層学習の理論的理解"
 date: "2026-02-01"
 author: "Naoto Iwase"
-categories: [Machine Learning, Deep Learning Theory, Statistical Physics, Neural Networks]
+categories: [Deep Learning, Statistical Physics]
 image: "images/pdlt.png"
 ---
 
