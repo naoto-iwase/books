@@ -581,7 +581,12 @@ w_i = \begin{cases}
 <p><span class="math display">\[
 \mathcal{L} = \frac{1}{B} \sum_{i=1}^{B} w_i \cdot \mathcal{L}_i
 \]</span></p>
-<p>ここで: - <span class="math inline">\(B\)</span> はバッチサイズ - <span class="math inline">\(\mathcal{L}_i\)</span> はサンプル <span class="math inline">\(i\)</span> の未調整損失 - <span class="math inline">\(w_i\)</span> はサンプル <span class="math inline">\(i\)</span> の重み</p>
+<p>ここで:</p>
+<ul>
+<li><span class="math inline">\(B\)</span> はバッチサイズ</li>
+<li><span class="math inline">\(\mathcal{L}_i\)</span> はサンプル <span class="math inline">\(i\)</span> の未調整損失</li>
+<li><span class="math inline">\(w_i\)</span> はサンプル <span class="math inline">\(i\)</span> の重み</li>
+</ul>
 <p>この重み付けは、各サンプルの損失を個別に計算できるため、実装が容易であり、既存の訓練パイプラインに容易に統合できる。</p>
 </section>
 <section id="関連手法との比較" class="level2">
