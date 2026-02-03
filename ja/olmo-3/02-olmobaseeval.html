@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>olmobaseeval – Naoto's Books</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ja/olmo-3/03-midtraining.html" rel="next">
+<link href="../../ja/olmo-3/01-dolma3-dataset.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f1aadacce99040138bbb613f9330654f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-13f3cb0f996876b50f7809a2eda1f948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Naoto’s Books">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://naoto-iwase.github.io/books/ja/olmo-3/assets/myicon.png">
+<meta property="og:site_name" content="Naoto's Books">
+<meta name="twitter:title" content="Naoto’s Books">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://naoto-iwase.github.io/books/ja/olmo-3/assets/myicon.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Naoto’s Books</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://naoto-iwase.github.io"> <i class="bi bi-arrow-left-circle" role="img">
+</i> 
+<span class="menu-text">Naoto Iwase</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/naoto_iwase"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/naoto-iwase-993430395/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/naoto-iwase"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/olmo-3/index.html">Olmo 3</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/01-dolma3-dataset.html">Base Model Training</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/02-olmobaseeval.html">OlmoBaseEval: 評価スイート</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../ja/olmo-3/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olmo 3</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/00-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">全体像</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Base Model Training</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/01-dolma3-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dolma 3 データセット</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/02-olmobaseeval.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">OlmoBaseEval: 評価スイート</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/03-midtraining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Midtraining: 中間訓練</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/04-long-context-extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Long-context Extension</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/05-deduplication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deduplication: 重複排除</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/06-olmocr-science-pdfs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">olmOCR science PDFs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/07-data-mixing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Mixing 手法</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Post-training</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/08-dolci-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dolci データスイート</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/09-delta-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delta Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/10-olmorl-grpo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OlmoRL / GRPO</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#olmobaseeval-base-モデル評価スイート" id="toc-olmobaseeval-base-モデル評価スイート" class="nav-link active" data-scroll-target="#olmobaseeval-base-モデル評価スイート">OlmoBaseEval: Base モデル評価スイート</a>
+  <ul class="collapse">
+  <li><a href="#背景と目的" id="toc-背景と目的" class="nav-link" data-scroll-target="#背景と目的">背景と目的</a></li>
+  <li><a href="#従来手法の課題" id="toc-従来手法の課題" class="nav-link" data-scroll-target="#従来手法の課題">従来手法の課題</a></li>
+  <li><a href="#解決策の3つの柱" id="toc-解決策の3つの柱" class="nav-link" data-scroll-target="#解決策の3つの柱">解決策の3つの柱</a>
+  <ul class="collapse">
+  <li><a href="#タスククラスタリング" id="toc-タスククラスタリング" class="nav-link" data-scroll-target="#タスククラスタリング">タスククラスタリング</a></li>
+  <li><a href="#プロキシメトリック" id="toc-プロキシメトリック" class="nav-link" data-scroll-target="#プロキシメトリック">プロキシメトリック</a></li>
+  <li><a href="#シグナルノイズ比の改善" id="toc-シグナルノイズ比の改善" class="nav-link" data-scroll-target="#シグナルノイズ比の改善">シグナルノイズ比の改善</a></li>
+  </ul></li>
+  <li><a href="#新しいベンチマーク" id="toc-新しいベンチマーク" class="nav-link" data-scroll-target="#新しいベンチマーク">新しいベンチマーク</a>
+  <ul class="collapse">
+  <li><a href="#basicskills" id="toc-basicskills" class="nav-link" data-scroll-target="#basicskills">BasicSkills</a></li>
+  <li><a href="#gen2mc" id="toc-gen2mc" class="nav-link" data-scroll-target="#gen2mc">Gen2MC</a></li>
+  <li><a href="#mt-mbpp" id="toc-mt-mbpp" class="nav-link" data-scroll-target="#mt-mbpp">MT MBPP</a></li>
+  <li><a href="#masked-perplexity" id="toc-masked-perplexity" class="nav-link" data-scroll-target="#masked-perplexity">Masked Perplexity</a></li>
+  </ul></li>
+  <li><a href="#評価の実践" id="toc-評価の実践" class="nav-link" data-scroll-target="#評価の実践">評価の実践</a></li>
+  <li><a href="#スケーリング分析との統合" id="toc-スケーリング分析との統合" class="nav-link" data-scroll-target="#スケーリング分析との統合">スケーリング分析との統合</a></li>
+  <li><a href="#計算効率" id="toc-計算効率" class="nav-link" data-scroll-target="#計算効率">計算効率</a></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ">まとめ</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/olmo-3/index.html">Olmo 3</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/01-dolma3-dataset.html">Base Model Training</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/02-olmobaseeval.html">OlmoBaseEval: 評価スイート</a></li></ol></nav></header>
+
+
+
+
+
+<section id="olmobaseeval-base-モデル評価スイート" class="level1">
+<h1>OlmoBaseEval: Base モデル評価スイート</h1>
+<p>OlmoBaseEval は、Base モデル（事前学習済みモデル）の性能を効率的に評価するために設計されたベンチマークスイートである。従来の評価手法が抱える課題を解決し、小規模モデルでも信頼性の高い評価を可能にする。</p>
+<section id="背景と目的" class="level2">
+<h2 class="anchored" data-anchor-id="背景と目的">背景と目的</h2>
+<p>言語モデルの開発プロセスでは、学習途中のモデルを頻繁に評価する必要がある。しかし、既存の評価ベンチマークの多くは完全に学習されたモデルや、指示チューニングされた大規模モデルを対象としており、小規模な Base モデルの評価には適していない。</p>
+<p>OlmoBaseEval は、以下の目的で開発された。</p>
+<ul>
+<li>小規模モデルでも意味のある評価結果を提供</li>
+<li>学習途中のモデルの進捗を正確に追跡</li>
+<li>計算コストを抑えつつ高い評価精度を実現</li>
+<li>モデルの基礎能力を多角的に測定</li>
+</ul>
+</section>
+<section id="従来手法の課題" class="level2">
+<h2 class="anchored" data-anchor-id="従来手法の課題">従来手法の課題</h2>
+<p>小規模な Base モデルの評価には、主に3つの課題が存在する。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>課題1: ランダムチャンス性能
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>小規模モデルは多くのタスクでランダム選択と変わらない性能しか示さない。例えば、4択問題でモデルが学習していない場合、正答率は25%前後に留まり、実質的な能力測定ができない。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>課題2: スコア差の小ささ
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>学習が進んでもスコアの変化が微小であり、改善の有無を判断しにくい。統計的に有意な差を検出するには、非常に多くのサンプルが必要となる。</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>課題3: 評価の不安定性
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>タスクによってはノイズが大きく、同じモデルでも評価のたびに結果が変動する。これにより、真の性能向上とノイズによる変動を区別できない。</p>
+</div>
+</div>
+</section>
+<section id="解決策の3つの柱" class="level2">
+<h2 class="anchored" data-anchor-id="解決策の3つの柱">解決策の3つの柱</h2>
+<p>OlmoBaseEval は、上記の課題に対して3つのアプローチで対処する。</p>
+<section id="タスククラスタリング" class="level3">
+<h3 class="anchored" data-anchor-id="タスククラスタリング">タスククラスタリング</h3>
+<p>類似した能力を評価する複数のタスクを集約することで、評価の信頼性を向上させる。</p>
+<p>個別のタスクではノイズが大きくても、同じ能力を測定する複数のタスクの結果を統合することで、より安定した評価指標が得られる。これにより、モデルの特定の能力（例: 推論能力、言語理解能力）を正確に測定できる。</p>
+<p>タスククラスタリングのメリット。</p>
+<ul>
+<li>単一タスクのノイズを平均化</li>
+<li>能力の多面的な評価</li>
+<li>評価の再現性向上</li>
+</ul>
+</section>
+<section id="プロキシメトリック" class="level3">
+<h3 class="anchored" data-anchor-id="プロキシメトリック">プロキシメトリック</h3>
+<p>小規模モデルに適した評価指標を導入する。</p>
+<p>従来の正答率ベースの評価では、小規模モデルの能力を捉えきれない。プロキシメトリックは、正答/誤答の二値ではなく、モデルの出力分布や確信度などを考慮した連続的な指標を用いる。</p>
+<p>代表的なプロキシメトリック。</p>
+<ul>
+<li><strong>Masked Perplexity</strong>: 特定のトークンに対するモデルの予測確率を測定</li>
+<li><strong>Probability-based metrics</strong>: 正解選択肢への確率割り当てを評価</li>
+<li><strong>Calibration metrics</strong>: モデルの確信度と実際の正答率の整合性を測定</li>
+</ul>
+<p>これらの指標は、モデルが完全に学習していない段階でも、学習の進捗を捉えることができる。</p>
+</section>
+<section id="シグナルノイズ比の改善" class="level3">
+<h3 class="anchored" data-anchor-id="シグナルノイズ比の改善">シグナルノイズ比の改善</h3>
+<p>評価タスクのシグナルノイズ比を分析し、信頼性の高いタスクのみを選定する。</p>
+<p>すべてのタスクが等しく有用というわけではない。OlmoBaseEval では、各タスクのシグナルノイズ比を測定し、小規模モデルでも安定した結果を示すタスクを優先的に採用する。</p>
+<p>シグナルノイズ比の分析手法。</p>
+<ul>
+<li>複数のモデルサイズでの評価結果の一貫性を確認</li>
+<li>同一モデルの複数回評価での分散を測定</li>
+<li>スケーリング則との整合性を検証</li>
+</ul>
+</section>
+</section>
+<section id="新しいベンチマーク" class="level2">
+<h2 class="anchored" data-anchor-id="新しいベンチマーク">新しいベンチマーク</h2>
+<p>OlmoBaseEval は、以下の4つの新規ベンチマークを含む。</p>
+<section id="basicskills" class="level3">
+<h3 class="anchored" data-anchor-id="basicskills">BasicSkills</h3>
+<p>基本的な言語理解と推論能力を測定する6つのタスク。</p>
+<ul>
+<li><strong>Reading Comprehension</strong>: 短文の理解と情報抽出</li>
+<li><strong>Fact Recall</strong>: 基本的な知識の記憶</li>
+<li><strong>Simple Logic</strong>: 基礎的な論理推論</li>
+<li><strong>Pattern Recognition</strong>: パターンの認識と予測</li>
+<li><strong>Basic Math</strong>: 算数レベルの数値計算</li>
+<li><strong>Common Sense</strong>: 常識的な推論</li>
+</ul>
+<p>これらのタスクは、小規模モデルでもランダムチャンスを超える性能を示すよう設計されている。</p>
+</section>
+<section id="gen2mc" class="level3">
+<h3 class="anchored" data-anchor-id="gen2mc">Gen2MC</h3>
+<p>生成タスクを多肢選択形式に変換した5つのタスク。</p>
+<p>従来、生成タスクは Base モデルの評価に適さないとされてきた。Gen2MC は、生成の品質を多肢選択形式で評価することで、この問題を解決する。</p>
+<ul>
+<li><strong>Summarization</strong>: 要約の適切性を選択肢から判定</li>
+<li><strong>Translation</strong>: 翻訳の正確性を評価</li>
+<li><strong>Paraphrasing</strong>: 言い換えの妥当性を測定</li>
+<li><strong>Question Generation</strong>: 質問生成の質を評価</li>
+<li><strong>Title Generation</strong>: タイトル生成の適切性を判定</li>
+</ul>
+<p>この形式により、生成タスクでも確率ベースの評価が可能になる。</p>
+</section>
+<section id="mt-mbpp" class="level3">
+<h3 class="anchored" data-anchor-id="mt-mbpp">MT MBPP</h3>
+<p>多言語プログラミングベンチマーク（17言語対応）。</p>
+<p>MBPP（Mostly Basic Programming Problems）を17の自然言語に翻訳したベンチマーク。モデルの多言語理解能力とコーディング能力を同時に評価する。</p>
+<p>対応言語の例。</p>
+<ul>
+<li>ヨーロッパ言語: 英語、スペイン語、フランス語、ドイツ語</li>
+<li>アジア言語: 日本語、中国語、韓国語、ヒンディー語</li>
+<li>その他: アラビア語、ロシア語、ポルトガル語</li>
+</ul>
+<p>各言語で同一の問題セットを評価することで、言語間の性能差を分析できる。</p>
+</section>
+<section id="masked-perplexity" class="level3">
+<h3 class="anchored" data-anchor-id="masked-perplexity">Masked Perplexity</h3>
+<p>マスクされたトークンの予測精度を測定する評価手法。</p>
+<p>特定の重要なトークン（名詞、動詞など）をマスクし、モデルがそれらをどの程度正確に予測できるかを評価する。この手法は、小規模モデルでも連続的なスコアを提供し、学習の進捗を細かく追跡できる。</p>
+<p>Masked Perplexity の特徴。</p>
+<ul>
+<li>連続的なスコアリング（二値判定ではない）</li>
+<li>文脈理解能力の直接的な測定</li>
+<li>計算コストが低い</li>
+<li>学習初期段階から有意な差を検出</li>
+</ul>
+</section>
+</section>
+<section id="評価の実践" class="level2">
+<h2 class="anchored" data-anchor-id="評価の実践">評価の実践</h2>
+<p>OlmoBaseEval を用いた評価は、以下の流れで実施される。</p>
+<ol type="1">
+<li><strong>ベースライン測定</strong>: 学習開始前のランダム初期化モデルを評価</li>
+<li><strong>定期評価</strong>: 学習ステップごとに自動評価を実行</li>
+<li><strong>クラスタ分析</strong>: タスククラスタごとの性能変化を追跡</li>
+<li><strong>スケーリング予測</strong>: 小規模モデルの結果から大規模モデルの性能を推定</li>
+</ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>評価の頻度
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>小規模モデル（1B パラメータ未満）では、数百ステップごとの評価が推奨される。大規模モデルでは、計算コストを考慮して評価頻度を調整する。</p>
+</div>
+</div>
+</section>
+<section id="スケーリング分析との統合" class="level2">
+<h2 class="anchored" data-anchor-id="スケーリング分析との統合">スケーリング分析との統合</h2>
+<p>OlmoBaseEval は、スケーリング則の分析と組み合わせることで、さらなる洞察を提供する。</p>
+<p>小規模モデルでの評価結果をもとに、より大規模なモデルの性能を予測できる。これにより、大規模モデルを実際に学習する前に、学習戦略の有効性を検証できる。</p>
+<p>予測精度の向上には、以下の要素が重要である。</p>
+<ul>
+<li>複数のモデルサイズでの評価データ</li>
+<li>タスククラスタごとのスケーリング曲線</li>
+<li>学習データ量との相関分析</li>
+</ul>
+</section>
+<section id="計算効率" class="level2">
+<h2 class="anchored" data-anchor-id="計算効率">計算効率</h2>
+<p>OlmoBaseEval は、従来の評価スイートと比較して、大幅に計算コストを削減する。</p>
+<pre class="text"><code>+----------------------------------+
+| Efficiency Comparison            |
++----------------------------------+
+| Traditional: 100 GPU hours       |
+| OlmoBaseEval: 10 GPU hours       |
+| Reduction: 90%                   |
++----------------------------------+</code></pre>
+<p>効率化の要因。</p>
+<ul>
+<li>タスク数の最適化（重複の排除）</li>
+<li>プロキシメトリックによる評価時間短縮</li>
+<li>バッチ処理の最適化</li>
+</ul>
+</section>
+<section id="まとめ" class="level2">
+<h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
+<p>OlmoBaseEval は、Base モデルの評価における以下の革新をもたらす。</p>
+<ul>
+<li><strong>小規模モデルでの信頼性</strong>: ランダムチャンス性能を超える評価を実現</li>
+<li><strong>効率性</strong>: 計算コストを大幅に削減</li>
+<li><strong>多角的評価</strong>: タスククラスタリングによる能力の包括的測定</li>
+<li><strong>予測可能性</strong>: スケーリング分析との統合</li>
+</ul>
+<p>この評価スイートにより、モデル開発の初期段階から、データ効率的かつ計算効率的な学習戦略の検証が可能になる。</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/naoto-iwase\.github\.io\/books");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ja/olmo-3/01-dolma3-dataset.html" class="pagination-link" aria-label="Dolma 3 データセット">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Dolma 3 データセット</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ja/olmo-3/03-midtraining.html" class="pagination-link" aria-label="Midtraining: 中間訓練">
+        <span class="nav-page-text">Midtraining: 中間訓練</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 <a href="https://naoto-iwase.github.io">Naoto Iwase</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://naoto-iwase.github.io/books">Books Home</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a> <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

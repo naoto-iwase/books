@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dense-video-captioning – Naoto's Books</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ja/molmo2/02-video-grounding.html" rel="next">
+<link href="../../ja/molmo2/00-overview.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f1aadacce99040138bbb613f9330654f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-13f3cb0f996876b50f7809a2eda1f948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Naoto’s Books">
+<meta property="og:image" content="https://naoto-iwase.github.io/books/ja/molmo2/assets/myicon.png">
+<meta property="og:site_name" content="Naoto's Books">
+<meta name="twitter:title" content="Naoto’s Books">
+<meta name="twitter:image" content="https://naoto-iwase.github.io/books/ja/molmo2/assets/myicon.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Naoto’s Books</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://naoto-iwase.github.io"> <i class="bi bi-arrow-left-circle" role="img">
+</i> 
+<span class="menu-text">Naoto Iwase</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/naoto_iwase"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/naoto-iwase-993430395/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/naoto-iwase"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/molmo2/index.html">Molmo2</a></li><li class="breadcrumb-item"><a href="../../ja/molmo2/01-dense-video-captioning.html">Dense Video Captioning</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../ja/molmo2/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Molmo2</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/00-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">全体像</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/01-dense-video-captioning.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Dense Video Captioning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/02-video-grounding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Video Grounding: Pointing &amp; Tracking</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/03-multi-image-understanding.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Multi-Image Understanding</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/04-vision-language-connector.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vision-Language Connector</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/05-long-context-training.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Long-Context Training</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/06-token-weighting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Token Weighting</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/molmo2/07-packing-message-trees.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Packing &amp; Message Trees</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dense-video-captioning" id="toc-dense-video-captioning" class="nav-link active" data-scroll-target="#dense-video-captioning">Dense Video Captioning</a>
+  <ul class="collapse">
+  <li><a href="#概要" id="toc-概要" class="nav-link" data-scroll-target="#概要">概要</a></li>
+  <li><a href="#なぜ-dense-captioning-が重要か" id="toc-なぜ-dense-captioning-が重要か" class="nav-link" data-scroll-target="#なぜ-dense-captioning-が重要か">なぜ Dense Captioning が重要か</a>
+  <ul class="collapse">
+  <li><a href="#ビデオ理解の課題" id="toc-ビデオ理解の課題" class="nav-link" data-scroll-target="#ビデオ理解の課題">ビデオ理解の課題</a></li>
+  <li><a href="#密度の重要性" id="toc-密度の重要性" class="nav-link" data-scroll-target="#密度の重要性">密度の重要性</a></li>
+  </ul></li>
+  <li><a href="#既存データセットとの比較" id="toc-既存データセットとの比較" class="nav-link" data-scroll-target="#既存データセットとの比較">既存データセットとの比較</a></li>
+  <li><a href="#データ収集パイプライン" id="toc-データ収集パイプライン" class="nav-link" data-scroll-target="#データ収集パイプライン">データ収集パイプライン</a>
+  <ul class="collapse">
+  <li><a href="#ステージ-1-ビデオソーシングと選定" id="toc-ステージ-1-ビデオソーシングと選定" class="nav-link" data-scroll-target="#ステージ-1-ビデオソーシングと選定">ステージ 1: ビデオソーシングと選定</a></li>
+  <li><a href="#ステージ-2-人手アノテーション" id="toc-ステージ-2-人手アノテーション" class="nav-link" data-scroll-target="#ステージ-2-人手アノテーション">ステージ 2: 人手アノテーション</a></li>
+  <li><a href="#ステージ-3-llm-ベースの文章整形" id="toc-ステージ-3-llm-ベースの文章整形" class="nav-link" data-scroll-target="#ステージ-3-llm-ベースの文章整形">ステージ 3: LLM ベースの文章整形</a></li>
+  <li><a href="#ステージ-4-molmo-によるフレームレベル統合" id="toc-ステージ-4-molmo-によるフレームレベル統合" class="nav-link" data-scroll-target="#ステージ-4-molmo-によるフレームレベル統合">ステージ 4: Molmo によるフレームレベル統合</a></li>
+  <li><a href="#パイプライン図解" id="toc-パイプライン図解" class="nav-link" data-scroll-target="#パイプライン図解">パイプライン図解</a></li>
+  </ul></li>
+  <li><a href="#データセットの統計" id="toc-データセットの統計" class="nav-link" data-scroll-target="#データセットの統計">データセットの統計</a></li>
+  <li><a href="#学習での使用" id="toc-学習での使用" class="nav-link" data-scroll-target="#学習での使用">学習での使用</a></li>
+  <li><a href="#影響と貢献" id="toc-影響と貢献" class="nav-link" data-scroll-target="#影響と貢献">影響と貢献</a></li>
+  <li><a href="#評価-molmo2-captest" id="toc-評価-molmo2-captest" class="nav-link" data-scroll-target="#評価-molmo2-captest">評価: Molmo2-CapTest</a></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ">まとめ</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/molmo2/index.html">Molmo2</a></li><li class="breadcrumb-item"><a href="../../ja/molmo2/01-dense-video-captioning.html">Dense Video Captioning</a></li></ol></nav></header>
+
+
+
+
+
+<section id="dense-video-captioning" class="level1">
+<h1>Dense Video Captioning</h1>
+<section id="概要" class="level2">
+<h2 class="anchored" data-anchor-id="概要">概要</h2>
+<p><strong>Molmo2-Cap</strong> は、Molmo2 の事前学習に使用される超詳細（dense）なビデオキャプションデータセットです。このデータセットは、従来のビデオキャプションデータセットと比較して桁違いに詳細な記述を含み、平均 <strong>924 語/動画</strong> という驚異的な記述量を実現しています。</p>
+<p>従来の VLM が生成する短く表面的なキャプションとは異なり、Molmo2-Cap は動的イベントと細かな視覚的詳細の両方を捉えることで、モデルがビデオの時空間的理解を深める基盤を提供します。</p>
+<p><strong>データセット規模</strong>:</p>
+<ul>
+<li><strong>104k のビデオレベルキャプション</strong></li>
+<li><strong>431k のクリップレベルキャプション</strong></li>
+<li>平均 <strong>924 語/動画</strong> の超詳細記述</li>
+</ul>
+</section>
+<section id="なぜ-dense-captioning-が重要か" class="level2">
+<h2 class="anchored" data-anchor-id="なぜ-dense-captioning-が重要か">なぜ Dense Captioning が重要か</h2>
+<section id="ビデオ理解の課題" class="level3">
+<h3 class="anchored" data-anchor-id="ビデオ理解の課題">ビデオ理解の課題</h3>
+<p>ビデオキャプションは画像キャプションよりも本質的に困難です。なぜなら、アノテーターは以下の両方を記述する必要があるからです:</p>
+<ol type="1">
+<li><strong>動的イベント</strong>: 時間とともに変化する出来事、動作、状態遷移</li>
+<li><strong>細かな視覚的詳細</strong>: オブジェクトの外観、空間配置、属性の変化</li>
+</ol>
+<p>既存のビデオキャプションデータセットの多くは、表面的な記述に留まっており、ビデオグラウンディング（いつ・どこで何が起きたか）を学習するには不十分でした。Molmo2-Cap は、この gap を埋めるために設計されました。</p>
+</section>
+<section id="密度の重要性" class="level3">
+<h3 class="anchored" data-anchor-id="密度の重要性">密度の重要性</h3>
+<p>より詳細なキャプションは、モデルに以下の能力を与えます:</p>
+<ul>
+<li><strong>時空間的な理解</strong>: 「いつ」「どこで」「何が」起きたかを正確に把握</li>
+<li><strong>細粒度の視覚認識</strong>: 小さな物体、微細な動作、属性の変化を捉える</li>
+<li><strong>文脈理解</strong>: イベント間の因果関係や時間的依存性を学習</li>
+</ul>
+</section>
+</section>
+<section id="既存データセットとの比較" class="level2">
+<h2 class="anchored" data-anchor-id="既存データセットとの比較">既存データセットとの比較</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>他のビデオキャプションデータセットとの比較
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Molmo2-Cap は既存のビデオキャプションデータセットを大きく上回る記述量を実現しています:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>データセット</th>
+<th>平均語数/動画</th>
+<th>特徴</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Molmo2-Cap</strong></td>
+<td><strong>924 語</strong></td>
+<td>人手による音声記述 + Molmo 統合</td>
+</tr>
+<tr class="even">
+<td>LLaVA-Video-178K</td>
+<td>547 語</td>
+<td>GPT ベースの合成キャプション</td>
+</tr>
+<tr class="odd">
+<td>ShareGPT4-Video</td>
+<td>280 語</td>
+<td>GPT ベースの合成キャプション</td>
+</tr>
+<tr class="even">
+<td>RDCap</td>
+<td>100 語</td>
+<td>既存データセット</td>
+</tr>
+<tr class="odd">
+<td>RCap</td>
+<td>89 語</td>
+<td>既存データセット</td>
+</tr>
+<tr class="even">
+<td>Video Localized Narratives</td>
+<td>75 語</td>
+<td>人手アノテーション</td>
+</tr>
+</tbody>
+</table>
+<p>Molmo2-Cap は、LLaVA-Video の <strong>1.7 倍</strong>、ShareGPT4-Video の <strong>3.3 倍</strong>、Video Localized Narratives の <strong>12 倍</strong> 以上の記述量を持ちます。</p>
+<p><strong>重要な差異</strong>:</p>
+<ul>
+<li>Molmo2-Cap は <strong>プロプライエタリモデル（GPT など）に依存しない</strong> 完全にオープンなパイプラインで構築されている</li>
+<li><strong>人手による音声記述</strong> をベースにしており、合成データよりも自然で詳細</li>
+<li><strong>フレームレベルのキャプション統合</strong> により、低レベルの視覚的詳細も漏れなく記述</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="データ収集パイプライン" class="level2">
+<h2 class="anchored" data-anchor-id="データ収集パイプライン">データ収集パイプライン</h2>
+<p>Molmo2-Cap のデータ収集は、革新的な <strong>2 段階パイプライン</strong> を採用しています。</p>
+<section id="ステージ-1-ビデオソーシングと選定" class="level3">
+<h3 class="anchored" data-anchor-id="ステージ-1-ビデオソーシングと選定">ステージ 1: ビデオソーシングと選定</h3>
+<ol type="1">
+<li><strong>初期プール構築</strong>: 10M 以上のビデオクリップを複数の大規模ソース（YT-Temporal、YouTube など）から収集</li>
+<li><strong>情報量フィルタリング</strong>:
+<ul>
+<li>音声トラックを除去し、1 fps で均一サンプリング</li>
+<li>H.264 でエンコードし、正規化された情報量スコアを算出: <code>bits / (duration × W × H)</code></li>
+<li>平均 - 1σ 未満のビデオを除外（視覚的・時間的多様性が低いビデオを排除）</li>
+</ul></li>
+<li><strong>多様性ベースサンプリング</strong>:
+<ul>
+<li>SAM 2 でフレームをセグメント化し、視覚的複雑さを推定</li>
+<li>Molmo でフレームをキャプション化し、MetaCLIP パイプラインでキーワード抽出</li>
+<li>エントロピー最大化を目指した貪欲サンプリング（キーワード分布とセグメント数分布）</li>
+<li>最終的に約 <strong>100k のビデオ</strong> を選定（サンプリング率 1%）</li>
+</ul></li>
+</ol>
+</section>
+<section id="ステージ-2-人手アノテーション" class="level3">
+<h3 class="anchored" data-anchor-id="ステージ-2-人手アノテーション">ステージ 2: 人手アノテーション</h3>
+<section id="クリップ分割アルゴリズム" class="level4">
+<h4 class="anchored" data-anchor-id="クリップ分割アルゴリズム">クリップ分割アルゴリズム</h4>
+<p>ビデオを可変長のクリップ（10〜30 秒）に分割します。<strong>情報密度が高いクリップほど短い期間に設定</strong> することで、アノテーターの負担を均等化しながら詳細な記述を促します。</p>
+<ul>
+<li>平均 <strong>4〜5 クリップ/動画</strong> に分割</li>
+</ul>
+</section>
+<section id="音声記述の収集" class="level4">
+<h4 class="anchored" data-anchor-id="音声記述の収集">音声記述の収集</h4>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>なぜ音声記述を使うのか？
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>音声記述（Spoken Captions）は、タイピングによる記述と比較して以下の利点があります:</p>
+<ol type="1">
+<li><strong>記述速度が速い</strong>: タイピングよりも自然に詳細を語れる</li>
+<li><strong>自然な言語表現</strong>: 書き言葉よりも口語の方が流暢で豊かな記述が得られる</li>
+<li><strong>認知負荷の軽減</strong>: タイピングに気を取られず、ビデオに集中できる</li>
+</ol>
+<p>この手法は PixMo-Cap（画像キャプションデータセット）でも採用されており、高品質なキャプション生成に有効であることが実証されています。</p>
+</div>
+</div>
+<p><strong>アノテーションプロセス</strong>:</p>
+<ol type="1">
+<li><strong>クリップ記述</strong>:
+<ul>
+<li>アノテーターは短いクリップごとに音声で内容を説明（音声はミュート）</li>
+<li>画面上で起きていることを詳細に語る</li>
+<li>リアルタイム文字起こし（Whisper-1）が自動実行</li>
+<li>アノテーターは転写結果を編集し、誤認識を修正</li>
+</ul></li>
+<li><strong>ビデオ全体の要約</strong>:
+<ul>
+<li>すべてのクリップ記述が完了した後、ビデオ全体の包括的な説明を記述</li>
+</ul></li>
+<li><strong>質問ベースのプロンプト</strong>:
+<ul>
+<li>アノテーターに「動的な視覚的詳細」を記述するよう促すため、事前定義された質問セットを提示</li>
+<li>例: 「オブジェクトや出来事は時間とともにどう変化したか？」</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="ステージ-3-llm-ベースの文章整形" class="level3">
+<h3 class="anchored" data-anchor-id="ステージ-3-llm-ベースの文章整形">ステージ 3: LLM ベースの文章整形</h3>
+<p>Whisper の文字起こしは不完全な文や口語表現を含むため、<strong>テキスト専用 LLM</strong> で以下を実行:</p>
+<ul>
+<li>文の構造を整理し、一貫性を確保</li>
+<li>冗長性を削除し、読みやすさを向上</li>
+<li>元の意味を保持しながら流暢な文章に変換</li>
+</ul>
+</section>
+<section id="ステージ-4-molmo-によるフレームレベル統合" class="level3">
+<h3 class="anchored" data-anchor-id="ステージ-4-molmo-によるフレームレベル統合">ステージ 4: Molmo によるフレームレベル統合</h3>
+<p>人手記述だけでは見落としがちな <strong>低レベルの視覚的詳細</strong> を補完するため:</p>
+<ol type="1">
+<li><strong>Molmo でフレームレベルのキャプションを生成</strong>:
+<ul>
+<li>個々のフレームを Molmo（早期バージョン）でキャプション化</li>
+<li>色、テクスチャ、細かなオブジェクト属性などを記述</li>
+</ul></li>
+<li><strong>LLM でマージ</strong>:
+<ul>
+<li>クリップレベルのキャプションとフレームレベルのキャプションを統合</li>
+<li>重複を削除し、一貫性のある長文キャプションを生成</li>
+</ul></li>
+</ol>
+</section>
+<section id="パイプライン図解" class="level3">
+<h3 class="anchored" data-anchor-id="パイプライン図解">パイプライン図解</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│  Stage 1: Video Selection                                   │
+│  10M+ clips -&gt; Filter -&gt; Diversity Sampling -&gt; 100k         │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Stage 2: Human Annotation                                  │
+│  Split -&gt; Voice -&gt; Whisper -&gt; Edit                          │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Stage 3: LLM Refinement                                    │
+│  Organize -&gt; Convert to coherent text                       │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+┌─────────────────────────────────────────────────────────────┐
+│  Stage 4: Molmo Integration                                 │
+│  Molmo frame captions -&gt; LLM merge -&gt; Final caption         │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+</section>
+</section>
+<section id="データセットの統計" class="level2">
+<h2 class="anchored" data-anchor-id="データセットの統計">データセットの統計</h2>
+<p><strong>ビデオソース</strong>:</p>
+<ul>
+<li>YT-Temporal</li>
+<li>YouTube キーワード検索</li>
+<li>複数の大規模ビデオデータセット</li>
+</ul>
+<p><strong>ライセンス</strong>: Creative Commons（一部）</p>
+<p><strong>フィルタリング</strong>:</p>
+<ul>
+<li>視覚的・時間的多様性が低いビデオを除外</li>
+<li>繰り返しパターンを含む低品質キャプションをヒューリスティックルールで除去</li>
+</ul>
+</section>
+<section id="学習での使用" class="level2">
+<h2 class="anchored" data-anchor-id="学習での使用">学習での使用</h2>
+<p>Molmo2-Cap は、Molmo2 の <strong>事前学習（Pre-training）</strong> フェーズで使用されます:</p>
+<ul>
+<li><strong>長さ条件付きキャプション生成</strong>: モデルは指定された長さのキャプションを生成するよう学習</li>
+<li><strong>重み付けサンプリング</strong>: ビデオキャプションデータには固定重み 0.1 を設定（他のタスクとバランス）</li>
+</ul>
+</section>
+<section id="影響と貢献" class="level2">
+<h2 class="anchored" data-anchor-id="影響と貢献">影響と貢献</h2>
+<p>Molmo2-Cap は以下の点で重要な貢献をしています:</p>
+<ol type="1">
+<li><strong>オープンソースの基盤</strong>: プロプライエタリモデル（GPT など）に依存しない完全にオープンなパイプライン</li>
+<li><strong>ビデオグラウンディングの基礎</strong>: 超詳細な記述により、時空間的なポインティングとトラッキングを学習</li>
+<li><strong>データ品質の新基準</strong>: 平均 924 語/動画という記述量は、今後のビデオキャプションデータセットのベンチマークとなる</li>
+<li><strong>再現可能な手法</strong>: 音声記述 + LLM 整形 + Molmo 統合という明確なパイプラインは、他のプロジェクトでも再利用可能</li>
+</ol>
+</section>
+<section id="評価-molmo2-captest" class="level2">
+<h2 class="anchored" data-anchor-id="評価-molmo2-captest">評価: Molmo2-CapTest</h2>
+<p>Molmo2 のビデオキャプション能力を評価するため、<strong>Molmo2-CapTest</strong> という評価セットが構築されています:</p>
+<ul>
+<li><strong>693 の Creative Commons ライセンスビデオ</strong></li>
+<li>Molmo2-Cap と同様のプロトコルで収集されたが、<strong>手動選定された高品質アノテーター</strong> が担当</li>
+<li>各ビデオに複数のリファレンスキャプションを用意</li>
+<li><strong>F1 スコア</strong> でキャプション品質を評価</li>
+</ul>
+</section>
+<section id="まとめ" class="level2">
+<h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
+<p>Molmo2-Cap は、以下の革新的な設計により、史上最も詳細なビデオキャプションデータセットとなっています:</p>
+<ul>
+<li><strong>音声記述 + Whisper</strong>: 自然で流暢な記述を効率的に収集</li>
+<li><strong>LLM 整形</strong>: 口語表現を読みやすい文章に変換</li>
+<li><strong>Molmo 統合</strong>: 低レベルの視覚的詳細を補完</li>
+<li><strong>多様性ベースサンプリング</strong>: 視覚的・意味的に多様なビデオセットを構築</li>
+</ul>
+<p>このデータセットは、Molmo2 がビデオグラウンディング（pointing &amp; tracking）を実現する上で不可欠な基盤となっており、完全にオープンなビデオ VLM の可能性を示しています。</p>
+<hr>
+<p><strong>関連セクション</strong>:</p>
+<ul>
+<li><a href="../../ja/molmo2/02-video-grounding.html">Video Grounding: Pointing &amp; Tracking</a> - ビデオポインティング・トラッキングデータセット</li>
+<li><a href="../../ja/molmo2/03-multi-image-understanding.html">Multi-Image Understanding</a> - マルチイメージ理解データセット</li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/naoto-iwase\.github\.io\/books");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ja/molmo2/00-overview.html" class="pagination-link" aria-label="全体像">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">全体像</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ja/molmo2/02-video-grounding.html" class="pagination-link" aria-label="Video Grounding: Pointing &amp; Tracking">
+        <span class="nav-page-text">Video Grounding: Pointing &amp; Tracking</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 <a href="https://naoto-iwase.github.io">Naoto Iwase</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://naoto-iwase.github.io/books">Books Home</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a> <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

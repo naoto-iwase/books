@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dolci-dataset – Naoto's Books</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ja/olmo-3/09-delta-learning.html" rel="next">
+<link href="../../ja/olmo-3/07-data-mixing.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f1aadacce99040138bbb613f9330654f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-13f3cb0f996876b50f7809a2eda1f948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Naoto’s Books">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://naoto-iwase.github.io/books/ja/olmo-3/assets/myicon.png">
+<meta property="og:site_name" content="Naoto's Books">
+<meta name="twitter:title" content="Naoto’s Books">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://naoto-iwase.github.io/books/ja/olmo-3/assets/myicon.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Naoto’s Books</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://naoto-iwase.github.io"> <i class="bi bi-arrow-left-circle" role="img">
+</i> 
+<span class="menu-text">Naoto Iwase</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/naoto_iwase"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/naoto-iwase-993430395/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/naoto-iwase"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/olmo-3/index.html">Olmo 3</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/08-dolci-dataset.html">Post-training</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/08-dolci-dataset.html">Dolci データスイート</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../ja/olmo-3/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olmo 3</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/00-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">全体像</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Base Model Training</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/01-dolma3-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dolma 3 データセット</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/02-olmobaseeval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OlmoBaseEval: 評価スイート</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/03-midtraining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Midtraining: 中間訓練</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/04-long-context-extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Long-context Extension</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/05-deduplication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deduplication: 重複排除</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/06-olmocr-science-pdfs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">olmOCR science PDFs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/07-data-mixing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Mixing 手法</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Post-training</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/08-dolci-dataset.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Dolci データスイート</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/09-delta-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delta Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/10-olmorl-grpo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OlmoRL / GRPO</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dolci-post-training-データスイート" id="toc-dolci-post-training-データスイート" class="nav-link active" data-scroll-target="#dolci-post-training-データスイート">Dolci: Post-training データスイート</a>
+  <ul class="collapse">
+  <li><a href="#概要と目的" id="toc-概要と目的" class="nav-link" data-scroll-target="#概要と目的">概要と目的</a></li>
+  <li><a href="#sec-dolci-subsets" id="toc-sec-dolci-subsets" class="nav-link" data-scroll-target="#sec-dolci-subsets">3 つのサブセット</a></li>
+  <li><a href="#sec-dolci-think" id="toc-sec-dolci-think" class="nav-link" data-scroll-target="#sec-dolci-think">Dolci Think: 思考型モデルのデータ</a>
+  <ul class="collapse">
+  <li><a href="#dolci-think-sft-合成思考トレース" id="toc-dolci-think-sft-合成思考トレース" class="nav-link" data-scroll-target="#dolci-think-sft-合成思考トレース">Dolci Think SFT: 合成思考トレース</a></li>
+  <li><a href="#dolci-think-dpo-delta-learning-による選好データ" id="toc-dolci-think-dpo-delta-learning-による選好データ" class="nav-link" data-scroll-target="#dolci-think-dpo-delta-learning-による選好データ">Dolci Think DPO: Delta Learning による選好データ</a></li>
+  <li><a href="#dolci-think-rl-挑戦的なプロンプト" id="toc-dolci-think-rl-挑戦的なプロンプト" class="nav-link" data-scroll-target="#dolci-think-rl-挑戦的なプロンプト">Dolci Think RL: 挑戦的なプロンプト</a></li>
+  </ul></li>
+  <li><a href="#sec-dolci-instruct" id="toc-sec-dolci-instruct" class="nav-link" data-scroll-target="#sec-dolci-instruct">Dolci Instruct: 指示追従型モデルのデータ</a>
+  <ul class="collapse">
+  <li><a href="#dolci-instruct-sft-function-calling-対応データ" id="toc-dolci-instruct-sft-function-calling-対応データ" class="nav-link" data-scroll-target="#dolci-instruct-sft-function-calling-対応データ">Dolci Instruct SFT: Function-calling 対応データ</a></li>
+  <li><a href="#dolci-instruct-dpo-応答長の最適化" id="toc-dolci-instruct-dpo-応答長の最適化" class="nav-link" data-scroll-target="#dolci-instruct-dpo-応答長の最適化">Dolci Instruct DPO: 応答長の最適化</a></li>
+  <li><a href="#dolci-instruct-rl-コア能力の改善" id="toc-dolci-instruct-rl-コア能力の改善" class="nav-link" data-scroll-target="#dolci-instruct-rl-コア能力の改善">Dolci Instruct RL: コア能力の改善</a></li>
+  </ul></li>
+  <li><a href="#sec-dolci-rl-zero" id="toc-sec-dolci-rl-zero" class="nav-link" data-scroll-target="#sec-dolci-rl-zero">Dolci RL-Zero: Base から直接 RL</a>
+  <ul class="collapse">
+  <li><a href="#目的と重要性" id="toc-目的と重要性" class="nav-link" data-scroll-target="#目的と重要性">目的と重要性</a></li>
+  <li><a href="#つのドメイン" id="toc-つのドメイン" class="nav-link" data-scroll-target="#つのドメイン">4 つのドメイン</a></li>
+  <li><a href="#decontamination評価データ汚染除去" id="toc-decontamination評価データ汚染除去" class="nav-link" data-scroll-target="#decontamination評価データ汚染除去">Decontamination（評価データ汚染除去）</a></li>
+  </ul></li>
+  <li><a href="#sec-dolci-pipeline" id="toc-sec-dolci-pipeline" class="nav-link" data-scroll-target="#sec-dolci-pipeline">データキュレーションパイプライン</a>
+  <ul class="collapse">
+  <li><a href="#パイプラインの主要ステップ" id="toc-パイプラインの主要ステップ" class="nav-link" data-scroll-target="#パイプラインの主要ステップ">パイプラインの主要ステップ</a></li>
+  </ul></li>
+  <li><a href="#sec-dolci-features" id="toc-sec-dolci-features" class="nav-link" data-scroll-target="#sec-dolci-features">主要な特徴</a>
+  <ul class="collapse">
+  <li><a href="#完全オープン" id="toc-完全オープン" class="nav-link" data-scroll-target="#完全オープン">完全オープン</a></li>
+  <li><a href="#高品質" id="toc-高品質" class="nav-link" data-scroll-target="#高品質">高品質</a></li>
+  <li><a href="#多様なドメインカバレッジ" id="toc-多様なドメインカバレッジ" class="nav-link" data-scroll-target="#多様なドメインカバレッジ">多様なドメインカバレッジ</a></li>
+  <li><a href="#段階的訓練サポート" id="toc-段階的訓練サポート" class="nav-link" data-scroll-target="#段階的訓練サポート">段階的訓練サポート</a></li>
+  </ul></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ">まとめ</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/olmo-3/index.html">Olmo 3</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/08-dolci-dataset.html">Post-training</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/08-dolci-dataset.html">Dolci データスイート</a></li></ol></nav></header>
+
+
+
+
+
+<section id="dolci-post-training-データスイート" class="level1">
+<h1>Dolci: Post-training データスイート</h1>
+<p>Dolci (Dolma Instruct) は、Olmo 3 の Post-training（後訓練）に使用される包括的なデータスイートです。Think（思考型）、Instruct（指示追従型）、RL-Zero（Base から直接 RL）という 3 つの異なるモデルバリエーションをサポートするため、複数のサブセットから構成されています。</p>
+<section id="概要と目的" class="level2">
+<h2 class="anchored" data-anchor-id="概要と目的">概要と目的</h2>
+<p>Dolci は、Olmo 3 Base モデルを特定のタスクに特化させるための高品質なデータセットです。事前学習で獲得した幅広い知識を、実用的な能力（数学的推論、コーディング、指示追従、チャット）に変換することを目的としています。</p>
+<p><strong>Dolci の主な特徴</strong>:</p>
+<ul>
+<li><strong>完全オープン</strong>: すべてのデータソースとキュレーションパイプラインを公開</li>
+<li><strong>高品質</strong>: モデル生成データの厳格なフィルタリングと検証</li>
+<li><strong>多様なドメイン</strong>: Math, Code, Chat, Instruction Following, Safety をカバー</li>
+<li><strong>段階的訓練</strong>: SFT、DPO、RL の各ステージに最適化されたデータ</li>
+</ul>
+</section>
+<section id="sec-dolci-subsets" class="level2">
+<h2 class="anchored" data-anchor-id="sec-dolci-subsets">3 つのサブセット</h2>
+<p>Dolci は、3 つの主要なサブセットから構成されています。</p>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│                     Dolci Data Suite                         │
+├──────────────────────────────────────────────────────────────┤
+│  Dolci Think                                                 │
+│    └─&gt; Think SFT (1.94M samples)                             │
+│        └─&gt; Think DPO (187K pairs)                            │
+│            └─&gt; Think RL (40K prompts)                        │
+├──────────────────────────────────────────────────────────────┤
+│  Dolci Instruct                                              │
+│    └─&gt; Instruct SFT (544K samples)                           │
+│        └─&gt; Instruct DPO (105K pairs)                         │
+│            └─&gt; Instruct RL (128K prompts)                    │
+├──────────────────────────────────────────────────────────────┤
+│  Dolci RL-Zero                                               │
+│    └─&gt; Math (30K prompts)                                    │
+│    └─&gt; Code (30K prompts)                                    │
+│    └─&gt; IF (30K prompts)                                      │
+│    └─&gt; General Mix (30K prompts)                             │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+<p>各サブセットは、異なるモデルバリエーションの訓練パイプラインに対応しています。</p>
+<p><strong>Dolci Think</strong>: 段階的推論を行う思考型モデル用</p>
+<p><strong>Dolci Instruct</strong>: 簡潔で直接的な応答を生成するモデル用</p>
+<p><strong>Dolci RL-Zero</strong>: Base モデルから直接 RL で訓練するモデル用</p>
+</section>
+<section id="sec-dolci-think" class="level2">
+<h2 class="anchored" data-anchor-id="sec-dolci-think">Dolci Think: 思考型モデルのデータ</h2>
+<p>Dolci Think は、最終回答を生成する前に段階的推論を行う思考型モデル（Olmo 3 Think）を訓練するためのデータセットです。</p>
+<section id="dolci-think-sft-合成思考トレース" class="level3">
+<h3 class="anchored" data-anchor-id="dolci-think-sft-合成思考トレース">Dolci Think SFT: 合成思考トレース</h3>
+<p><strong>規模</strong>: 約 194 万サンプル</p>
+<p><strong>目的</strong>: モデルに思考トレースを生成する能力を教える</p>
+<p><strong>データソースの構成</strong>:</p>
+<div id="tbl-dolci-think-sft" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dolci-think-sft-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Dolci Think SFT のデータソース構成
+</figcaption>
+<div aria-describedby="tbl-dolci-think-sft-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>カテゴリ</th>
+<th>主なソース</th>
+<th>サンプル数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Math</td>
+<td>OpenThoughts3+, SYNTHETIC-2-Verified</td>
+<td>約 85 万</td>
+</tr>
+<tr class="even">
+<td>Code</td>
+<td>OpenThoughts3+, Dolci Think Python Algorithms</td>
+<td>約 55 万</td>
+</tr>
+<tr class="odd">
+<td>Chat &amp; IF</td>
+<td>WildChat, Persona IF, OpenAssistant</td>
+<td>約 45 万</td>
+</tr>
+<tr class="even">
+<td>Safety</td>
+<td>CoCoNot, WildGuardMix, WildJailbreak</td>
+<td>約 9 万</td>
+</tr>
+<tr class="odd">
+<td>その他</td>
+<td>Aya, TableGPT</td>
+<td>約 10 万</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>データ生成手法</strong>:</p>
+<p>Dolci Think SFT のデータは、既存のプロンプトに対して強力なモデルで思考トレースを生成することで作成されています。</p>
+<p><strong>使用モデル</strong>:</p>
+<ul>
+<li><strong>Math / Code</strong>: QwQ-32B（思考型モデル）</li>
+<li><strong>Chat / Safety</strong>: DeepSeek R1（推論特化モデル）</li>
+</ul>
+<p><strong>フィルタリング基準</strong>:</p>
+<ul>
+<li>不完全な思考トレース（途中で打ち切られたもの）を削除</li>
+<li>ドメイン固有エラー（数式の誤り、コード構文エラー）を削除</li>
+<li>過度の繰り返しや冗長性を削除</li>
+<li>OpenAI taxonomy を使用したトピックフィルタリング</li>
+</ul>
+</section>
+<section id="dolci-think-dpo-delta-learning-による選好データ" class="level3">
+<h3 class="anchored" data-anchor-id="dolci-think-dpo-delta-learning-による選好データ">Dolci Think DPO: Delta Learning による選好データ</h3>
+<p><strong>規模</strong>: 約 18.7 万ペア</p>
+<p><strong>目的</strong>: 思考トレースの品質を向上させる</p>
+<p><strong>Delta Learning の原理</strong>:</p>
+<p>DPO（Direct Preference Optimization）で重要なのは、選択（chosen）と棄却（rejected）の「品質差（デルタ）」です。Dolci Think DPO では、強いモデルと弱いモデルのペアを使用して、明確な品質差を持つ選好データを作成しています。</p>
+<p><strong>データ生成設定</strong>:</p>
+<div id="tbl-delta-learning-think" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-delta-learning-think-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Delta Learning のモデルペア
+</figcaption>
+<div aria-describedby="tbl-delta-learning-think-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>役割</th>
+<th>モデル</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Chosen (選択)</td>
+<td>Qwen 3 32B (thinking mode)</td>
+</tr>
+<tr class="even">
+<td>Rejected (棄却)</td>
+<td>Qwen 3 0.6B (thinking mode)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>主要な知見</strong>:</p>
+<p>SFT では改善しないデータでも、DPO では大幅に改善可能です。</p>
+<ul>
+<li>Qwen3-32B の出力で SFT すると性能低下</li>
+<li>同じデータを弱いモデルとペアにして DPO すると大幅改善</li>
+</ul>
+<p>これは、「絶対的な品質」よりも「相対的な品質差」が学習に重要であることを示しています。</p>
+</section>
+<section id="dolci-think-rl-挑戦的なプロンプト" class="level3">
+<h3 class="anchored" data-anchor-id="dolci-think-rl-挑戦的なプロンプト">Dolci Think RL: 挑戦的なプロンプト</h3>
+<p><strong>規模</strong>: 約 4 万プロンプト</p>
+<p><strong>目的</strong>: RLVR（Reinforcement Learning with Verifiable Rewards）による性能向上</p>
+<p><strong>特徴</strong>:</p>
+<p>Dolci Think RL は、思考型モデルが苦手とする挑戦的なプロンプトを集めたデータセットです。</p>
+<p><strong>ドメイン</strong>:</p>
+<ul>
+<li><strong>Math</strong>: AIME（アメリカ数学招待試験）レベルの高難度問題</li>
+<li><strong>Code</strong>: LiveCodeBench などの実践的プログラミング課題</li>
+<li><strong>Reasoning</strong>: ZebraLogic などの論理パズル</li>
+</ul>
+</section>
+</section>
+<section id="sec-dolci-instruct" class="level2">
+<h2 class="anchored" data-anchor-id="sec-dolci-instruct">Dolci Instruct: 指示追従型モデルのデータ</h2>
+<p>Dolci Instruct は、思考トレースを生成せずに、簡潔で直接的な応答を生成するモデル（Olmo 3 Instruct）を訓練するためのデータセットです。</p>
+<section id="dolci-instruct-sft-function-calling-対応データ" class="level3">
+<h3 class="anchored" data-anchor-id="dolci-instruct-sft-function-calling-対応データ">Dolci Instruct SFT: Function-calling 対応データ</h3>
+<p><strong>規模</strong>: 約 54.4 万サンプル</p>
+<p><strong>目的</strong>: 効率的で有用な応答を生成する能力を教える</p>
+<p><strong>主要なデータソース</strong>:</p>
+<ul>
+<li><strong>Tulu 3 SFT</strong>: 多様な指示追従タスク</li>
+<li><strong>Function-calling データ</strong>: ツール使用と API 呼び出しのサンプル</li>
+<li><strong>Flan</strong>: タスクフォーマット学習データ</li>
+</ul>
+<p><strong>Dolci Think SFT との違い</strong>:</p>
+<div id="tbl-think-vs-instruct-sft" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-think-vs-instruct-sft-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Think と Instruct の SFT データの比較
+</figcaption>
+<div aria-describedby="tbl-think-vs-instruct-sft-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>項目</th>
+<th>Dolci Think SFT</th>
+<th>Dolci Instruct SFT</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>思考トレース</td>
+<td>あり</td>
+<td>なし</td>
+</tr>
+<tr class="even">
+<td>応答スタイル</td>
+<td>段階的推論</td>
+<td>簡潔・直接的</td>
+</tr>
+<tr class="odd">
+<td>Function-calling</td>
+<td>なし</td>
+<td>あり</td>
+</tr>
+<tr class="even">
+<td>サンプル数</td>
+<td>194 万</td>
+<td>54.4 万</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="dolci-instruct-dpo-応答長の最適化" class="level3">
+<h3 class="anchored" data-anchor-id="dolci-instruct-dpo-応答長の最適化">Dolci Instruct DPO: 応答長の最適化</h3>
+<p><strong>規模</strong>: 約 10.5 万ペア</p>
+<p><strong>目的</strong>: 簡潔性とユーザビリティの向上</p>
+<p><strong>主要な改善点</strong>:</p>
+<p><strong>Multi-turn preferences（複数ターン選好データ）</strong>:</p>
+<p>合成会話を生成し、複数ターンにわたる一貫した応答を学習します。</p>
+<p><strong>Length control（応答長制御）</strong>:</p>
+<p>Chosen と Rejected の長さ差を 100 トークン以下に制限することで、冗長性を抑えています。</p>
+<ul>
+<li>モデルが単に「長い応答」を学習するのを防ぐ</li>
+<li>ユーザビリティを重視した簡潔な応答を促進</li>
+</ul>
+</section>
+<section id="dolci-instruct-rl-コア能力の改善" class="level3">
+<h3 class="anchored" data-anchor-id="dolci-instruct-rl-コア能力の改善">Dolci Instruct RL: コア能力の改善</h3>
+<p><strong>規模</strong>: 約 12.8 万プロンプト</p>
+<p><strong>目的</strong>: RLVR による核心能力のさらなる向上</p>
+<p><strong>ドメイン分布</strong>:</p>
+<ul>
+<li><strong>Instruction Following</strong>: 複雑な指示の正確な追従</li>
+<li><strong>Chat</strong>: 多様な会話シナリオへの対応</li>
+<li><strong>Function-calling</strong>: ツール使用の精度向上</li>
+<li><strong>Knowledge Recall</strong>: 知識の正確な想起</li>
+</ul>
+</section>
+</section>
+<section id="sec-dolci-rl-zero" class="level2">
+<h2 class="anchored" data-anchor-id="sec-dolci-rl-zero">Dolci RL-Zero: Base から直接 RL</h2>
+<p>Dolci RL-Zero は、Base モデルから SFT/DPO を経由せずに、直接 RL で訓練するための特別なデータセットです。</p>
+<section id="目的と重要性" class="level3">
+<h3 class="anchored" data-anchor-id="目的と重要性">目的と重要性</h3>
+<p><strong>研究的価値</strong>:</p>
+<ul>
+<li>事前学習データが RL パフォーマンスに与える影響を研究可能</li>
+<li>完全にオープンな RL ベンチマークを提供</li>
+</ul>
+<p><strong>既存の課題</strong>:</p>
+<p>従来のオープンウェイトモデル（Llama 3、Qwen 2.5 など）は事前学習データを公開していないため、RL 研究が制限されていました。</p>
+<p>Dolci RL-Zero により、データリークの影響を排除した明確なベンチマークが可能になります。</p>
+</section>
+<section id="つのドメイン" class="level3">
+<h3 class="anchored" data-anchor-id="つのドメイン">4 つのドメイン</h3>
+<p>Dolci RL-Zero は、4 つの異なるドメインで構成されています。</p>
+<p><strong>Math（数学）</strong>:</p>
+<ul>
+<li><strong>規模</strong>: 3 万プロンプト</li>
+<li><strong>タスク</strong>: GSM8K、MATH などの数学的推論問題</li>
+<li><strong>検証方法</strong>: SymPy による数式比較</li>
+</ul>
+<p><strong>Code（コーディング）</strong>:</p>
+<ul>
+<li><strong>規模</strong>: 3 万プロンプト</li>
+<li><strong>タスク</strong>: HumanEvalPlus、LiveCodeBench などのプログラミング課題</li>
+<li><strong>検証方法</strong>: テストケースの実行と検証</li>
+</ul>
+<p><strong>IF（Instruction Following）</strong>:</p>
+<ul>
+<li><strong>規模</strong>: 3 万プロンプト</li>
+<li><strong>タスク</strong>: IFEval、IFBench などの精密な指示追従</li>
+<li><strong>検証方法</strong>: 制約チェック関数による検証</li>
+</ul>
+<p><strong>General Mix（一般混合）</strong>:</p>
+<ul>
+<li><strong>規模</strong>: 3 万プロンプト</li>
+<li><strong>タスク</strong>: 上記 3 つのドメインと Chat の混合</li>
+<li><strong>検証方法</strong>: ドメインに応じた検証方法</li>
+</ul>
+</section>
+<section id="decontamination評価データ汚染除去" class="level3">
+<h3 class="anchored" data-anchor-id="decontamination評価データ汚染除去">Decontamination（評価データ汚染除去）</h3>
+<p>Dolci RL-Zero の全データは、評価ベンチマークとの重複を排除するため、厳格な Decontamination 処理が施されています。</p>
+<p><strong>手法</strong>: decon パッケージによる 2 フェーズ処理</p>
+<ol type="1">
+<li><strong>検出フェーズ</strong>: 8-gram マッチングで重複を検出（閾値 50%）</li>
+<li><strong>クラスタ拡張フェーズ</strong>: 類似サンプルのクラスタ全体を除去</li>
+</ol>
+<p>これにより、RL 訓練データとベンチマークデータの完全な分離を保証しています。</p>
+</section>
+</section>
+<section id="sec-dolci-pipeline" class="level2">
+<h2 class="anchored" data-anchor-id="sec-dolci-pipeline">データキュレーションパイプライン</h2>
+<p>Dolci のデータキュレーションは、以下のパイプラインで実施されます。</p>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│              Dolci Data Curation Pipeline                    │
+├──────────────────────────────────────────────────────────────┤
+│  Step 1: Source Selection                                    │
+│    └─&gt; Public datasets (OpenThoughts, WildChat, etc.)        │
+│        └─&gt; Model generation (QwQ-32B, DeepSeek R1)           │
+├──────────────────────────────────────────────────────────────┤
+│  Step 2: Heuristic Filtering                                 │
+│    └─&gt; Remove incomplete traces                              │
+│        └─&gt; Remove domain-specific errors                     │
+│            └─&gt; Remove excessive repetition                   │
+├──────────────────────────────────────────────────────────────┤
+│  Step 3: Topic Filtering                                     │
+│    └─&gt; OpenAI taxonomy classification                        │
+│        └─&gt; Remove off-topic samples                          │
+├──────────────────────────────────────────────────────────────┤
+│  Step 4: Difficulty Filtering                                │
+│    └─&gt; Select challenging prompts for RL                     │
+│        └─&gt; Balance difficulty distribution                   │
+├──────────────────────────────────────────────────────────────┤
+│  Step 5: Data Mixing                                         │
+│    └─&gt; Balance domain distribution                           │
+│        └─&gt; Optimize mix for target tasks                     │
+├──────────────────────────────────────────────────────────────┤
+│  Step 6: Decontamination                                     │
+│    └─&gt; 8-gram matching (50% threshold)                       │
+│        └─&gt; Cluster expansion                                 │
+│            └─&gt; Final Dolci datasets                          │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+<section id="パイプラインの主要ステップ" class="level3">
+<h3 class="anchored" data-anchor-id="パイプラインの主要ステップ">パイプラインの主要ステップ</h3>
+<p><strong>Step 1: Source Selection（ソース選択）</strong>:</p>
+<p>公開データセットと強力なモデルによる生成データを収集します。</p>
+<p><strong>Step 2: Heuristic Filtering（ヒューリスティックフィルタリング）</strong>:</p>
+<p>明らかな低品質データを除去します。</p>
+<ul>
+<li>不完全な思考トレース</li>
+<li>ドメイン固有エラー（数式の誤り、コード構文エラー）</li>
+<li>過度の繰り返し</li>
+</ul>
+<p><strong>Step 3: Topic Filtering（トピックフィルタリング）</strong>:</p>
+<p>OpenAI taxonomy を使用して、トピック外のサンプルを除去します。</p>
+<p><strong>Step 4: Difficulty Filtering（難易度フィルタリング）</strong>:</p>
+<p>RL 用に挑戦的なプロンプトを選択し、難易度分布をバランスします。</p>
+<p><strong>Step 5: Data Mixing（データミキシング）</strong>:</p>
+<p>ドメイン分布をバランスし、ターゲットタスクに最適化されたミックスを作成します。</p>
+<p><strong>Step 6: Decontamination（評価データ汚染除去）</strong>:</p>
+<p>評価ベンチマークとの重複を完全に排除します。</p>
+</section>
+</section>
+<section id="sec-dolci-features" class="level2">
+<h2 class="anchored" data-anchor-id="sec-dolci-features">主要な特徴</h2>
+<p>Dolci データスイートは、以下の特徴を持ちます。</p>
+<section id="完全オープン" class="level3">
+<h3 class="anchored" data-anchor-id="完全オープン">完全オープン</h3>
+<p>すべてのデータソース、キュレーションパイプライン、処理コードを公開しています。</p>
+<p><strong>公開内容</strong>:</p>
+<ul>
+<li>元のデータソースへの参照</li>
+<li>キュレーションスクリプト</li>
+<li>フィルタリング基準</li>
+<li>データミキシング比率</li>
+</ul>
+</section>
+<section id="高品質" class="level3">
+<h3 class="anchored" data-anchor-id="高品質">高品質</h3>
+<p>強力なモデルによる生成と厳格なフィルタリングにより、高品質を実現しています。</p>
+<p><strong>品質保証の仕組み</strong>:</p>
+<ul>
+<li>モデル生成: QwQ-32B、DeepSeek R1 などの最先端モデルを使用</li>
+<li>複数段階フィルタリング: ヒューリスティック、トピック、難易度</li>
+<li>Decontamination: 評価データとの完全な分離</li>
+</ul>
+</section>
+<section id="多様なドメインカバレッジ" class="level3">
+<h3 class="anchored" data-anchor-id="多様なドメインカバレッジ">多様なドメインカバレッジ</h3>
+<p>Math、Code、Chat、Instruction Following、Safety など、幅広いドメインをカバーしています。</p>
+<p><strong>ドメイン分布</strong>:</p>
+<div id="tbl-dolci-domain-coverage" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dolci-domain-coverage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Dolci のドメインカバレッジ
+</figcaption>
+<div aria-describedby="tbl-dolci-domain-coverage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>ドメイン</th>
+<th>Think SFT</th>
+<th>Instruct SFT</th>
+<th>RL-Zero</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Math</td>
+<td>85 万</td>
+<td>含む</td>
+<td>3 万</td>
+</tr>
+<tr class="even">
+<td>Code</td>
+<td>55 万</td>
+<td>含む</td>
+<td>3 万</td>
+</tr>
+<tr class="odd">
+<td>Chat</td>
+<td>45 万</td>
+<td>大部分</td>
+<td>含む</td>
+</tr>
+<tr class="even">
+<td>IF</td>
+<td>45 万</td>
+<td>大部分</td>
+<td>3 万</td>
+</tr>
+<tr class="odd">
+<td>Safety</td>
+<td>9 万</td>
+<td>含む</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="段階的訓練サポート" class="level3">
+<h3 class="anchored" data-anchor-id="段階的訓練サポート">段階的訓練サポート</h3>
+<p>SFT、DPO、RL の各ステージに最適化されたデータを提供しています。</p>
+<p><strong>訓練パイプライン</strong>:</p>
+<pre><code>Base Model
+    ↓
+  SFT (Dolci Think/Instruct SFT)
+    ↓
+  DPO (Dolci Think/Instruct DPO)
+    ↓
+  RL (Dolci Think/Instruct RL)
+    ↓
+Final Model</code></pre>
+<p>各ステージでデータの種類が異なります。</p>
+<ul>
+<li><strong>SFT</strong>: 高品質な入力-出力ペア</li>
+<li><strong>DPO</strong>: 品質差のある選好ペア</li>
+<li><strong>RL</strong>: 検証可能な報酬を持つプロンプト</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Delta Learning の詳細
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Delta Learning は、Dolci DPO データセットの作成に使用される重要な手法です。</p>
+<p><strong>核心的洞察</strong>:</p>
+<p>DPO で重要なのは、選択（chosen）と棄却（rejected）の「品質差（デルタ）」です。絶対的な品質よりも、相対的な品質差が学習に重要です。</p>
+<p><strong>実験結果</strong>:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>設定</th>
+<th>MATH スコア</th>
+<th>変化</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Base モデル</td>
+<td>45.2</td>
+<td>-</td>
+</tr>
+<tr class="even">
+<td>Qwen3-32B で SFT</td>
+<td>43.8</td>
+<td>-1.4</td>
+</tr>
+<tr class="odd">
+<td>Qwen3-32B (chosen) vs Qwen3-0.6B (rejected) で DPO</td>
+<td>52.3</td>
+<td>+7.1</td>
+</tr>
+</tbody>
+</table>
+<p>同じ Qwen3-32B の出力でも、SFT では性能が低下するのに対し、弱いモデルとペアにして DPO すると大幅に改善します。</p>
+<p><strong>応用</strong>:</p>
+<p>この知見は、Dolci Think DPO と Dolci Instruct DPO の両方で活用されています。</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="まとめ" class="level2">
+<h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
+<p>Dolci は、Olmo 3 の Post-training に使用される包括的なデータスイートです。Think、Instruct、RL-Zero という 3 つの異なるモデルバリエーションをサポートし、SFT、DPO、RL の各訓練ステージに最適化されたデータを提供しています。</p>
+<p><strong>主な貢献</strong>:</p>
+<ul>
+<li><strong>完全オープン</strong>: すべてのデータソースとパイプラインを公開</li>
+<li><strong>高品質</strong>: 強力なモデルによる生成と厳格なフィルタリング</li>
+<li><strong>多様性</strong>: Math, Code, Chat, IF, Safety をカバー</li>
+<li><strong>段階的訓練</strong>: SFT、DPO、RL に最適化</li>
+<li><strong>研究価値</strong>: RL-Zero により完全オープンな RL ベンチマークを提供</li>
+</ul>
+<p>Dolci は、完全にオープンな Post-training データセットとして、研究者が再現性の高い研究を行い、任意のステージから介入・カスタマイズできるようにしています。</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/naoto-iwase\.github\.io\/books");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ja/olmo-3/07-data-mixing.html" class="pagination-link" aria-label="Data Mixing 手法">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Data Mixing 手法</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ja/olmo-3/09-delta-learning.html" class="pagination-link" aria-label="Delta Learning">
+        <span class="nav-page-text">Delta Learning</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 <a href="https://naoto-iwase.github.io">Naoto Iwase</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://naoto-iwase.github.io/books">Books Home</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a> <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

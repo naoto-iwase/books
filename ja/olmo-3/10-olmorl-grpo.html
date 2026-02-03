@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>olmorl-grpo – Naoto's Books</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ja/olmo-3/09-delta-learning.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f1aadacce99040138bbb613f9330654f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-13f3cb0f996876b50f7809a2eda1f948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Naoto’s Books">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://naoto-iwase.github.io/books/ja/olmo-3/assets/myicon.png">
+<meta property="og:site_name" content="Naoto's Books">
+<meta name="twitter:title" content="Naoto’s Books">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://naoto-iwase.github.io/books/ja/olmo-3/assets/myicon.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Naoto’s Books</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://naoto-iwase.github.io"> <i class="bi bi-arrow-left-circle" role="img">
+</i> 
+<span class="menu-text">Naoto Iwase</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/naoto_iwase"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/naoto-iwase-993430395/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/naoto-iwase"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/olmo-3/index.html">Olmo 3</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/08-dolci-dataset.html">Post-training</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/10-olmorl-grpo.html">OlmoRL / GRPO</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../ja/olmo-3/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Olmo 3</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/00-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">全体像</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Base Model Training</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/01-dolma3-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dolma 3 データセット</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/02-olmobaseeval.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OlmoBaseEval: 評価スイート</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/03-midtraining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Midtraining: 中間訓練</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/04-long-context-extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Long-context Extension</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/05-deduplication.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Deduplication: 重複排除</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/06-olmocr-science-pdfs.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">olmOCR science PDFs</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/07-data-mixing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Mixing 手法</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Post-training</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/08-dolci-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dolci データスイート</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/09-delta-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Delta Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/olmo-3/10-olmorl-grpo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">OlmoRL / GRPO</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#olmorl-grpo-効率的な強化学習" id="toc-olmorl-grpo-効率的な強化学習" class="nav-link active" data-scroll-target="#olmorl-grpo-効率的な強化学習">OlmoRL / GRPO: 効率的な強化学習</a>
+  <ul class="collapse">
+  <li><a href="#olmorl-の概要" id="toc-olmorl-の概要" class="nav-link" data-scroll-target="#olmorl-の概要">OlmoRL の概要</a></li>
+  <li><a href="#olmorl-アルゴリズムの詳細" id="toc-olmorl-アルゴリズムの詳細" class="nav-link" data-scroll-target="#olmorl-アルゴリズムの詳細">OlmoRL アルゴリズムの詳細</a>
+  <ul class="collapse">
+  <li><a href="#vanilla-grpo-からの改善点" id="toc-vanilla-grpo-からの改善点" class="nav-link" data-scroll-target="#vanilla-grpo-からの改善点">Vanilla GRPO からの改善点</a></li>
+  <li><a href="#olmorl-の目的関数" id="toc-olmorl-の目的関数" class="nav-link" data-scroll-target="#olmorl-の目的関数">OlmoRL の目的関数</a></li>
+  <li><a href="#verifiers検証器" id="toc-verifiers検証器" class="nav-link" data-scroll-target="#verifiers検証器">Verifiers（検証器）</a></li>
+  </ul></li>
+  <li><a href="#dolci-think-rl-データセット" id="toc-dolci-think-rl-データセット" class="nav-link" data-scroll-target="#dolci-think-rl-データセット">Dolci-Think-RL データセット</a>
+  <ul class="collapse">
+  <li><a href="#データセット構成" id="toc-データセット構成" class="nav-link" data-scroll-target="#データセット構成">データセット構成</a></li>
+  <li><a href="#データ構築プロセス" id="toc-データ構築プロセス" class="nav-link" data-scroll-target="#データ構築プロセス">データ構築プロセス</a></li>
+  </ul></li>
+  <li><a href="#olmorl-インフラストラクチャ" id="toc-olmorl-インフラストラクチャ" class="nav-link" data-scroll-target="#olmorl-インフラストラクチャ">OlmoRL インフラストラクチャ</a>
+  <ul class="collapse">
+  <li><a href="#計算リソース" id="toc-計算リソース" class="nav-link" data-scroll-target="#計算リソース">計算リソース</a></li>
+  <li><a href="#主要な技術革新" id="toc-主要な技術革新" class="nav-link" data-scroll-target="#主要な技術革新">主要な技術革新</a></li>
+  <li><a href="#インフラ改善の効果" id="toc-インフラ改善の効果" class="nav-link" data-scroll-target="#インフラ改善の効果">インフラ改善の効果</a></li>
+  </ul></li>
+  <li><a href="#olmo-3.1-think-32b-の拡張訓練" id="toc-olmo-3.1-think-32b-の拡張訓練" class="nav-link" data-scroll-target="#olmo-3.1-think-32b-の拡張訓練">Olmo 3.1 Think 32B の拡張訓練</a></li>
+  <li><a href="#主要な発見" id="toc-主要な発見" class="nav-link" data-scroll-target="#主要な発見">主要な発見</a>
+  <ul class="collapse">
+  <li><a href="#delta-learning-が-rlvr-のより強力な初期化を提供" id="toc-delta-learning-が-rlvr-のより強力な初期化を提供" class="nav-link" data-scroll-target="#delta-learning-が-rlvr-のより強力な初期化を提供">Delta Learning が RLVR のより強力な初期化を提供</a></li>
+  <li><a href="#dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点" id="toc-dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点" class="nav-link" data-scroll-target="#dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点">DPO と SFT の両方が RL から恩恵を受けるが、DPO がより良い開始点</a></li>
+  <li><a href="#すべてのドメインで報酬が着実に増加" id="toc-すべてのドメインで報酬が着実に増加" class="nav-link" data-scroll-target="#すべてのドメインで報酬が着実に増加">すべてのドメインで報酬が着実に増加</a></li>
+  </ul></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ">まとめ</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/olmo-3/index.html">Olmo 3</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/08-dolci-dataset.html">Post-training</a></li><li class="breadcrumb-item"><a href="../../ja/olmo-3/10-olmorl-grpo.html">OlmoRL / GRPO</a></li></ol></nav></header>
+
+
+
+
+
+<section id="olmorl-grpo-効率的な強化学習" class="level1">
+<h1>OlmoRL / GRPO: 効率的な強化学習</h1>
+<p>OlmoRL は、思考型モデル（reasoning model）の強化学習訓練を効率化するために開発されたフレームワークです。Group Relative Policy Optimization（GRPO）をベースとし、Reinforcement Learning with Verifiable Rewards（RLVR）の手法を採用しています。</p>
+<p>Post-training の第3段階として、数学、コーディング、指示追従、一般的なチャットの複数ドメインにわたり、検証可能な報酬と LM-judge 報酬を組み合わせた強化学習を実施します。</p>
+<section id="olmorl-の概要" class="level2">
+<h2 class="anchored" data-anchor-id="olmorl-の概要">OlmoRL の概要</h2>
+<p>OlmoRL は、長い推論トレースを伴う強化学習の課題に対処するため、アルゴリズムとエンジニアリングインフラを密接に統合したシステムです。従来の数学とコードに限定されていた RLVR を、より幅広い検証可能なタスクへと拡張しています。</p>
+<p><strong>主な特徴</strong>:</p>
+<ul>
+<li><strong>アルゴリズムの改善</strong>: GRPO をベースに、DAPO や Dr GRPO などの最新の改善を統合</li>
+<li><strong>大規模データセット</strong>: Dolci-Think-RL（約 100K プロンプト、4 ドメイン）</li>
+<li><strong>効率的なインフラ</strong>: 長いシーケンス（最大 32K トークン）を効率的に処理する分散訓練システム</li>
+<li><strong>4倍の高速化</strong>: OLMo 2 の RL インフラと比較して約 4 倍の高速化を達成</li>
+</ul>
+</section>
+<section id="olmorl-アルゴリズムの詳細" class="level2">
+<h2 class="anchored" data-anchor-id="olmorl-アルゴリズムの詳細">OlmoRL アルゴリズムの詳細</h2>
+<p>OlmoRL の強化学習段階は、GRPO（Shao et al., 2024）をベースに構築され、DAPO（Yu et al., 2025）や Dr GRPO（Liu et al., 2025b）などの最新のアルゴリズム改善を統合しています。</p>
+<section id="vanilla-grpo-からの改善点" class="level3">
+<h3 class="anchored" data-anchor-id="vanilla-grpo-からの改善点">Vanilla GRPO からの改善点</h3>
+<p>OlmoRL は、Vanilla GRPO に対して以下の改善を実施しています：</p>
+<p><strong>1. Zero gradient signal filtering</strong>:</p>
+<ul>
+<li>報酬がすべて同一のグループ（advantage の標準偏差がゼロ）を除外</li>
+<li>ゼロ勾配のサンプルでの訓練を回避（DAPO と同様）</li>
+</ul>
+<p><strong>2. Active sampling</strong>:</p>
+<ul>
+<li>Zero gradient filtering にもかかわらず、一貫したバッチサイズを維持</li>
+<li>動的サンプリングの改良版を実装（詳細は §4.4.3）</li>
+</ul>
+<p><strong>3. Token-level loss</strong>:</p>
+<ul>
+<li>サンプルごとではなく、バッチ全体のトークン数で損失を正規化</li>
+<li>長さバイアスを回避</li>
+</ul>
+<p><strong>4. No KL loss</strong>:</p>
+<ul>
+<li>KL 損失を削除（GLM-4.5、DAPO、Dr GRPO などと同様の実践）</li>
+<li>より制限の少ないポリシー更新を可能にし、過最適化や訓練の不安定化を引き起こさない</li>
+</ul>
+<p><strong>5. Clip higher</strong>:</p>
+<ul>
+<li>上限クリッピング項を下限よりわずかに高く設定</li>
+<li>トークンに対するより大きな更新を可能にする（Yu et al., 2025）</li>
+</ul>
+<p><strong>6. Truncated importance sampling</strong>:</p>
+<ul>
+<li>推論エンジンと訓練エンジン間の対数確率の差を調整</li>
+<li>切り詰められた重要度サンプリング比を損失に掛ける（Yao et al., 2025）</li>
+</ul>
+<p><strong>7. No standard deviation normalization</strong>:</p>
+<ul>
+<li>Advantage 計算時に標準偏差で正規化しない（Liu et al., 2025b）</li>
+<li>難易度バイアスを除去（報酬の標準偏差が低い問題の advantage が過度に増加するのを防止）</li>
+</ul>
+</section>
+<section id="olmorl-の目的関数" class="level3">
+<h3 class="anchored" data-anchor-id="olmorl-の目的関数">OlmoRL の目的関数</h3>
+<p>最終的な目的関数は、token-level loss、truncated importance sampling、clip-higher、および advantage 計算における標準偏差正規化なしを含みます：</p>
+<p><span class="math display">\[
+J(\theta) = \frac{1}{\sum_{i=1}^{G} |y_i|} \sum_{i=1}^{G} \sum_{t=1}^{|y_i|} \min\left(\frac{\pi(y_{i,t} | x, y_{i,&lt;t}; \theta_{\text{old}})}{\pi_{\text{vllm}}(y_{i,t} | x, y_{i,&lt;t}; \theta_{\text{old}})}, \rho\right) \times \min(r_{i,t} A_{i,t}, \text{clip}(r_{i,t}, 1 - \varepsilon_{\text{low}}, 1 + \varepsilon_{\text{high}}) A_{i,t})
+\]</span></p>
+<p>ここで：</p>
+<ul>
+<li><span class="math inline">\(r_{i,t} = \frac{\pi(y_{i,t}|x,y_{i,&lt;t};\theta)}{\pi(y_{i,t}|x,y_{i,&lt;t};\theta_{\text{old}})}\)</span></li>
+<li><span class="math inline">\(\varepsilon_{\text{low}}\)</span> と <span class="math inline">\(\varepsilon_{\text{high}}\)</span> はクリッピングハイパーパラメータ</li>
+<li><span class="math inline">\(\rho\)</span> は truncated importance sampling の上限値</li>
+<li>Advantage <span class="math inline">\(A_{i,t}\)</span> は、グループ <span class="math inline">\(G\)</span> 内での相対報酬に基づいて計算：</li>
+</ul>
+<p><span class="math display">\[
+A_{i,t} = r(x, y_i) - \text{mean}(\{r(x, y_i)\}_{i=1}^{G})
+\]</span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>GRPO と PPO の比較
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>GRPO は PPO の変種であり、主な違いは報酬の正規化方法にあります。</p>
+<p><strong>PPO</strong>:</p>
+<ul>
+<li>報酬を全データセットまたはバッチ全体で正規化</li>
+<li>グローバルなベースラインを使用</li>
+</ul>
+<p><strong>GRPO</strong>:</p>
+<ul>
+<li>同じプロンプトから生成された応答グループ内で報酬を正規化</li>
+<li>グループベースの相対的な品質評価により、学習の安定性が向上</li>
+<li>思考型モデルのように出力長が大きく異なる場合に特に有効</li>
+</ul>
+<p><strong>OlmoRL の改善</strong>:</p>
+<ul>
+<li>Vanilla GRPO に対して 7 つの主要な改善を実施</li>
+<li>Zero gradient filtering と active sampling により、訓練の効率と安定性を大幅に向上</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="verifiers検証器" class="level3">
+<h3 class="anchored" data-anchor-id="verifiers検証器">Verifiers（検証器）</h3>
+<p>OlmoRL は、OLMo 2 の数学ドメインを超えて、一般的なドメインへと検証可能な報酬を拡張しています。各ドメインに対して異なるカスタム検証器を使用します：</p>
+<p><strong>Math（数学）</strong>:</p>
+<ul>
+<li>ルールベースの検証器</li>
+<li>基本的な正規化を実行し、SymPy を使用して参照回答と比較</li>
+<li>参照回答と同じであれば 1、そうでなければ 0 を返す</li>
+</ul>
+<p><strong>Code（コーディング）</strong>:</p>
+<ul>
+<li>テストケースベースの検証器</li>
+<li>応答に対して一連のテストケースを実行</li>
+<li><ol type="a">
+<li>通過したテストケースの割合を報酬とする、または (b) すべてのテストケースを通過した場合に 1、そうでなければ 0 を返す</li>
+</ol></li>
+</ul>
+<p><strong>Instruction-following（指示追従）</strong>:</p>
+<ul>
+<li>プロンプトからの一連の制約への準拠をチェックする関数セットを通して応答を渡す</li>
+<li>すべての制約が満たされている場合に 1、そうでなければ 0 を返す</li>
+</ul>
+<p><strong>Chat—reference（参照付きチャット）</strong>:</p>
+<ul>
+<li>ground-truth 応答がある場合、LM judge を使用してモデルの応答を参照回答と比較</li>
+<li>応答の品質に基づいて [0, 1] のスコアを付与</li>
+</ul>
+<p><strong>Chat—open-ended（オープンエンドチャット）</strong>:</p>
+<ul>
+<li>参照回答なしで、LM judge を使用して応答の品質に基づいて [0, 1] のスコアを付与</li>
+</ul>
+</section>
+</section>
+<section id="dolci-think-rl-データセット" class="level2">
+<h2 class="anchored" data-anchor-id="dolci-think-rl-データセット">Dolci-Think-RL データセット</h2>
+<p>Dolci-Think-RL は、4 つのドメイン（数学、コーディング、指示追従、一般的なチャット）にわたる約 100K のサンプルからなる大規模で多様なデータセットです。多様な推論タスクでの堅牢な RL を支援しながら、一般的な有用性を維持します。</p>
+<section id="データセット構成" class="level3">
+<h3 class="anchored" data-anchor-id="データセット構成">データセット構成</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 32%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>カテゴリ</th>
+<th>データセット</th>
+<th>Think RL 用プロンプト数</th>
+<th>Instruct RL 用プロンプト数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Precise IF</strong></td>
+<td>IF-RLVR</td>
+<td>30,186</td>
+<td>38,000</td>
+</tr>
+<tr class="even">
+<td><strong>Math</strong></td>
+<td>Open-Reasoner-Zero</td>
+<td>3,000</td>
+<td>14,000</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>DAPO-Math</td>
+<td>2,584</td>
+<td>7,000</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>AceReason-Math</td>
+<td>6,602</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Polaris-Dataset</td>
+<td>-</td>
+<td>14,000</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>KlearReasoner-MathSub</td>
+<td>3,000</td>
+<td>9,000</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>OMEGA-train</td>
+<td>15,000</td>
+<td>20,000</td>
+</tr>
+<tr class="even">
+<td><strong>Coding</strong></td>
+<td>AceCoder</td>
+<td>9,767</td>
+<td>20,000</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>KlearReasoner-Code</td>
+<td>8,040</td>
+<td>-</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Nemotron Post-training Code</td>
+<td>2,303</td>
+<td>-</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>SYNTHETIC-2</td>
+<td>3,000</td>
+<td>-</td>
+</tr>
+<tr class="even">
+<td><strong>General Chat</strong></td>
+<td>Tulu 3 SFT</td>
+<td>7,129</td>
+<td>18,955</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Wildchat-4.8M</td>
+<td>7,129</td>
+<td>18,761</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Multi-Subject RLVR</td>
+<td>7,129</td>
+<td>12,234</td>
+</tr>
+<tr class="odd">
+<td><strong>合計</strong></td>
+<td></td>
+<td><strong>104,869</strong></td>
+<td><strong>171,950</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="データ構築プロセス" class="level3">
+<h3 class="anchored" data-anchor-id="データ構築プロセス">データ構築プロセス</h3>
+<p><strong>Step 1: プロンプトの調達</strong>:</p>
+<p>各ドメインから高品質なプロンプトを収集し、キュレーションします。</p>
+<ul>
+<li><strong>Math</strong>: Open-Reasoner-Zero、DAPO-Math、AceReason-Math、KlearReasoner-MathSub、OMEGA など</li>
+<li><strong>Coding</strong>: AceCoder、Klear-Reasoner Code、Nemotron Post-training Code、SYNTHETIC-2 など</li>
+<li><strong>Instruction-following</strong>: IF-RLVR（最大 5 つの制約、IFEval と IFBench-Train からサンプリング）</li>
+<li><strong>General chat</strong>: Tülu 3 SFT、WildChat-4.8M、Multi-subject-RLVR</li>
+</ul>
+<p><strong>Step 2: オフライン難易度フィルタリング</strong>:</p>
+<ul>
+<li>モデルの初期チェックポイントから各プロンプトに対して 8 つのロールアウトを生成</li>
+<li>モデルが容易に解決するサンプル（pass rate &gt; 62.5%）を除外</li>
+<li>温度 1.0、top-p 1.0 でサンプリング（RL 訓練時と一致）</li>
+</ul>
+<p><strong>Step 3: データミキシング</strong>:</p>
+<ul>
+<li>ドメイン固有の実験を実施し、最初の 500-1000 ステップで下流評価のトレンドを観察</li>
+<li>高品質なデータセットをアップウェイト</li>
+<li>各ドメインでほぼ同等のデータ量を使用（数学と指示追従にわずかに重点）</li>
+<li>OMEGA から特定のサブタスクをダウンサンプル</li>
+</ul>
+</section>
+</section>
+<section id="olmorl-インフラストラクチャ" class="level2">
+<h2 class="anchored" data-anchor-id="olmorl-インフラストラクチャ">OlmoRL インフラストラクチャ</h2>
+<p>OlmoRL は、長いシーケンスとより高速な全体的スループットを処理するために、強化学習インフラストラクチャに大幅な改善を加えました。</p>
+<section id="計算リソース" class="level3">
+<h3 class="anchored" data-anchor-id="計算リソース">計算リソース</h3>
+<p>RL での主要な技術的課題は、推論（ロールアウト）の管理です。最終モデルでは、最大 32K トークンの長さのロールアウトを生成し、平均 10K トークン以上になります。</p>
+<p><strong>リソース配分</strong>（32B モデルの場合）:</p>
+<ul>
+<li><strong>訓練</strong>: 8 H100 ノード</li>
+<li><strong>推論</strong>: 20 ノード</li>
+<li><strong>GPU 利用率</strong>: 推論が訓練の約 5 倍の計算量を使用</li>
+</ul>
+<p>自己回帰推論のコストが高いため、学習器は時間の 75% をデータ待ちに費やします。</p>
+</section>
+<section id="主要な技術革新" class="level3">
+<h3 class="anchored" data-anchor-id="主要な技術革新">主要な技術革新</h3>
+<pre><code>+------------------------------------------------------------------+
+|               OlmoRL Infrastructure Components                   |
++------------------------------------------------------------------+
+|                                                                  |
+|  1. Fully Asynchronous Training                                 |
+|     - Centralized learner across multiple nodes (DeepSpeed)     |
+|     - Large pool of actors (independent vLLM instances)         |
+|     - Prompts queue &amp; Results queue                             |
+|                                                                  |
+|  2. Continuous Batching                                         |
+|     - Remove compute waste for long generations                 |
+|     - Constantly enqueue new generations as each one finishes   |
+|     - Up to 54% compute savings vs static batching              |
+|                                                                  |
+|  3. Active Sampling                                             |
+|     - Continuously pull completions and resample prompts        |
+|     - Filter until desired batch size is reached                |
+|     - More efficient than dynamic oversampling (3x reduction)   |
+|                                                                  |
+|  4. Inflight Updates                                            |
+|     - Update weights without pausing generation engine          |
+|     - Thread-safe, no KV cache invalidation                     |
+|     - Up to 4x throughput increase                              |
+|                                                                  |
++------------------------------------------------------------------+</code></pre>
+<p><strong>Fully Asynchronous Training</strong>:</p>
+<ul>
+<li>中央集権的な学習器を複数ノードに分散（DeepSpeed 使用）</li>
+<li>大規模なアクタープール、それぞれ独立した vLLM インスタンスを実行</li>
+<li>学習器がプロンプトをキューに入れ、アクターに配信</li>
+<li>アクターが環境と相互作用し、結果をキューを通じて返す</li>
+</ul>
+<p><strong>Continuous Batching</strong>:</p>
+<ul>
+<li>各生成が終了するたびに新しい生成を絶えずエンキュー</li>
+<li>静的バッチングと比較して、長い生成での計算の無駄を削減</li>
+<li>Olmo 3 では、32K 生成長で平均 14,628 トークン、最大 32K トークン</li>
+<li>静的バッチングでは最大 54% の計算が無駄になっていた</li>
+</ul>
+<p><strong>Active Sampling</strong>:</p>
+<ul>
+<li>フィルタリングされたインスタンスを補償するため、継続的にアクターから補完を引き出し、プロンプトをキューに再サンプリング</li>
+<li>ゼロ勾配でない補完の所望のバッチサイズに到達するまで、アクティブにサンプリングとフィルタリングを実施</li>
+<li>DAPO の動的サンプリング（3 倍のオーバーサンプリング）よりも効率的</li>
+</ul>
+<p><strong>Inflight Updates</strong>:</p>
+<ul>
+<li>各訓練ステップ後、生成エンジンを一時停止せずに重みを即座に更新</li>
+<li>スレッドセーフな生成フレームワークに依存し、KV キャッシュを無効化せずに生成を継続</li>
+<li>同じリソースで最大 4 倍の高速化を達成</li>
+</ul>
+</section>
+<section id="インフラ改善の効果" class="level3">
+<h3 class="anchored" data-anchor-id="インフラ改善の効果">インフラ改善の効果</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>設定</th>
+<th>総トークン数 (Mtok)</th>
+<th>トークン/秒</th>
+<th>MFU (%)</th>
+<th>MBU (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OLMo 2</td>
+<td>6.34</td>
+<td>881</td>
+<td>0.30</td>
+<td>12.90</td>
+</tr>
+<tr class="even">
+<td>+ continuous batching</td>
+<td>7.02</td>
+<td>975</td>
+<td>0.33</td>
+<td>14.29</td>
+</tr>
+<tr class="odd">
+<td>+ better threading</td>
+<td>9.77</td>
+<td>1358</td>
+<td>0.46</td>
+<td>19.89</td>
+</tr>
+<tr class="even">
+<td>+ inflight updates (Olmo 3)</td>
+<td>21.23</td>
+<td>2949</td>
+<td>1.01</td>
+<td>43.21</td>
+</tr>
+</tbody>
+</table>
+<p>Inflight updates の追加が最も劇的な改善をもたらしています。</p>
+</section>
+</section>
+<section id="olmo-3.1-think-32b-の拡張訓練" class="level2">
+<h2 class="anchored" data-anchor-id="olmo-3.1-think-32b-の拡張訓練">Olmo 3.1 Think 32B の拡張訓練</h2>
+<p>Olmo 3.1 Think 32B は、拡張された OlmoRL 訓練を通じて、性能向上を示しました。Dolci Think RL データセットでの追加エポックにより、以下の改善が観察されました：</p>
+<p><strong>性能向上</strong>:</p>
+<ul>
+<li><strong>AIME 2024</strong>: +4 ポイント</li>
+<li><strong>IFBench</strong>: +20 ポイント</li>
+<li><strong>他のベンチマーク</strong>: 性能を維持</li>
+</ul>
+<p>拡張訓練により、より長い RL 訓練が汎化性能を向上させ、破局的忘却なしに安定した訓練が可能であることが確認されました。</p>
+</section>
+<section id="主要な発見" class="level2">
+<h2 class="anchored" data-anchor-id="主要な発見">主要な発見</h2>
+<section id="delta-learning-が-rlvr-のより強力な初期化を提供" class="level3">
+<h3 class="anchored" data-anchor-id="delta-learning-が-rlvr-のより強力な初期化を提供">Delta Learning が RLVR のより強力な初期化を提供</h3>
+<p>Delta Learning を用いた選好調整を先に実施してから RLVR を適用すると、SFT 単独よりも優れた全体的な性能を達成します。</p>
+</section>
+<section id="dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点" class="level3">
+<h3 class="anchored" data-anchor-id="dpo-と-sft-の両方が-rl-から恩恵を受けるがdpo-がより良い開始点">DPO と SFT の両方が RL から恩恵を受けるが、DPO がより良い開始点</h3>
+<p>最終的な RL ミックスを DPO モデルで実行すると、SFT モデルで実行する場合よりも一貫して優れた性能を示します。</p>
+<p><strong>主要な違い</strong>:</p>
+<ul>
+<li>RL が改善しない評価では、DPO モデルがしばしば優れた性能を発揮し、RL 訓練中もその優位性を維持（例: AlpacaEval）</li>
+<li>RL によって明示的にターゲットにされた評価では、DPO と SFT モデルの両方が同様の最終性能を達成（例: OMEGA）</li>
+<li>RL によってターゲットにされているが DPO からさらに改善が困難な評価では、SFT モデルが改善して DPO 性能に近づく（例: AIME 2025）</li>
+</ul>
+</section>
+<section id="すべてのドメインで報酬が着実に増加" class="level3">
+<h3 class="anchored" data-anchor-id="すべてのドメインで報酬が着実に増加">すべてのドメインで報酬が着実に増加</h3>
+<p>RL 訓練中、すべてのドメインで報酬が着実に増加します（ただし、増加率は異なります）。指示追従データが最も着実に増加し、コード報酬が最もゆっくり増加します。</p>
+</section>
+</section>
+<section id="まとめ" class="level2">
+<h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
+<p>OlmoRL は、GRPO をベースとした効率的な強化学習フレームワークであり、以下を実現しています：</p>
+<p><strong>主要な貢献</strong>:</p>
+<ul>
+<li><strong>アルゴリズムの改善</strong>: Vanilla GRPO に対して 7 つの重要な改善を実施</li>
+<li><strong>大規模データセット</strong>: Dolci-Think-RL（100K プロンプト、4 ドメイン）</li>
+<li><strong>効率的なインフラ</strong>: Continuous batching、active sampling、inflight updates により 4 倍の高速化</li>
+<li><strong>複数ドメイン対応</strong>: Math、Code、Instruction-following、General chat</li>
+<li><strong>拡張訓練</strong>: Olmo 3.1 Think 32B で 2300 ステップの拡張訓練により大幅な性能向上</li>
+</ul>
+<p>OlmoRL により、思考型モデルの訓練が大幅に効率化され、完全にオープンな RL 研究環境が提供されています。</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/naoto-iwase\.github\.io\/books");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ja/olmo-3/09-delta-learning.html" class="pagination-link" aria-label="Delta Learning">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Delta Learning</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 <a href="https://naoto-iwase.github.io">Naoto Iwase</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://naoto-iwase.github.io/books">Books Home</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a> <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
