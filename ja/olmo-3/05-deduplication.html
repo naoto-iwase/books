@@ -628,34 +628,34 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="duplodocus-のワークフロー" class="level3">
 <h3 class="anchored" data-anchor-id="duplodocus-のワークフロー">Duplodocus のワークフロー</h3>
-<pre><code>┌──────────────────────────────────────────────────────────────┐
-│                   Duplodocus Workflow                        │
-├──────────────────────────────────────────────────────────────┤
-│  Input: 38.7B documents                                      │
+<pre><code>┌───────────────────────────────────────────────────────────────┐
+│                   Duplodocus Workflow                         │
+├───────────────────────────────────────────────────────────────┤
+│  Input: 38.7B documents                                       │
 │    |                                                          │
 │    v                                                          │
-│  Stage 1: Hash-based exact deduplication                     │
-│    | - Compute SHA-256 hash for each document                │
-│    | - Remove duplicates                                     │
-│    | - Output: 12.8B documents (67% reduction)               │
+│  Stage 1: Hash-based exact deduplication                      │
+│    | - Compute SHA-256 hash for each document                 │
+│    | - Remove duplicates                                      │
+│    | - Output: 12.8B documents (67% reduction)                │
 │    |                                                          │
 │    v                                                          │
-│  Stage 2: MinHash fuzzy deduplication                        │
-│    | - Generate MinHash signatures                           │
-│    | - LSH for candidate pairs                               │
-│    | - Cluster similar documents                             │
-│    | - Output: 9.8B documents (23% reduction)                │
+│  Stage 2: MinHash fuzzy deduplication                         │
+│    | - Generate MinHash signatures                            │
+│    | - LSH for candidate pairs                                │
+│    | - Cluster similar documents                              │
+│    | - Output: 9.8B documents (23% reduction)                 │
 │    |                                                          │
 │    v                                                          │
-│  Stage 3: Suffix array substring deduplication               │
-│    | - Build suffix arrays                                   │
-│    | - Detect repeated substrings (&gt;=500 bytes)              │
-│    | - Mark and remove                                       │
-│    | - Output: 9.7B documents (14% byte reduction)           │
+│  Stage 3: Suffix array substring deduplication                │
+│    | - Build suffix arrays                                    │
+│    | - Detect repeated substrings (&gt;=500 bytes)               │
+│    | - Mark and remove                                        │
+│    | - Output: 9.7B documents (14% byte reduction)            │
 │    |                                                          │
 │    v                                                          │
-│  Output: 9.7B documents, 36.5T bytes                         │
-└──────────────────────────────────────────────────────────────┘</code></pre>
+│  Output: 9.7B documents, 36.5T bytes                          │
+└───────────────────────────────────────────────────────────────┘</code></pre>
 </section>
 </section>
 <section id="最終結果" class="level2">

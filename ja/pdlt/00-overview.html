@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>overview – Naoto's Books</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ja/pdlt/01-effective-theory.html" rel="next">
+<link href="../../ja/pdlt/index.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f1aadacce99040138bbb613f9330654f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-13f3cb0f996876b50f7809a2eda1f948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Naoto’s Books">
+<meta property="og:image" content="https://naoto-iwase.github.io/books/ja/pdlt/assets/myicon.png">
+<meta property="og:site_name" content="Naoto's Books">
+<meta name="twitter:title" content="Naoto’s Books">
+<meta name="twitter:image" content="https://naoto-iwase.github.io/books/ja/pdlt/assets/myicon.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Naoto’s Books</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://naoto-iwase.github.io"> <i class="bi bi-arrow-left-circle" role="img">
+</i> 
+<span class="menu-text">Naoto Iwase</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/naoto_iwase"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/naoto-iwase-993430395/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/naoto-iwase"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/pdlt/index.html">Principles of Deep Learning Theory</a></li><li class="breadcrumb-item"><a href="../../ja/pdlt/00-overview.html">全体像</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../ja/pdlt/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Deep Learning Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/00-overview.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">全体像</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/01-effective-theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Effective Theory Approach</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/02-rg-flow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RG Flow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/03-criticality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criticality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/04-neural-tangent-kernel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Neural Tangent Kernel</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/05-infinite-width-limit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Infinite Width Limit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/06-representation-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Representation Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/07-universality-classes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Universality Classes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-principles-of-deep-learning-theory-まとめ" id="toc-the-principles-of-deep-learning-theory-まとめ" class="nav-link active" data-scroll-target="#the-principles-of-deep-learning-theory-まとめ">The Principles of Deep Learning Theory まとめ</a>
+  <ul class="collapse">
+  <li><a href="#概要" id="toc-概要" class="nav-link" data-scroll-target="#概要">概要</a></li>
+  <li><a href="#原著の特徴" id="toc-原著の特徴" class="nav-link" data-scroll-target="#原著の特徴">原著の特徴</a>
+  <ul class="collapse">
+  <li><a href="#物理学からのアプローチ" id="toc-物理学からのアプローチ" class="nav-link" data-scroll-target="#物理学からのアプローチ">物理学からのアプローチ</a></li>
+  <li><a href="#対象読者と前提知識" id="toc-対象読者と前提知識" class="nav-link" data-scroll-target="#対象読者と前提知識">対象読者と前提知識</a></li>
+  <li><a href="#実践的なモデルへのフォーカス" id="toc-実践的なモデルへのフォーカス" class="nav-link" data-scroll-target="#実践的なモデルへのフォーカス">実践的なモデルへのフォーカス</a></li>
+  </ul></li>
+  <li><a href="#原著の主要な概念" id="toc-原著の主要な概念" class="nav-link" data-scroll-target="#原著の主要な概念">原著の主要な概念</a>
+  <ul class="collapse">
+  <li><a href="#effective-theory-と-rg-flow" id="toc-effective-theory-と-rg-flow" class="nav-link" data-scroll-target="#effective-theory-と-rg-flow">1. Effective Theory と RG Flow</a></li>
+  <li><a href="#criticality臨界性" id="toc-criticality臨界性" class="nav-link" data-scroll-target="#criticality臨界性">2. Criticality（臨界性）</a></li>
+  <li><a href="#neural-tangent-kernel-ntk" id="toc-neural-tangent-kernel-ntk" class="nav-link" data-scroll-target="#neural-tangent-kernel-ntk">3. Neural Tangent Kernel (NTK)</a></li>
+  <li><a href="#infinite-width-vs-finite-width" id="toc-infinite-width-vs-finite-width" class="nav-link" data-scroll-target="#infinite-width-vs-finite-width">4. Infinite Width vs Finite Width</a></li>
+  <li><a href="#representation-learning" id="toc-representation-learning" class="nav-link" data-scroll-target="#representation-learning">5. Representation Learning</a></li>
+  <li><a href="#universality-classes" id="toc-universality-classes" class="nav-link" data-scroll-target="#universality-classes">6. Universality Classes</a></li>
+  </ul></li>
+  <li><a href="#原著の構成" id="toc-原著の構成" class="nav-link" data-scroll-target="#原著の構成">原著の構成</a>
+  <ul class="collapse">
+  <li><a href="#part-1-初期化時の理論-chapters-0-5" id="toc-part-1-初期化時の理論-chapters-0-5" class="nav-link" data-scroll-target="#part-1-初期化時の理論-chapters-0-5">Part 1: 初期化時の理論 (Chapters 0-5)</a></li>
+  <li><a href="#part-2-学習の理論-chapters-6-11" id="toc-part-2-学習の理論-chapters-6-11" class="nav-link" data-scroll-target="#part-2-学習の理論-chapters-6-11">Part 2: 学習の理論 (Chapters 6-11)</a></li>
+  <li><a href="#appendices" id="toc-appendices" class="nav-link" data-scroll-target="#appendices">Appendices</a></li>
+  </ul></li>
+  <li><a href="#原著の主要な結果" id="toc-原著の主要な結果" class="nav-link" data-scroll-target="#原著の主要な結果">原著の主要な結果</a>
+  <ul class="collapse">
+  <li><a href="#臨界性と初期化" id="toc-臨界性と初期化" class="nav-link" data-scroll-target="#臨界性と初期化">1. 臨界性と初期化</a></li>
+  <li><a href="#無限幅極限の限界" id="toc-無限幅極限の限界" class="nav-link" data-scroll-target="#無限幅極限の限界">2. 無限幅極限の限界</a></li>
+  <li><a href="#有限幅での表現学習" id="toc-有限幅での表現学習" class="nav-link" data-scroll-target="#有限幅での表現学習">3. 有限幅での表現学習</a></li>
+  <li><a href="#アーキテクチャの選択" id="toc-アーキテクチャの選択" class="nav-link" data-scroll-target="#アーキテクチャの選択">4. アーキテクチャの選択</a></li>
+  </ul></li>
+  <li><a href="#原著の意義" id="toc-原著の意義" class="nav-link" data-scroll-target="#原著の意義">原著の意義</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/pdlt/index.html">Principles of Deep Learning Theory</a></li><li class="breadcrumb-item"><a href="../../ja/pdlt/00-overview.html">全体像</a></li></ol></nav></header>
+
+
+
+
+
+<section id="the-principles-of-deep-learning-theory-まとめ" class="level1">
+<h1>The Principles of Deep Learning Theory まとめ</h1>
+<section id="概要" class="level2">
+<h2 class="anchored" data-anchor-id="概要">概要</h2>
+<p>本まとめは、Daniel A. Roberts と Sho Yaida による “The Principles of Deep Learning Theory” (PDLT) の主要な概念と理論的枠組みを解説するものである。</p>
+<p>原著 PDLT は、物理学の<strong>有効理論（Effective Theory）</strong>のアプローチを深層学習に適用し、深層ニューラルネットワークの動作原理を理論的に解明することを目指した画期的な教科書である。著者らは、統計力学や場の理論で用いられる手法（繰り込み群、臨界性解析、ガウス過程など）を駆使して、深層学習の「なぜ動くのか」を first principles から説明している。</p>
+<p><strong>原著論文</strong>: <a href="https://arxiv.org/abs/2106.10165">arXiv:2106.10165</a></p>
+<p><strong>原著 Web サイト</strong>: <a href="https://deeplearningtheory.com">deeplearningtheory.com</a></p>
+</section>
+<section id="原著の特徴" class="level2">
+<h2 class="anchored" data-anchor-id="原著の特徴">原著の特徴</h2>
+<section id="物理学からのアプローチ" class="level3">
+<h3 class="anchored" data-anchor-id="物理学からのアプローチ">物理学からのアプローチ</h3>
+<p>原著は、深層学習を理解するために、物理学の effective theory framework を採用している。これは、多数の素子（ニューロン）から構成される系の<strong>巨視的な振る舞い</strong>を、統計的性質から理解するアプローチである。</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/01-effective-theory.html">Effective Theory Approach</a></p>
+</blockquote>
+<p>熱力学が蒸気機関の macroscopic な性質を記述し、統計力学がその microscopic な起源を説明したように、原著は深層ニューラルネットワークの macroscopic な計算能力を、microscopic なパラメータの統計的性質から導出する。</p>
+</section>
+<section id="対象読者と前提知識" class="level3">
+<h3 class="anchored" data-anchor-id="対象読者と前提知識">対象読者と前提知識</h3>
+<p>原著は以下の知識を持つ読者を対象としている：</p>
+<ul>
+<li>線形代数</li>
+<li>多変量微積分</li>
+<li>確率論の基礎</li>
+</ul>
+<p>物理学のバックグラウンドは必須ではなく、必要な数学的道具は原著 Chapter 1 “Pretraining” で丁寧に説明されている。</p>
+</section>
+<section id="実践的なモデルへのフォーカス" class="level3">
+<h3 class="anchored" data-anchor-id="実践的なモデルへのフォーカス">実践的なモデルへのフォーカス</h3>
+<p>原著の重要な特徴は、理論研究でよく扱われる理想化されたモデル（single-hidden-layer networks や完全な無限幅極限）を出発点としつつも、最終的には<strong>実際に使われる深層ニューラルネットワーク</strong>の理論的理解を目指している点である。</p>
+<p>特に、deep multilayer perceptrons（深層多層パーセプトロン）を中心に、有限幅（finite width）のネットワークの挙動を解析する。</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>他の深層学習理論書との違い
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>従来の深層学習理論書は、以下のいずれかに偏る傾向がある：</p>
+<ul>
+<li><strong>実践書</strong>: アルゴリズムと実装に焦点を当てるが、理論的根拠は限定的</li>
+<li><strong>数学的厳密性重視</strong>: 厳密な証明を重視するが、単純化された設定（single-hidden-layer など）に限定</li>
+<li><strong>漸近解析</strong>: 無限幅極限など数学的に扱いやすい極限に焦点</li>
+</ul>
+<p><strong>原著の独自性</strong>:</p>
+<ul>
+<li>実際に使われる深層ネットワーク（finite depth, finite width）の理論</li>
+<li>物理学の有効理論による直感的かつ定量的な理解</li>
+<li>計算の詳細を省略せず、読者が自ら拡張できる枠組みを提供</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="原著の主要な概念" class="level2">
+<h2 class="anchored" data-anchor-id="原著の主要な概念">原著の主要な概念</h2>
+<p>本まとめでは、原著で展開される以下の主要な概念を解説する。</p>
+<section id="effective-theory-と-rg-flow" class="level3">
+<h3 class="anchored" data-anchor-id="effective-theory-と-rg-flow">1. Effective Theory と RG Flow</h3>
+<p>原著では、深層ニューラルネットワークの各層を通る信号の変化を、<strong>繰り込み群フロー（Renormalization Group Flow, RG Flow）</strong>として捉える。</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/02-rg-flow.html">RG Flow</a></p>
+</blockquote>
+<p>入力層から出力層に向かって、preactivation の分布がどのように変化していくかを追跡し、その effective theory を構築する。</p>
+</section>
+<section id="criticality臨界性" class="level3">
+<h3 class="anchored" data-anchor-id="criticality臨界性">2. Criticality（臨界性）</h3>
+<p>ニューラルネットワークの初期化における<strong>臨界性（Criticality）</strong>は、訓練の成功に重要な役割を果たす。</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/03-criticality.html">Criticality</a></p>
+</blockquote>
+<p>適切な初期化により、信号が層を通じて指数的に増大（exploding）または減衰（vanishing）することなく、臨界点（critical point）に保たれる。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>実践への応用: 初期化戦略
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>原著の臨界性理論は、以下の実践的初期化手法の理論的基盤を提供する：</p>
+<ul>
+<li><strong>He initialization</strong> (Kaiming He, 2015): ReLU 系活性化関数に最適（Scale-Invariant Class）</li>
+<li><strong>Xavier initialization</strong> (Glorot &amp; Bengio, 2010): tanh 系活性化関数に適合（K* = 0 Class）</li>
+<li><strong>活性化関数の選択</strong>: 普遍性クラスに応じた初期化パラメータの調整</li>
+</ul>
+<p>これらの経験則が「なぜ動くのか」を、原著は臨界性の観点から理論的に説明している。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="neural-tangent-kernel-ntk" class="level3">
+<h3 class="anchored" data-anchor-id="neural-tangent-kernel-ntk">3. Neural Tangent Kernel (NTK)</h3>
+<p>無限幅極限において、ニューラルネットワークの訓練はカーネル法と等価になる。このカーネルを <strong>Neural Tangent Kernel (NTK)</strong> と呼ぶ。</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/04-neural-tangent-kernel.html">Neural Tangent Kernel</a></p>
+</blockquote>
+<p>NTK は訓練中に固定され、ネットワークは線形モデルとして振る舞う。しかし、有限幅では NTK が変化し、<strong>表現学習（Representation Learning）</strong>が可能になる。</p>
+</section>
+<section id="infinite-width-vs-finite-width" class="level3">
+<h3 class="anchored" data-anchor-id="infinite-width-vs-finite-width">4. Infinite Width vs Finite Width</h3>
+<p>原著における重要な区別：</p>
+<ul>
+<li><strong>無限幅（Infinite Width）</strong>: ニューロン数 <span class="math inline">\(n \to \infty\)</span> の極限
+<ul>
+<li>ガウス過程に収束</li>
+<li>NTK が固定され、線形モデルに帰着</li>
+<li>表現学習が起こらない</li>
+</ul></li>
+<li><strong>有限幅（Finite Width）</strong>: 実際のニューラルネットワーク
+<ul>
+<li>NTK が訓練中に変化</li>
+<li>非線形性が残り、表現学習が可能</li>
+<li>Hebbian learning により、層間の相関が形成される</li>
+</ul></li>
+</ul>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/05-infinite-width-limit.html">Infinite Width Limit</a></p>
+</blockquote>
+</section>
+<section id="representation-learning" class="level3">
+<h3 class="anchored" data-anchor-id="representation-learning">5. Representation Learning</h3>
+<p>有限幅のニューラルネットワークでは、訓練によって内部表現が変化する。これが<strong>表現学習（Representation Learning）</strong>であり、深層学習の本質的な能力である。</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/06-representation-learning.html">Representation Learning</a></p>
+</blockquote>
+<p>無限幅極限では表現学習が消失するため、実際の深層学習を理解するには有限幅の解析が不可欠である。</p>
+</section>
+<section id="universality-classes" class="level3">
+<h3 class="anchored" data-anchor-id="universality-classes">6. Universality Classes</h3>
+<p>異なる活性化関数（ReLU, tanh, GELU など）は、臨界性の解析において<strong>普遍性クラス（Universality Classes）</strong>に分類される。</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/pdlt/07-universality-classes.html">Universality Classes</a></p>
+</blockquote>
+<p>主要な普遍性クラス：</p>
+<ul>
+<li><strong>Scale-Invariant Universality Class</strong>: ReLU, leaky ReLU など</li>
+<li><strong>K* = 0 Universality Class</strong>: tanh, sin など</li>
+<li><strong>Half-Stable Universality Classes</strong>: SWISH, GELU など</li>
+</ul>
+<p>同じ普遍性クラスに属する活性化関数は、深層極限において同様の統計的性質を示す。</p>
+</section>
+</section>
+<section id="原著の構成" class="level2">
+<h2 class="anchored" data-anchor-id="原著の構成">原著の構成</h2>
+<p>原著は以下のように構成されている。本まとめでは、これらの章から主要な概念を抽出して解説する。</p>
+<section id="part-1-初期化時の理論-chapters-0-5" class="level3">
+<h3 class="anchored" data-anchor-id="part-1-初期化時の理論-chapters-0-5">Part 1: 初期化時の理論 (Chapters 0-5)</h3>
+<p><strong>Chapter 0: Initialization</strong> - Effective Theory Approach の導入 - 深層学習における理論の必要性</p>
+<p><strong>Chapter 1: Pretraining</strong> - Gaussian integrals - 確率論と統計の数学的基礎 - Nearly-Gaussian distributions</p>
+<p><strong>Chapter 2: Neural Networks</strong> - 関数近似としてのニューラルネットワーク - 活性化関数 - アンサンブル</p>
+<p><strong>Chapter 3: Effective Theory of Deep Linear Networks at Initialization</strong> - Deep linear networks の解析 - Criticality の導入 - Fluctuations と Chaos</p>
+<p><strong>Chapter 4: RG Flow of Preactivations</strong> - 第1層: Gaussian 分布 - 第2層: Non-Gaussianity の発生 - 深層: Non-Gaussianity の蓄積 - Marginalization rules</p>
+<p><strong>Chapter 5: Effective Theory of Preactivations at Initialization</strong> - Kernel の criticality 解析 - 普遍性クラスの分類 - Fluctuations の解析</p>
+</section>
+<section id="part-2-学習の理論-chapters-6-11" class="level3">
+<h3 class="anchored" data-anchor-id="part-2-学習の理論-chapters-6-11">Part 2: 学習の理論 (Chapters 6-11)</h3>
+<p><strong>Chapter 6: Bayesian Learning</strong> - ベイズ推論とニューラルネットワーク - 無限幅での推論（表現学習なし） - 有限幅での推論（Hebbian learning、表現学習あり）</p>
+<p><strong>Chapter 7: Gradient-Based Learning</strong> - 教師あり学習 - 勾配降下法と関数近似</p>
+<p><strong>Chapter 8: RG Flow of the Neural Tangent Kernel</strong> - NTK の forward equation - 層ごとの NTK の発展 - NTK の平均と分散</p>
+<p><strong>Chapter 9: Effective Theory of the NTK at Initialization</strong> - NTK の criticality 解析 - 普遍性クラスごとの NTK の性質</p>
+<p><strong>Chapter 10: Kernel Learning</strong> - 無限幅ネットワークの線形モデルとしての性質 - Generalization と bias-variance tradeoff - Kernel methods との関連</p>
+<p><strong>Chapter 11: Representation Learning</strong> - NTK の微分 (dNTK) - 有限幅ネットワークの非線形性 - Nearly-kernel methods</p>
+<p><strong>Chapter ∞: The End of Training</strong> - 有限幅での訓練 - 多数ステップの勾配降下 - 有限幅での予測</p>
+</section>
+<section id="appendices" class="level3">
+<h3 class="anchored" data-anchor-id="appendices">Appendices</h3>
+<p><strong>Appendix A: Information in Deep Learning</strong> - Entropy と mutual information - 無限幅での情報理論的解析 - 有限幅での最適アスペクト比</p>
+<p><strong>Appendix B: Residual Learning</strong> - Residual networks (ResNets) への拡張 - Residual MLP の criticality 解析</p>
+</section>
+</section>
+<section id="原著の主要な結果" class="level2">
+<h2 class="anchored" data-anchor-id="原著の主要な結果">原著の主要な結果</h2>
+<p>原著が導出した主要な理論的結果を以下にまとめる。</p>
+<section id="臨界性と初期化" class="level3">
+<h3 class="anchored" data-anchor-id="臨界性と初期化">1. 臨界性と初期化</h3>
+<p>原著は、適切な初期化（例: He initialization, Xavier initialization）がネットワークを臨界点に保ち、gradient の exploding/vanishing を防ぐことを理論的に証明した。これにより、経験的に知られていた初期化手法の理論的根拠が明らかになった。</p>
+</section>
+<section id="無限幅極限の限界" class="level3">
+<h3 class="anchored" data-anchor-id="無限幅極限の限界">2. 無限幅極限の限界</h3>
+<p>原著は、無限幅極限においてニューラルネットワークが Gaussian process に収束し、NTK が訓練中に固定されることを示した。これは線形モデルに帰着し、表現学習が起こらない。</p>
+<p>この結果は、深層学習の本質を理解するには<strong>有限幅の理論</strong>が不可欠であることを示す重要な洞察である。</p>
+</section>
+<section id="有限幅での表現学習" class="level3">
+<h3 class="anchored" data-anchor-id="有限幅での表現学習">3. 有限幅での表現学習</h3>
+<p>原著は、有限幅では NTK が訓練中に変化し（dNTK <span class="math inline">\(\neq 0\)</span>）、これが表現学習を可能にすることを明らかにした。この変化は <span class="math inline">\(1/n\)</span> のオーダーで起こり（<span class="math inline">\(n\)</span> はニューロン数）、深さとともに蓄積される。</p>
+<p>この理論により、深層学習が単なるカーネル法を超える能力を持つ理由が説明される。</p>
+</section>
+<section id="アーキテクチャの選択" class="level3">
+<h3 class="anchored" data-anchor-id="アーキテクチャの選択">4. アーキテクチャの選択</h3>
+<p>原著の普遍性クラスの解析により、異なる活性化関数がどのように振る舞うかを予測できるようになった。例えば：</p>
+<ul>
+<li>ReLU (Scale-Invariant Class): 深層ネットワークでも安定</li>
+<li>tanh (K* = 0 Class): 深層で情報が減衰しやすい</li>
+</ul>
+<p>この知見は、アーキテクチャ設計の理論的指針を提供する。</p>
+</section>
+</section>
+<section id="原著の意義" class="level2">
+<h2 class="anchored" data-anchor-id="原著の意義">原著の意義</h2>
+<p>原著 PDLT は、深層学習を「経験的に動くがなぜかわからない」状態から、「物理学的に理解できる」状態へと引き上げることを目指した画期的な著作である。</p>
+<p>原著が採用する物理学の effective theory アプローチは、以下の利点をもたらす：</p>
+<ul>
+<li><strong>予測可能性</strong>: 初期化やアーキテクチャの選択が訓練にどう影響するかを理論的に予測</li>
+<li><strong>普遍性</strong>: 特定のモデルに依存しない、一般的な原理の発見</li>
+<li><strong>拡張性</strong>: MLPs 以外のアーキテクチャ（ResNets, Transformers など）への拡張可能性</li>
+</ul>
+<p>原著は、深層学習の理論研究における新しいパラダイムを提示し、今後の理論的・実践的進展の基盤となることが期待される。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>深層学習理論の現状と課題
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><strong>原著が解決した問題</strong>:</p>
+<ul>
+<li>深層ニューラルネットワークの初期化時の統計的性質の完全な特徴づけ</li>
+<li>無限幅と有限幅の理論的区別の明確化</li>
+<li>表現学習の理論的基盤の提供</li>
+</ul>
+<p><strong>残された課題</strong>:</p>
+<ul>
+<li><strong>アーキテクチャの拡張</strong>: Transformers, Diffusion Models などへの理論的拡張</li>
+<li><strong>訓練ダイナミクスの完全な理解</strong>: 有限ステップでの収束性、学習率の最適化</li>
+<li><strong>汎化の理論</strong>: なぜ過剰パラメータ化されたネットワークが汎化するのか</li>
+<li><strong>実データへの適用</strong>: 理論と実験の定量的比較の更なる精緻化</li>
+</ul>
+<p>原著 PDLT はこれらの課題に取り組むための理論的枠組みを提供している。</p>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/naoto-iwase\.github\.io\/books");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ja/pdlt/index.html" class="pagination-link" aria-label="Principles of Deep Learning Theory">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Principles of Deep Learning Theory</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ja/pdlt/01-effective-theory.html" class="pagination-link" aria-label="Effective Theory Approach">
+        <span class="nav-page-text">Effective Theory Approach</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 <a href="https://naoto-iwase.github.io">Naoto Iwase</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://naoto-iwase.github.io/books">Books Home</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a> <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

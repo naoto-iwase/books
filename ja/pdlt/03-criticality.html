@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>criticality – Naoto's Books</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../ja/pdlt/04-neural-tangent-kernel.html" rel="next">
+<link href="../../ja/pdlt/02-rg-flow.html" rel="prev">
+<link href="../../assets/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-f1aadacce99040138bbb613f9330654f.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-8b4baf804e461d9b72633f0de59a0cac.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-13f3cb0f996876b50f7809a2eda1f948.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-59ef5632e116603d0ed5b5dff363f10b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Naoto’s Books">
+<meta property="og:image" content="https://naoto-iwase.github.io/books/ja/pdlt/assets/myicon.png">
+<meta property="og:site_name" content="Naoto's Books">
+<meta name="twitter:title" content="Naoto’s Books">
+<meta name="twitter:image" content="https://naoto-iwase.github.io/books/ja/pdlt/assets/myicon.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Naoto’s Books</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://naoto-iwase.github.io"> <i class="bi bi-arrow-left-circle" role="img">
+</i> 
+<span class="menu-text">Naoto Iwase</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://x.com/naoto_iwase"> <i class="bi bi-twitter-x" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/naoto-iwase-993430395/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.co.jp/citations?user=mCaNh1QAAAAJ"> <i class="bi bi-mortarboard" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/naoto-iwase"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/pdlt/index.html">Principles of Deep Learning Theory</a></li><li class="breadcrumb-item"><a href="../../ja/pdlt/03-criticality.html">Criticality</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../ja/pdlt/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Principles of Deep Learning Theory</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/00-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">全体像</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/01-effective-theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Effective Theory Approach</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/02-rg-flow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RG Flow</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/03-criticality.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Criticality</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/04-neural-tangent-kernel.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Neural Tangent Kernel</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/05-infinite-width-limit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Infinite Width Limit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/06-representation-learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Representation Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../ja/pdlt/07-universality-classes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Universality Classes</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#criticality-臨界性" id="toc-criticality-臨界性" class="nav-link active" data-scroll-target="#criticality-臨界性">Criticality: 臨界性</a>
+  <ul class="collapse">
+  <li><a href="#概要" id="toc-概要" class="nav-link" data-scroll-target="#概要">概要</a></li>
+  <li><a href="#exploding-と-vanishing-の問題" id="toc-exploding-と-vanishing-の問題" class="nav-link" data-scroll-target="#exploding-と-vanishing-の問題">Exploding と Vanishing の問題</a>
+  <ul class="collapse">
+  <li><a href="#exploding-problem爆発問題" id="toc-exploding-problem爆発問題" class="nav-link" data-scroll-target="#exploding-problem爆発問題">Exploding Problem（爆発問題）</a></li>
+  <li><a href="#vanishing-problem消失問題" id="toc-vanishing-problem消失問題" class="nav-link" data-scroll-target="#vanishing-problem消失問題">Vanishing Problem（消失問題）</a></li>
+  </ul></li>
+  <li><a href="#critical-initialization臨界初期化" id="toc-critical-initialization臨界初期化" class="nav-link" data-scroll-target="#critical-initialization臨界初期化">Critical Initialization（臨界初期化）</a>
+  <ul class="collapse">
+  <li><a href="#critical-point臨界点" id="toc-critical-point臨界点" class="nav-link" data-scroll-target="#critical-point臨界点">Critical Point（臨界点）</a></li>
+  </ul></li>
+  <li><a href="#criticality-の数学的定式化" id="toc-criticality-の数学的定式化" class="nav-link" data-scroll-target="#criticality-の数学的定式化">Criticality の数学的定式化</a>
+  <ul class="collapse">
+  <li><a href="#deep-linear-networks-の場合" id="toc-deep-linear-networks-の場合" class="nav-link" data-scroll-target="#deep-linear-networks-の場合">Deep Linear Networks の場合</a></li>
+  <li><a href="#非線形活性化関数の場合chapter-5.1" id="toc-非線形活性化関数の場合chapter-5.1" class="nav-link" data-scroll-target="#非線形活性化関数の場合chapter-5.1">非線形活性化関数の場合（Chapter 5.1）</a></li>
+  </ul></li>
+  <li><a href="#universality-classes普遍性クラス" id="toc-universality-classes普遍性クラス" class="nav-link" data-scroll-target="#universality-classes普遍性クラス">Universality Classes（普遍性クラス）</a>
+  <ul class="collapse">
+  <li><a href="#scale-invariant-universality-class" id="toc-scale-invariant-universality-class" class="nav-link" data-scroll-target="#scale-invariant-universality-class">Scale-Invariant Universality Class</a></li>
+  <li><a href="#k-0-universality-class" id="toc-k-0-universality-class" class="nav-link" data-scroll-target="#k-0-universality-class">K* = 0 Universality Class</a></li>
+  <li><a href="#half-stable-universality-classes" id="toc-half-stable-universality-classes" class="nav-link" data-scroll-target="#half-stable-universality-classes">Half-Stable Universality Classes</a></li>
+  </ul></li>
+  <li><a href="#gradient-explodingvanishing-との関連chapter-9.1-9.4" id="toc-gradient-explodingvanishing-との関連chapter-9.1-9.4" class="nav-link" data-scroll-target="#gradient-explodingvanishing-との関連chapter-9.1-9.4">Gradient Exploding/Vanishing との関連（Chapter 9.1, 9.4）</a>
+  <ul class="collapse">
+  <li><a href="#traditional-view-gradient-の-explodingvanishing" id="toc-traditional-view-gradient-の-explodingvanishing" class="nav-link" data-scroll-target="#traditional-view-gradient-の-explodingvanishing">Traditional View: Gradient の Exploding/Vanishing</a></li>
+  <li><a href="#critical-view-criticality-による解決" id="toc-critical-view-criticality-による解決" class="nav-link" data-scroll-target="#critical-view-criticality-による解決">Critical View: Criticality による解決</a></li>
+  </ul></li>
+  <li><a href="#実践的な初期化手法との比較" id="toc-実践的な初期化手法との比較" class="nav-link" data-scroll-target="#実践的な初期化手法との比較">実践的な初期化手法との比較</a>
+  <ul class="collapse">
+  <li><a href="#xavier-initialization-glorot-initialization" id="toc-xavier-initialization-glorot-initialization" class="nav-link" data-scroll-target="#xavier-initialization-glorot-initialization">Xavier Initialization (Glorot Initialization)</a></li>
+  <li><a href="#he-initialization-kaiming-initialization" id="toc-he-initialization-kaiming-initialization" class="nav-link" data-scroll-target="#he-initialization-kaiming-initialization">He Initialization (Kaiming Initialization)</a></li>
+  </ul></li>
+  <li><a href="#criticality-の可視化" id="toc-criticality-の可視化" class="nav-link" data-scroll-target="#criticality-の可視化">Criticality の可視化</a>
+  <ul class="collapse">
+  <li><a href="#kernel-evolution-の-phase-diagram" id="toc-kernel-evolution-の-phase-diagram" class="nav-link" data-scroll-target="#kernel-evolution-の-phase-diagram">Kernel Evolution の Phase Diagram</a></li>
+  <li><a href="#universality-classes-の比較" id="toc-universality-classes-の比較" class="nav-link" data-scroll-target="#universality-classes-の比較">Universality Classes の比較</a></li>
+  </ul></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ">まとめ</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../ja/pdlt/index.html">Principles of Deep Learning Theory</a></li><li class="breadcrumb-item"><a href="../../ja/pdlt/03-criticality.html">Criticality</a></li></ol></nav></header>
+
+
+
+
+
+<section id="criticality-臨界性" class="level1">
+<h1>Criticality: 臨界性</h1>
+<section id="概要" class="level2">
+<h2 class="anchored" data-anchor-id="概要">概要</h2>
+<p>Criticality（臨界性）は、深層ニューラルネットワークの初期化において最も重要な概念の一つである。適切な初期化ハイパーパラメータの選択により、信号が層を通じて指数的に増大（exploding）または減衰（vanishing）することなく、臨界点（critical point）に保たれる。この criticality の概念は、統計物理学における相転移（phase transition）の理論から着想を得ており、深層学習の訓練可能性（trainability）と汎化性能（generalization）の両方に深く関わっている。</p>
+</section>
+<section id="exploding-と-vanishing-の問題" class="level2">
+<h2 class="anchored" data-anchor-id="exploding-と-vanishing-の問題">Exploding と Vanishing の問題</h2>
+<p>深層ニューラルネットワークにおいて、信号が層を通過する際の振る舞いは、初期化ハイパーパラメータに強く依存する。適切でない初期化は、以下の二つの問題のいずれかを引き起こす。</p>
+<section id="exploding-problem爆発問題" class="level3">
+<h3 class="anchored" data-anchor-id="exploding-problem爆発問題">Exploding Problem（爆発問題）</h3>
+<p>重みの分散 <span class="math inline">\(C_W &gt; 1\)</span> の場合、preactivation の共分散（covariance）<span class="math inline">\(G^{(\ell)}_{\alpha\beta}\)</span> は層を通じて指数的に増大する:</p>
+<p><span class="math display">\[
+G^{(\ell)}_{\alpha\beta} = (C_W)^\ell G^{(0)}_{\alpha\beta} \to \infty \quad \text{as } \ell \to \infty
+\]</span></p>
+<p>この状況では:</p>
+<ul>
+<li><strong>ネットワーク出力の発散</strong>: 出力値が exponentially large となり、数値的不安定性を引き起こす</li>
+<li><strong>勾配の爆発</strong>: バックプロパゲーション時の勾配が exponentially large となり、パラメータ更新が不安定になる</li>
+<li><strong>訓練の失敗</strong>: 損失関数の値が発散し、学習が進まない</li>
+</ul>
+</section>
+<section id="vanishing-problem消失問題" class="level3">
+<h3 class="anchored" data-anchor-id="vanishing-problem消失問題">Vanishing Problem（消失問題）</h3>
+<p>逆に、重みの分散 <span class="math inline">\(C_W &lt; 1\)</span> の場合、共分散は層を通じて指数的に減衰する:</p>
+<p><span class="math display">\[
+G^{(\ell)}_{\alpha\beta} = (C_W)^\ell G^{(0)}_{\alpha\beta} \to 0 \quad \text{as } \ell \to \infty
+\]</span></p>
+<p>この状況では:</p>
+<ul>
+<li><strong>情報の損失</strong>: 入力データの構造が深層で消失し、全ての入力が同じ出力に写像される</li>
+<li><strong>勾配の消失</strong>: バックプロパゲーション時の勾配が exponentially small となり、浅い層のパラメータが更新されない</li>
+<li><strong>表現学習の不能</strong>: ネットワークが有用な内部表現を学習できない</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Exploding と Vanishing は双対問題
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Exploding problem と vanishing problem は、同じ数学的構造の両端に位置する双対的な問題である。Forward pass における kernel の exploding/vanishing は、backward pass における gradient の exploding/vanishing に対応する（Chapter 9.4 参照）。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="critical-initialization臨界初期化" class="level2">
+<h2 class="anchored" data-anchor-id="critical-initialization臨界初期化">Critical Initialization（臨界初期化）</h2>
+<section id="critical-point臨界点" class="level3">
+<h3 class="anchored" data-anchor-id="critical-point臨界点">Critical Point（臨界点）</h3>
+<p>Exploding と vanishing の二つの regime の境界に、特別な点が存在する。この点では、重みの分散が <span class="math inline">\(C_W = 1\)</span> に調整されており、共分散が層を通じて保存される:</p>
+<p><span class="math display">\[
+G^{(\ell)}_{\alpha\beta} = G^{(0)}_{\alpha\beta} \quad \text{for all } \ell
+\]</span></p>
+<p>この点を <strong>critical point</strong>（臨界点）と呼び、このような初期化を <strong>critical initialization</strong>（臨界初期化）と呼ぶ。Critical point は以下の特徴を持つ:</p>
+<ul>
+<li><strong>Self-similarity（自己相似性）</strong>: 共分散の統計的性質が層を通じて不変</li>
+<li><strong>Nontrivial fixed point（非自明固定点）</strong>: 入力データの構造を保持する固定点（<span class="math inline">\(G^* \neq 0, \infty\)</span>）</li>
+<li><strong>Stable information flow（安定的情報伝播）</strong>: 信号が exponential behavior なしに伝播</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>統計物理学との類似
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Critical point の概念は、統計物理学における臨界温度（critical temperature）の類推である。例えば、磁石は高温では常磁性（paramagnetic）相、低温では強磁性（ferromagnetic）相を示すが、臨界温度では自己相似性を示す特別な状態になる。深層ニューラルネットワークにおいても、<span class="math inline">\(C_W\)</span> が臨界値から外れると、vanishing 相（<span class="math inline">\(C_W &lt; 1\)</span>）または exploding 相（<span class="math inline">\(C_W &gt; 1\)</span>）に遷移する。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="criticality-の数学的定式化" class="level2">
+<h2 class="anchored" data-anchor-id="criticality-の数学的定式化">Criticality の数学的定式化</h2>
+<section id="deep-linear-networks-の場合" class="level3">
+<h3 class="anchored" data-anchor-id="deep-linear-networks-の場合">Deep Linear Networks の場合</h3>
+<p>最も単純なケースとして、活性化関数が恒等写像である deep linear networks を考える。この場合、共分散の recursion は以下の形をとる:</p>
+<p><span class="math display">\[
+G^{(\ell+1)}_{\alpha\beta} = C_W G^{(\ell)}_{\alpha\beta}
+\]</span></p>
+<p>初期条件 <span class="math inline">\(G^{(0)}_{\alpha\beta} = \frac{1}{n_0} \sum_{i=1}^{n_0} x_{i;\alpha} x_{i;\beta}\)</span> の下で、この recursion の解は:</p>
+<p><span class="math display">\[
+G^{(\ell)}_{\alpha\beta} = (C_W)^\ell G^{(0)}_{\alpha\beta}
+\]</span></p>
+<p>Criticality condition は:</p>
+<p><span class="math display">\[
+C_W = 1
+\]</span></p>
+<p>この条件下で、共分散は層を通じて完全に保存される。</p>
+</section>
+<section id="非線形活性化関数の場合chapter-5.1" class="level3">
+<h3 class="anchored" data-anchor-id="非線形活性化関数の場合chapter-5.1">非線形活性化関数の場合（Chapter 5.1）</h3>
+<p>一般の活性化関数 <span class="math inline">\(\sigma(z)\)</span> を持つ MLP の場合、kernel <span class="math inline">\(K^{(\ell)}_{\alpha\beta}\)</span> の recursion は以下の形をとる:</p>
+<p><span class="math display">\[
+K^{(\ell+1)}_{\alpha\beta} = C_b + C_W \langle \sigma_\alpha \sigma_\beta \rangle_{K^{(\ell)}}
+\]</span></p>
+<p>ここで、<span class="math inline">\(\langle \cdot \rangle_{K^{(\ell)}}\)</span> は kernel <span class="math inline">\(K^{(\ell)}\)</span> に関する Gaussian expectation である。</p>
+<section id="single-input-の場合" class="level4">
+<h4 class="anchored" data-anchor-id="single-input-の場合">Single Input の場合</h4>
+<p>単一入力 <span class="math inline">\(\alpha = 0\)</span> の場合、diagonal component <span class="math inline">\(K^{(\ell)}_{00}\)</span> は self-consistent に解ける:</p>
+<p><span class="math display">\[
+K^{(\ell+1)}_{00} = C_b + C_W g(K^{(\ell)}_{00})
+\]</span></p>
+<p>ここで、helper function <span class="math inline">\(g(K)\)</span> は:</p>
+<p><span class="math display">\[
+g(K) \equiv \langle \sigma(z) \sigma(z) \rangle_K = \frac{1}{\sqrt{2\pi K}} \int_{-\infty}^{\infty} dz \, e^{-\frac{z^2}{2K}} \sigma(z) \sigma(z)
+\]</span></p>
+<p>Fixed point <span class="math inline">\(K^*_{00}\)</span> の周りで線形化すると:</p>
+<p><span class="math display">\[
+\Delta K^{(\ell+1)}_{00} = \chi_\parallel(K^*_{00}) \Delta K^{(\ell)}_{00} + O(\Delta^2)
+\]</span></p>
+<p>ここで、<strong>parallel susceptibility</strong>（平行感受率）は:</p>
+<p><span class="math display">\[
+\chi_\parallel(K) \equiv C_W g'(K) = \frac{C_W}{2K^2} \left\langle \sigma(z) \sigma(z) (z^2 - K) \right\rangle_K
+\]</span></p>
+<p><strong>第一の criticality condition</strong> は:</p>
+<p><span class="math display">\[
+\chi_\parallel(K^*_{00}) = 1
+\]</span></p>
+<p>この条件により、kernel が exponentially explode または vanish することを防ぐ。</p>
+</section>
+<section id="two-inputs-の場合chapter-5.1" class="level4">
+<h4 class="anchored" data-anchor-id="two-inputs-の場合chapter-5.1">Two Inputs の場合（Chapter 5.1）</h4>
+<p>二つの異なる入力 <span class="math inline">\(\alpha = \pm\)</span> の場合、off-diagonal component <span class="math inline">\(K^{(\ell)}_{+-}\)</span> の evolution を考える必要がある。Coincident limit <span class="math inline">\(x_{i;+}, x_{i;-} \to x_{i;0}\)</span> の周りで線形化すると、<strong>perpendicular susceptibility</strong>（垂直感受率）が現れる:</p>
+<p><span class="math display">\[
+\chi_\perp(K) \equiv C_W \langle \sigma'(z) \sigma'(z) \rangle_K
+\]</span></p>
+<p><strong>第二の criticality condition</strong> は:</p>
+<p><span class="math display">\[
+\chi_\perp(K^*) = 1
+\]</span></p>
+<p>この条件により、異なる入力間の correlation が適切に保存される。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Parallel と Perpendicular の意味
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><strong>Parallel susceptibility</strong> <span class="math inline">\(\chi_\parallel\)</span>: Kernel matrix の diagonal direction に沿った perturbation の増幅率</li>
+<li><strong>Perpendicular susceptibility</strong> <span class="math inline">\(\chi_\perp\)</span>: Kernel matrix の off-diagonal direction に沿った perturbation の増幅率</li>
+</ul>
+<p>両方の susceptibility が 1 に調整されることで、kernel matrix の全ての component が安定的に伝播する。</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="universality-classes普遍性クラス" class="level2">
+<h2 class="anchored" data-anchor-id="universality-classes普遍性クラス">Universality Classes（普遍性クラス）</h2>
+<p>異なる活性化関数は、criticality の振る舞いに基づいて <strong>universality classes</strong>（普遍性クラス）に分類される（Chapter 5.2-5.3 参照）。</p>
+<section id="scale-invariant-universality-class" class="level3">
+<h3 class="anchored" data-anchor-id="scale-invariant-universality-class">Scale-Invariant Universality Class</h3>
+<p><strong>代表的な活性化関数</strong>: ReLU, leaky ReLU, absolute value</p>
+<p><strong>特徴</strong>:</p>
+<ul>
+<li>Perfect self-similarity: <span class="math inline">\(K^{(\ell)}_{00} = K^{(1)}_{00}\)</span> for all <span class="math inline">\(\ell\)</span></li>
+<li>Fixed point が入力依存: <span class="math inline">\(K^*_{00} = C_b + C_W \sum_i x_{i;0} x_{i;0} / n_0\)</span></li>
+<li>Higher-order corrections が消失: <span class="math inline">\(O(\Delta^{p&gt;1}) = 0\)</span></li>
+</ul>
+<p><strong>Critical initialization</strong>:</p>
+<p><span class="math display">\[
+C_W = 1, \quad C_b = 0
+\]</span></p>
+</section>
+<section id="k-0-universality-class" class="level3">
+<h3 class="anchored" data-anchor-id="k-0-universality-class">K* = 0 Universality Class</h3>
+<p><strong>代表的な活性化関数</strong>: tanh, sin, erf</p>
+<p><strong>特徴</strong>:</p>
+<ul>
+<li>Fixed point が zero: <span class="math inline">\(K^*_{00} = 0\)</span></li>
+<li>Power-law decay: <span class="math inline">\(K^{(\ell)}_{00} \sim 1/\ell^q\)</span> with <span class="math inline">\(0 &lt; q \leq 1\)</span></li>
+<li>Higher-order corrections が重要</li>
+</ul>
+<p><strong>Critical initialization</strong>: Activation function に依存した調整が必要</p>
+</section>
+<section id="half-stable-universality-classes" class="level3">
+<h3 class="anchored" data-anchor-id="half-stable-universality-classes">Half-Stable Universality Classes</h3>
+<p><strong>代表的な活性化関数</strong>: SWISH, GELU</p>
+<p><strong>特徴</strong>:</p>
+<ul>
+<li>Power-law decay towards nonzero fixed point: <span class="math inline">\(K^*_{00} \neq 0\)</span></li>
+<li>部分的な stability</li>
+</ul>
+<p>これらの universality class の理解により、異なる活性化関数が深層ネットワークでどう振る舞うかを予測できる。</p>
+</section>
+</section>
+<section id="gradient-explodingvanishing-との関連chapter-9.1-9.4" class="level2">
+<h2 class="anchored" data-anchor-id="gradient-explodingvanishing-との関連chapter-9.1-9.4">Gradient Exploding/Vanishing との関連（Chapter 9.1, 9.4）</h2>
+<p>Criticality の概念は、もともと <strong>exploding and vanishing gradient problem</strong> を解決するために導入された。</p>
+<section id="traditional-view-gradient-の-explodingvanishing" class="level3">
+<h3 class="anchored" data-anchor-id="traditional-view-gradient-の-explodingvanishing">Traditional View: Gradient の Exploding/Vanishing</h3>
+<p>Backpropagation において、損失関数の勾配は chain rule により以下の形をとる:</p>
+<p><span class="math display">\[
+\frac{dL_A}{d\theta^{(\ell)}_\mu} = \sum_{\alpha \in D} \sum_{i_L} \sum_{i_\ell} \epsilon_{i_L;\alpha} \frac{dz^{(L)}_{i_L;\alpha}}{dz^{(\ell)}_{i_\ell;\alpha}} \frac{dz^{(\ell)}_{i_\ell;\alpha}}{d\theta^{(\ell)}_\mu}
+\]</span></p>
+<p>ここで、中間の chain-rule factor は:</p>
+<p><span class="math display">\[
+\frac{dz^{(L)}_{i_L;\alpha}}{dz^{(\ell)}_{i_\ell;\alpha}} = \sum_{i_{\ell+1}, \ldots, i_{L-1}} \prod_{\ell'=\ell}^{L-1} \left[ W^{(\ell'+1)}_{i_{\ell'+1} i_{\ell'}} \sigma'^{(\ell')}_{i_{\ell'};\alpha} \right]
+\]</span></p>
+<p>この product of matrices が、層 <span class="math inline">\(\ell\)</span> から層 <span class="math inline">\(L\)</span> にかけて exponential behavior を示すことが、gradient exploding/vanishing problem の本質である。</p>
+</section>
+<section id="critical-view-criticality-による解決" class="level3">
+<h3 class="anchored" data-anchor-id="critical-view-criticality-による解決">Critical View: Criticality による解決</h3>
+<p>Criticality は、この問題を以下の三つの観点から解決する:</p>
+<p><strong>1. Error Factor の制御</strong>:</p>
+<p>Mean Squared Error (MSE) loss の場合、error factor は:</p>
+<p><span class="math display">\[
+\epsilon_{i;\alpha} = z^{(L)}_{i;\alpha} - y_{i;\alpha}
+\]</span></p>
+<p>Kernel が explode すると、出力 <span class="math inline">\(z^{(L)}_{i;\alpha}\)</span> も explode し、error factor が発散する。Criticality condition <span class="math inline">\(\chi_\parallel(K^*) \leq 1\)</span> により、これを防ぐ。</p>
+<p><strong>2. Trivial Factor の制御</strong>:</p>
+<p>重みに関する trivial factor は:</p>
+<p><span class="math display">\[
+\frac{dz^{(\ell)}_{i;\alpha}}{dW^{(\ell)}_{jk}} = \delta_{ij} \sigma^{(\ell-1)}_{k;\alpha}
+\]</span></p>
+<p>Kernel が vanish すると、activation <span class="math inline">\(\sigma^{(\ell-1)}_{k;\alpha}\)</span> も vanish し、深い層の重みが訓練されない。Criticality condition <span class="math inline">\(\chi_\parallel(K^*) \geq 1\)</span> により、これを防ぐ。</p>
+<p><strong>3. Chain-rule Factor の制御</strong>:</p>
+<p>Chain-rule factor は、Neural Tangent Kernel (NTK) の中に <span class="math inline">\(\prod_{\ell'=\ell}^{\ell-1} \chi_\perp^{(\ell')}\)</span> の形で encode されている。Criticality condition <span class="math inline">\(\chi_\perp(K^*) = 1\)</span> により、この積が exponentially grow/decay しないことが保証される。</p>
+<p><strong>結論</strong>: 二つの criticality condition</p>
+<p><span class="math display">\[
+\chi_\parallel(K^*) = 1, \quad \chi_\perp(K^*) = 1
+\]</span></p>
+<p>は、kernel の exploding/vanishing と gradient の exploding/vanishing の両方を同時に解決する。</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Criticality の普遍性
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Criticality は、forward pass における kernel の安定性だけでなく、backward pass における gradient の安定性も同時に保証する。この意味で、criticality は深層学習における<strong>普遍的な原理</strong>である。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="実践的な初期化手法との比較" class="level2">
+<h2 class="anchored" data-anchor-id="実践的な初期化手法との比較">実践的な初期化手法との比較</h2>
+<p>Criticality の理論は、実践的に用いられている初期化手法の理論的基盤を提供する。</p>
+<section id="xavier-initialization-glorot-initialization" class="level3">
+<h3 class="anchored" data-anchor-id="xavier-initialization-glorot-initialization">Xavier Initialization (Glorot Initialization)</h3>
+<p><strong>提案</strong>: Glorot &amp; Bengio (2010)</p>
+<p><strong>初期化規則</strong>:</p>
+<p><span class="math display">\[
+W^{(\ell)}_{ij} \sim \mathcal{N}\left(0, \frac{2}{n_{\ell-1} + n_\ell}\right)
+\]</span></p>
+<p><strong>動機</strong>: Forward pass と backward pass の両方で variance を保存</p>
+<p><strong>Criticality との関連</strong>: Scale-invariant universality class において、<span class="math inline">\(C_W = 1\)</span> を満たす</p>
+</section>
+<section id="he-initialization-kaiming-initialization" class="level3">
+<h3 class="anchored" data-anchor-id="he-initialization-kaiming-initialization">He Initialization (Kaiming Initialization)</h3>
+<p><strong>提案</strong>: He et al.&nbsp;(2015)</p>
+<p><strong>初期化規則</strong>:</p>
+<p><span class="math display">\[
+W^{(\ell)}_{ij} \sim \mathcal{N}\left(0, \frac{2}{n_{\ell-1}}\right)
+\]</span></p>
+<p><strong>動機</strong>: ReLU などの非対称な活性化関数に対して variance を保存</p>
+<p><strong>Criticality との関連</strong>: ReLU (scale-invariant class) において、<span class="math inline">\(C_W = 1\)</span> を正確に満たす</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>理論と実践の一致
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>He initialization と Xavier initialization は、経験的に良い性能を示すことが知られていたが、PDLT の criticality 理論により、これらが <strong>数学的に最適な初期化</strong> であることが証明された。Criticality 理論は、既存の実践的手法を統一的に理解し、新しい活性化関数やアーキテクチャに対する初期化手法を systematic に導出する枠組みを提供する。</p>
+</div>
+</div>
+</section>
+</section>
+<section id="criticality-の可視化" class="level2">
+<h2 class="anchored" data-anchor-id="criticality-の可視化">Criticality の可視化</h2>
+<p>Criticality の効果を視覚的に理解するため、以下の diagram を用いる。</p>
+<section id="kernel-evolution-の-phase-diagram" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-evolution-の-phase-diagram">Kernel Evolution の Phase Diagram</h3>
+<pre><code>┌──────────────────────────────────────────────────────────────┐
+│           Kernel Evolution Phase Diagram                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  K^(l)                                                       │
+│   ^                                                          │
+│   |    Exploding Phase (C_W &gt; 1)                             │
+│   |   /                                                      │
+│   |  /                                                       │
+│   | /                                                        │
+│   |/  Critical Point (C_W = 1)                               │
+│   +─────────────────────────────────────&gt; Layer l            │
+│   |\                                                         │
+│   | \                                                        │
+│   |  \                                                       │
+│   |   \ Vanishing Phase (C_W &lt; 1)                            │
+│   |    v                                                     │
+│   |     0                                                    │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘</code></pre>
+<ul>
+<li><strong>Exploding phase</strong> (<span class="math inline">\(C_W &gt; 1\)</span>): Kernel が exponentially grow し、<span class="math inline">\(K^* = \infty\)</span> に到達</li>
+<li><strong>Critical point</strong> (<span class="math inline">\(C_W = 1\)</span>): Kernel が一定値に保たれる（nontrivial fixed point）</li>
+<li><strong>Vanishing phase</strong> (<span class="math inline">\(C_W &lt; 1\)</span>): Kernel が exponentially decay し、<span class="math inline">\(K^* = 0\)</span> に到達</li>
+</ul>
+</section>
+<section id="universality-classes-の比較" class="level3">
+<h3 class="anchored" data-anchor-id="universality-classes-の比較">Universality Classes の比較</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────────────────────┐
+│      Kernel Evolution across Universality Classes                                           │
+├─────────────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                             │
+│  K^(l)                                                                                      │
+│   ^                                                                                         │
+│   |  Scale-Invariant Class (ReLU)                                                           │
+│   |  ════════════════════════════════ (constant)            │
+│   |                                                                                         │
+│   |  Half-Stable Class (GELU)                                                               │
+│   |  ─────────────.                   (power-law decay)                                     │
+│   |                \                                                                        │
+│   |                 `─────────────────                                                      │
+│   |                                                                                         │
+│   |  K* = 0 Class (tanh)                                                                    │
+│   |  ───────                          (power-law to zero)                                   │
+│   |         `──                                                                             │
+│   |            `─────                                                                       │
+│   |                  `────────────────                                                      │
+│   +─────────────────────────────────────&gt; Layer l                                           │
+│                                                                                             │
+└─────────────────────────────────────────────────────────────────────────────────────────────┘</code></pre>
+<p>異なる universality class は、critical initialization 下でも異なる kernel evolution を示す:</p>
+<ul>
+<li><strong>Scale-Invariant</strong>: Perfect preservation (constant)</li>
+<li><strong>Half-Stable</strong>: Power-law decay to nonzero fixed point</li>
+<li><strong>K* = 0</strong>: Power-law decay to zero</li>
+</ul>
+</section>
+</section>
+<section id="まとめ" class="level2">
+<h2 class="anchored" data-anchor-id="まとめ">まとめ</h2>
+<p>Criticality は、深層ニューラルネットワークの初期化における最重要原理である。</p>
+<p><strong>主要な概念</strong>:</p>
+<ul>
+<li><strong>Exploding/Vanishing Problem</strong>: 不適切な初期化により、信号が exponentially grow または decay する問題</li>
+<li><strong>Critical Point</strong>: Exploding と vanishing の境界にある特別な点（<span class="math inline">\(C_W = 1\)</span>）</li>
+<li><strong>Criticality Conditions</strong>: <span class="math inline">\(\chi_\parallel(K^*) = 1\)</span> と <span class="math inline">\(\chi_\perp(K^*) = 1\)</span> の二つの条件</li>
+<li><strong>Universality Classes</strong>: 活性化関数の criticality 挙動による分類</li>
+</ul>
+<p><strong>実践的意義</strong>:</p>
+<ul>
+<li><strong>He/Xavier Initialization の理論的基盤</strong>: 既存の実践的手法が数学的に最適であることの証明</li>
+<li><strong>新しい活性化関数への適用</strong>: Criticality 理論により、任意の活性化関数に対する最適初期化を systematic に導出可能</li>
+<li><strong>Forward と Backward の統一</strong>: Kernel の安定性と gradient の安定性が同じ条件で達成される</li>
+</ul>
+<p><strong>理論的意義</strong>:</p>
+<ul>
+<li><strong>統計物理学との接続</strong>: Phase transition の理論を深層学習に応用</li>
+<li><strong>有効理論の枠組み</strong>: Criticality は有効理論アプローチの中心的概念</li>
+<li><strong>深層極限の理解</strong>: 深層ニューラルネットワークの asymptotic behavior の理解</li>
+</ul>
+<p>Criticality は、深層学習を「なぜ動くのか」から「どう設計すべきか」へと導く、理論と実践の橋渡しとなる概念である。</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/naoto-iwase\.github\.io\/books");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ja/pdlt/02-rg-flow.html" class="pagination-link" aria-label="RG Flow">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">RG Flow</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ja/pdlt/04-neural-tangent-kernel.html" class="pagination-link" aria-label="Neural Tangent Kernel">
+        <span class="nav-page-text">Neural Tangent Kernel</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 <a href="https://naoto-iwase.github.io">Naoto Iwase</a></p>
+</div>   
+    <div class="nav-footer-center">
+<p><a href="https://naoto-iwase.github.io/books">Books Home</a></p>
+</div>
+    <div class="nav-footer-right">
+<p><a href="https://x.com/naoto_iwase"><i class="bi bi-twitter-x"></i></a> <a href="https://github.com/naoto-iwase"><i class="bi bi-github"></i></a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
