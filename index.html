@@ -85,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
       searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description"],
     };
@@ -113,7 +113,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
       searchColumns: [],
     };
@@ -418,9 +418,10 @@ window.Quarto = {
 </header>
 
 
-<div class="grid">
-<section id="日本語-japanese" class="level2 g-col-6">
-<h2 class="anchored" data-anchor-id="日本語-japanese">日本語 (Japanese)</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">日本語 (Japanese)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">English</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div id="listing-listing-ja" class="quarto-listing quarto-listing-container-default">
 <div class="listing-actions-group">
     <div class="input-group input-group-sm quarto-listing-filter">
@@ -429,7 +430,7 @@ window.Quarto = {
     </div>
 </div>
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDVkxNJTJDVmlkZW8lMjBMYW5ndWFnZSUyME1vZGVsJTJDTXVsdGltb2RhbCUyQ0dyb3VuZGluZw==" data-listing-date-sort="1770076800000" data-listing-file-modified-sort="1770083112910" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="67">
+<div class="quarto-post image-right" data-index="0" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDVkxNJTJDVmlkZW8lMjBMYW5ndWFnZSUyME1vZGVsJTJDTXVsdGltb2RhbCUyQ0dyb3VuZGluZw==" data-listing-date-sort="1770076800000" data-listing-file-modified-sort="1770086765981" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="67">
 <div class="thumbnail"><a href="./ja/molmo2/index.html" class="no-external">
 
 <img loading="lazy" src="./ja/molmo2/images/molmo2.png" class="thumbnail-image">
@@ -448,10 +449,13 @@ window.Quarto = {
 <div class="listing-date">
 Feb 3, 2026
 </div>
+<div class="listing-author">
+Naoto Iwase
+</div>
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDTExNJTJDVHJhbnNmb3JtZXIlMkNPcGVuJTIwU291cmNlJTJDUmVhc29uaW5n" data-listing-date-sort="1738454400000" data-listing-file-modified-sort="1770083112911" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="183">
+<div class="quarto-post image-right" data-index="1" data-categories="TWFjaGluZSUyMExlYXJuaW5nJTJDTExNJTJDVHJhbnNmb3JtZXIlMkNPcGVuJTIwU291cmNlJTJDUmVhc29uaW5n" data-listing-date-sort="1738454400000" data-listing-file-modified-sort="1770086765982" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="183">
 <div class="thumbnail"><a href="./ja/olmo-3/index.html" class="no-external">
 
 <img loading="lazy" src="./ja/olmo-3/images/olmo-3.png" class="thumbnail-image">
@@ -470,29 +474,68 @@ Feb 3, 2026
 <div class="listing-date">
 Feb 2, 2025
 </div>
+<div class="listing-author">
+Naoto Iwase
+</div>
 </a>
 </div>
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div>
-</section>
-<section id="english" class="level2 g-col-6">
-<h2 class="anchored" data-anchor-id="english">English</h2>
-<div id="listing-listing-en" class="quarto-listing quarto-listing-container-default">
-<div class="listing-actions-group">
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
 </div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div id="listing-listing-en" class="quarto-listing quarto-listing-container-default">
 <div class="list quarto-listing-default">
 
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
 </div>
-</section>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
 </div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>English translations are in progress. Please check the Japanese tab for now.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+// URL hash (#ja, #en) to switch tabs
+document.addEventListener('DOMContentLoaded', () => {
+  const tabs = document.querySelectorAll('.panel-tabset .nav-link');
+
+  // Activate tab based on URL hash
+  const activate = () => {
+    const hash = location.hash.slice(1);
+    tabs.forEach(tab => {
+      const text = tab.textContent.toLowerCase();
+      if ((hash === 'ja' && text.includes('japanese')) ||
+          (hash === 'en' && text.includes('english'))) {
+        tab.click();
+      }
+    });
+  };
+
+  // Update URL hash when tab is clicked
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const lang = tab.textContent.toLowerCase().includes('japanese') ? 'ja' : 'en';
+      history.replaceState(null, null, `#${lang}`);
+    });
+  });
+
+  activate();
+  addEventListener('hashchange', activate);
+});
+</script>
 
 
 
