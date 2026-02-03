@@ -84,6 +84,7 @@ Molmo2 は、人手アノテーションと自前モデル（Molmo, Claude Sonne
 
 - **内容**: 650k のビデオポインティングクエリ（280k 動画、平均6ポイント/動画）
 - **カテゴリ**: 8種類
+
   - Objects, Animals, Actions/Events
   - Referring expressions, Indirect references
   - Spatial references, Comparative references
@@ -157,6 +158,7 @@ Molmo2 は、標準的な VLM アーキテクチャを採用しています。
 ```
 
 **主要な設計選択**:
+
 - **Cropping**: 画像は最大24クロップ（推論時）、動画は2 fpsサンプリング
 - **Bi-directional attention**: 画像トークン同士が相互に attend 可能（性能向上）
 - **Pointing フォーマット**: 正規化された (x, y, timestamp/image_index, object_id) をプレーンテキストで出力
@@ -209,6 +211,7 @@ Molmo2 は **3段階** でトレーニングされます。
 データには、単一トークン出力の多肢選択問題から、4000+トークンの長いビデオキャプションまで含まれます。長い出力が損失の大部分を占めてしまうと、短い回答タスクの性能が低下します。
 
 **解決策**: タスクごとに重み付けを調整
+
 - ビデオキャプション: 重み 0.1
 - ポインティング: 重み 0.2
 - その他: $\frac{4}{\sqrt{n}}$（$n$ = 回答トークン数）
@@ -238,6 +241,7 @@ Molmo2 は、オンザフライでパッキングするアルゴリズムを開�
 Molmo2 は、標準的なビデオベンチマークと新規のキャプション・カウンティングベンチマークで評価されています。
 
 **主要な結果**:
+
 - **短尺ビデオ理解**: オープンウェイトモデル中で SOTA
   - NextQA: 86.2（Molmo2-8B）
   - PerceptionTest: 82.1
@@ -270,6 +274,7 @@ Molmo2 は、以下の長尺ビデオベンチマークで課題を抱えてい�
 :::
 
 **Human Preference Study**:
+
 - Elo スコア: 1057（Molmo2-8B）
 - Gemini 3 Pro (1082)、Gemini 2.5 Flash (1084) に次ぐ5位
 - 完全オープンモデルとしては最高性能
@@ -279,11 +284,13 @@ Molmo2 は、以下の長尺ビデオベンチマークで課題を抱えてい�
 Molmo2 の最大の強みは **ビデオグラウンディング** です。
 
 **Video Pointing**:
+
 - Molmo2-VP ベンチマーク（新規）で F1 Score **38.4**
   - Gemini 3 Pro (20.0) を大きく上回る
   - プロプライエタリモデルを含めて最高性能
 
 **Video Tracking**:
+
 - BURST（test）で accuracy **56.2**
 - Molmo2-VC（新規ベンチマーク）で J&F **41.1**
   - Gemini 3 Pro を上回る（詳細はベンチマークによる）
