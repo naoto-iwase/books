@@ -332,14 +332,20 @@ image: "images/cover-image.png"
 #### フィールド説明
 
 - **title**: 本のタイトル（モデル名など）
-- **description**: 1行の説明文
+- **description**: 1行の説明文（簡潔なひと言で）
 - **date**: 作成日または論文の公開日（YYYY-MM-DD形式）
   - **重要**: 現在の日付は Bash ツールで `date +%Y-%m-%d` を実行して確認すること
   - タイポを防ぐため、手動で年を書かずに必ずコマンド結果を使用する
 - **author**: "Naoto Iwase"（固定）
-- **categories**: 適切なカテゴリをリスト形式で指定
-  - 例: `[Machine Learning, LLM, Transformer]`
-  - 例: `[Machine Learning, VLM, Video Language Model, Multimodal]`
+- **categories**: 適切なカテゴリを**最大2つまで**リスト形式で指定
+  - **重要**: まず既存カテゴリを確認して表記揺れを防ぐ：
+    ```bash
+    python .claude/skills/book-writer/scripts/list_categories.py .
+    ```
+  - 既存カテゴリがあれば優先的に使用し、新規カテゴリは必要な場合のみ追加
+  - 例: `[LLM, Reasoning]`
+  - 例: `[VLM, Multimodal]`
+  - 例: `[Deep Learning, Statistical Physics]`
 - **image**: カバー画像のパス（`images/` ディレクトリ内）
 
 #### 本文
