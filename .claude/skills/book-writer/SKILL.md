@@ -334,6 +334,8 @@ image: "images/cover-image.png"
 - **title**: 本のタイトル（モデル名など）
 - **description**: 1行の説明文
 - **date**: 作成日または論文の公開日（YYYY-MM-DD形式）
+  - **重要**: 現在の日付は Bash ツールで `date +%Y-%m-%d` を実行して確認すること
+  - タイポを防ぐため、手動で年を書かずに必ずコマンド結果を使用する
 - **author**: "Naoto Iwase"（固定）
 - **categories**: 適切なカテゴリをリスト形式で指定
   - 例: `[Machine Learning, LLM, Transformer]`
