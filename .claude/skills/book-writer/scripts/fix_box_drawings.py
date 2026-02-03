@@ -13,26 +13,42 @@ Usage:
 
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 
 def count_display_width(text):
-    """Count display width of text (considering full-width characters).
+    """Count display width of text.
+
+    Box drawings should only contain half-width characters (ASCII, box drawing
+    characters, arrows, etc.). All characters are treated as width 1.
+
+    If full-width characters (e.g., Japanese) are detected, a warning is printed
+    as they violate the formatting rules.
 
     Args:
         text: String to measure
 
     Returns:
-        int: Display width (ASCII chars = 1, full-width chars = 2)
+        int: Display width (all characters = 1)
     """
     width = 0
+    has_fullwidth = False
+    fullwidth_chars = []
+
     for char in text:
-        # ASCII characters and box drawing characters are 1 width
-        if ord(char) < 0x80 or char in '┌┐└┘├┤│─┬┴┼':
-            width += 1
-        else:
-            # Other characters (including Japanese) are 2 width
-            width += 2
+        width += 1
+        # Check East Asian Width property
+        # F (Fullwidth) or W (Wide) are full-width characters
+        ea_width = unicodedata.east_asian_width(char)
+        if ea_width in ('F', 'W'):
+            has_fullwidth = True
+            fullwidth_chars.append(char)
+
+    if has_fullwidth:
+        chars_str = ''.join(fullwidth_chars[:10])  # Show first 10 chars
+        print(f"    WARNING: Full-width characters detected: {chars_str}")
+
     return width
 
 
