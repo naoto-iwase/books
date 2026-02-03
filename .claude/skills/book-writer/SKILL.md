@@ -214,6 +214,7 @@ Task tool を複数同時に呼び出し:
 {.claude/skills/book-writer/assets/formatting-rules.md の内容を読み込む}
 
 **CRITICAL ルール**（厳守）:
+- 日本語（`ja/`）の場合は**である調**で記述（ですます調禁止）
 - Box drawings 内は半角英数字のみ使用（日本語禁止）
 - **リスト前に必ず空行を挿入**（箇条書き、順序付きリスト、チェックリスト全て）
 - **リスト項目内の引用（blockquote）の前にも空行を挿入**
@@ -425,6 +426,7 @@ python3 .claude/skills/book-writer/scripts/fix_list_spacing.py {lang}/{book}
 
 自動修正ツールの実行後、以下を確認:
 
+- [ ] 日本語（`ja/`）の場合は**である調**で記述されているか
 - [ ] `_metadata.yml` が作成されているか（`sidebar: book-name` 形式）
 - [ ] `index.qmd` が作成されているか（目次が全章を網羅しているか）
 - [ ] `_quarto.yml` のサイドバーに追加されているか
@@ -506,6 +508,9 @@ Bad (全角文字混在):
 
 ### 日本語 (ja/) の場合
 
+- **文体**: である調（断定調）を使用
+  - 例: 「〜である」「〜する」「〜となる」
+  - ですます調は使用しない
 - 専門用語は初出時に英語を併記: 「強化学習（Reinforcement Learning, RL）」
 - 論文タイトルや固有名詞は原語表記を優先
 - Callout 内も日本語で記述
