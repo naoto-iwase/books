@@ -138,6 +138,6 @@ Section 3.5.4 の主要な発見。
 
 ## 関連セクション
 
-- [03-pretraining.qmd](03-pretraining.qmd): Stage 1 の事前学習
-- [04-sft.qmd](04-sft.qmd): Stage 3 の SFT 訓練
-- [05-data-dolma3.qmd](05-data-dolma3.qmd): Dolma 3 データセット全体
+- [全体像](00-overview.qmd): Olmo 3 の訓練パイプライン全体
+- [Dolma 3 データセット](01-dolma3-dataset.qmd): Stage 1 の事前学習データ
+- [Dolci データセット](08-dolci-dataset.qmd): Stage 3 の Post-training データ

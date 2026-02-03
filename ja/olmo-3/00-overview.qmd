@@ -146,7 +146,7 @@ Olmo 3 Think は、最終回答を生成する前に**段階的推論**を行い
 
 3. **RLVR (Reinforcement Learning with Verifiable Rewards)**: OlmoRL による強化学習
 
-   > 詳細: [OlmoRL / GRPO](10-olmrl-grpo.qmd)
+   > 詳細: [OlmoRL / GRPO](10-olmorl-grpo.qmd)
 
 > 詳細: [Dolci データセット](08-dolci-dataset.qmd)
 
