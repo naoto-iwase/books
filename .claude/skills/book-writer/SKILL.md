@@ -409,16 +409,17 @@ python .claude/skills/book-writer/scripts/fix_box_drawings.py {lang}/{book}
 - Box drawingsの右端を自動で揃える
 - 修正が必要なファイルのみ上書き
 
-#### 5.2: リスト前の空行の自動修正
+#### 5.2: リストとblockquote前の空行の自動修正
 
-**次に必ず実行**: LLMは箇条書き前の空行を見落としやすいため、自動化ツールで修正します。
+**次に必ず実行**: LLMは箇条書きやblockquote前の空行を見落としやすいため、自動化ツールで修正します。
 
 ```bash
-python3 .claude/skills/book-writer/scripts/fix_list_spacing.py {lang}/{book}
+python3 .claude/skills/book-writer/scripts/fix_spacing.py {lang}/{book}
 ```
 
 このスクリプトは:
 - 箇条書き（`-`, `*`, `+`）と順序付きリスト（`1.`, `2.`など）の直前に空行がない箇所を検出
+- blockquote（`>`で始まる引用ブロック）の直前に空行がない箇所を検出
 - 自動的に空行を挿入
 - 修正が必要なファイルのみ上書き
 

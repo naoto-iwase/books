@@ -18,7 +18,7 @@ This finds lines that are directly followed by a list item or blockquote block
 (without a blank line) and inserts a blank line between them.
 
 Usage:
-    python fix_list_spacing.py <directory>
+    python fix_spacing.py <directory>
 
     Processes all .qmd files in the specified directory.
 """
@@ -95,7 +95,7 @@ def main():
     if len(sys.argv) > 1:
         target_dir = Path(sys.argv[1])
     else:
-        print("Usage: python fix_list_spacing.py <directory>")
+        print("Usage: python fix_spacing.py <directory>")
         print("Error: Please specify a directory to process")
         sys.exit(1)
 
