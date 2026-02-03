@@ -482,13 +482,13 @@ ul.task-list li input[type="checkbox"] {
 │                    Base Model Training                        │
 ├───────────────────────────────────────────────────────────────┤
 │  Stage 1: Pretraining (5.9T tokens)                           │
-│    → Dolma 3 Mix (Web, PDFs, Code, etc.)                     │
+│    → Dolma 3 Mix (Web, PDFs, Code, etc.)                      │
 ├───────────────────────────────────────────────────────────────┤
 │  Stage 2: Midtraining (100B tokens)                           │
-│    → Dolma 3 Dolmino Mix (Math, Code, QA, etc.)              │
+│    → Dolma 3 Dolmino Mix (Math, Code, QA, etc.)               │
 ├───────────────────────────────────────────────────────────────┤
 │  Stage 3: Long-context Extension (50-100B tokens)             │
-│    → Dolma 3 Longmino Mix (Long PDFs + Midtrain data)        │
+│    → Dolma 3 Longmino Mix (Long PDFs + Midtrain data)         │
 └───────────────────────────────────────────────────────────────┘
                             ↓
                      Olmo 3 Base
@@ -497,13 +497,13 @@ ul.task-list li input[type="checkbox"] {
 │                      Post-training                            │
 ├───────────────────────────────────────────────────────────────┤
 │  Path 1: Olmo 3 Think                                         │
-│    SFT → DPO (Delta Learning) → RLVR (OlmoRL)               │
+│    SFT → DPO (Delta Learning) → RLVR (OlmoRL)                 │
 ├───────────────────────────────────────────────────────────────┤
 │  Path 2: Olmo 3 Instruct                                      │
-│    SFT → DPO → RLVR                                         │
+│    SFT → DPO → RLVR                                           │
 ├───────────────────────────────────────────────────────────────┤
 │  Path 3: Olmo 3 RL-Zero                                       │
-│    Base → RLVR (from scratch)                                │
+│    Base → RLVR (from scratch)                                 │
 └───────────────────────────────────────────────────────────────┘</code></pre>
 </section>
 <section id="base-model-training" class="level2">
