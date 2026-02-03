@@ -825,7 +825,12 @@ window.Quarto = {
 <li><strong>MLVU</strong>: 60.2（Eagle2.5-8B: 60.4、PLM-8B: 52.6）</li>
 <li><strong>LVBench</strong>: 52.8（Eagle2.5-8B: 50.9、PLM-8B: 44.5）</li>
 </ul>
-<p><strong>原因</strong>: 1. <strong>オープンデータ不足</strong>: 10分以上の動画に対する高品質なアノテーションが不足 2. <strong>計算制約</strong>: Long-Context Training（Stage 3）は 2,000 ステップのみ実施（オーバーヘッドが大きい） 3. <strong>トレードオフ</strong>: キャプション品質を優先したため、長尺ビデオタスクの性能がやや低下</p>
+<p><strong>原因</strong>:</p>
+<ol type="1">
+<li><strong>オープンデータ不足</strong>: 10分以上の動画に対する高品質なアノテーションが不足</li>
+<li><strong>計算制約</strong>: Long-Context Training（Stage 3）は 2,000 ステップのみ実施（オーバーヘッドが大きい）</li>
+<li><strong>トレードオフ</strong>: キャプション品質を優先したため、長尺ビデオタスクの性能がやや低下</li>
+</ol>
 <p>ただし、Molmo2 の長尺ビデオ性能は依然として多くのオープンモデルを上回っており、完全オープンデータのみを使用していることを考慮すれば十分な成果です。</p>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/molmo2/05-long-context-training.html">Long-Context Training</a></p>
