@@ -28,6 +28,8 @@
 
 **補足**: Box drawings の**外側**の説明文は日本語でOKです（`ja/` の場合）。
 
+**自動修正**: Box drawings の右端が不揃いな場合は `scripts/fix_box_drawings.py` で自動修正できます。
+
 ---
 
 ## 2. Quarto 記法

@@ -385,7 +385,24 @@ sidebar:
 
 すべての文書とリンクが正しく整備されているか最終確認を行う。
 
-### チェックリスト
+### 手順
+
+#### 5.1: Box Drawings の自動修正
+
+**最初に必ず実行**: LLMは文字幅を正確に認識できないため、Box drawingsの修正は自動化ツールに任せます。
+
+```bash
+python .claude/skills/book-writer/scripts/fix_box_drawings.py {lang}/{book}
+```
+
+このスクリプトは:
+- 全角文字と半角文字の表示幅を正しく計算（ASCII=1, 全角=2）
+- Box drawingsの右端を自動で揃える
+- 修正が必要なファイルのみ上書き
+
+#### 5.2: チェックリスト
+
+Box drawingsの修正後、以下を確認:
 
 - [ ] `_metadata.yml` が作成されているか（`sidebar: book-name` 形式）
 - [ ] `index.qmd` が作成されているか（目次が全章を網羅しているか）
@@ -397,10 +414,6 @@ sidebar:
 - [ ] リスト項目内の引用（blockquote）の前にも空行が挿入されているか
 - [ ] Quarto callout が正しく閉じているか（`:::` の対応）
 - [ ] 画像は `images/` ディレクトリに配置されているか
-- [ ] Box drawings を使っている場合:
-  - [ ] 箱の線が揃っているか（特に右端の縦線）
-  - [ ] 半角文字のみを使用しているか（全角文字が混入していないか）
-  - [ ] 上下の罫線の長さが一致しているか
 
 ### リンク形式の確認
 
@@ -450,6 +463,7 @@ quarto preview
 - **半角文字のみを使用**: Box drawings 内に日本語などの全角文字を入れると、文字幅が揃わずレイアウトが崩れるため、Box drawings 内は英数字・記号のみで記述
 - **.qmd でも同じ**: Quarto でも ASCII box drawings は同様に機能する
 - **サブエージェントへの注意**: サブエージェントに Box drawings を含む文書を作成させる際は、必ず `assets/formatting-rules.md` の該当セクションを読ませること
+- **自動修正**: Phase 5で `scripts/fix_box_drawings.py` を必ず実行（LLMは文字幅を認識できないため）
 - **例**:
 
 ```
