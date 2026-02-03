@@ -516,9 +516,18 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p><strong>主な革新点</strong>:</p>
 <ol type="1">
-<li><p><strong>高速でスケーラブルなグローバル重複排除</strong>: 兆トークンスケールでの新しいツール &gt; 詳細: <a href="../../ja/olmo-3/05-deduplication.html">Deduplication（重複排除）</a></p></li>
-<li><p><strong>olmOCR science PDFs</strong>: 学術 PDF を線形化プレーンテキストに変換した新しいデータソース &gt; 詳細: <a href="../../ja/olmo-3/06-olmocr-science-pdfs.html">olmOCR science PDFs</a></p></li>
-<li><p><strong>データミキシングの新手法</strong>: Token-constrained mixing と Quality-aware upsampling &gt; 詳細: <a href="../../ja/olmo-3/07-data-mixing.html">Data Mixing 手法</a></p></li>
+<li><p><strong>高速でスケーラブルなグローバル重複排除</strong>: 兆トークンスケールでの新しいツール</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/olmo-3/05-deduplication.html">Deduplication（重複排除）</a></p>
+</blockquote></li>
+<li><p><strong>olmOCR science PDFs</strong>: 学術 PDF を線形化プレーンテキストに変換した新しいデータソース</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/olmo-3/06-olmocr-science-pdfs.html">olmOCR science PDFs</a></p>
+</blockquote></li>
+<li><p><strong>データミキシングの新手法</strong>: Token-constrained mixing と Quality-aware upsampling</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/olmo-3/07-data-mixing.html">Data Mixing 手法</a></p>
+</blockquote></li>
 </ol>
 <p><strong>データソース</strong>:</p>
 <ul>
@@ -544,7 +553,10 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 <li><strong>Post-training の下準備</strong>: 指示データと思考トレースを意図的に含めることで、後訓練の基盤を構築</li>
 </ol>
-<p><strong>評価スイート</strong>: OlmoBaseEval &gt; 詳細: <a href="../../ja/olmo-3/02-olmobaseeval.html">OlmoBaseEval（評価スイート）</a></p>
+<p><strong>評価スイート</strong>: OlmoBaseEval</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/olmo-3/02-olmobaseeval.html">OlmoBaseEval（評価スイート）</a></p>
+</blockquote>
 </section>
 <section id="stage-3-long-context-extension" class="level3">
 <h3 class="anchored" data-anchor-id="stage-3-long-context-extension">Stage 3: Long-context Extension</h3>
@@ -584,9 +596,15 @@ ul.task-list li input[type="checkbox"] {
 <p>Olmo 3 Think は、最終回答を生成する前に<strong>段階的推論</strong>を行い、中間的な思考トレースを生成するように訓練されています。</p>
 <p><strong>訓練パイプライン</strong>:</p>
 <ol type="1">
-<li><strong>SFT (Supervised Finetuning)</strong>: Dolci Think SFT で思考トレースを学習</li>
-<li><strong>DPO (Direct Preference Optimization)</strong>: Delta Learning による選好調整 &gt; 詳細: <a href="../../ja/olmo-3/09-delta-learning.html">Delta Learning</a></li>
-<li><strong>RLVR (Reinforcement Learning with Verifiable Rewards)</strong>: OlmoRL による強化学習 &gt; 詳細: <a href="10-olmrl-grpo.qmd">OlmoRL / GRPO</a></li>
+<li><p><strong>SFT (Supervised Finetuning)</strong>: Dolci Think SFT で思考トレースを学習</p></li>
+<li><p><strong>DPO (Direct Preference Optimization)</strong>: Delta Learning による選好調整</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="../../ja/olmo-3/09-delta-learning.html">Delta Learning</a></p>
+</blockquote></li>
+<li><p><strong>RLVR (Reinforcement Learning with Verifiable Rewards)</strong>: OlmoRL による強化学習</p>
+<blockquote class="blockquote">
+<p>詳細: <a href="10-olmrl-grpo.qmd">OlmoRL / GRPO</a></p>
+</blockquote></li>
 </ol>
 <blockquote class="blockquote">
 <p>詳細: <a href="../../ja/olmo-3/08-dolci-dataset.html">Dolci データセット</a></p>
