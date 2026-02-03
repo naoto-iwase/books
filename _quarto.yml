@@ -97,6 +97,30 @@ website:
             - text: "Packing & Message Trees"
               href: ja/molmo2/07-packing-message-trees.qmd
 
+    - id: pdlt
+      title: "Principles of Deep Learning Theory"
+      style: "docked"
+      contents:
+        - section: "Principles of Deep Learning Theory"
+          href: ja/pdlt/index.qmd
+          contents:
+            - text: "全体像"
+              href: ja/pdlt/00-overview.qmd
+            - text: "Effective Theory Approach"
+              href: ja/pdlt/01-effective-theory.qmd
+            - text: "RG Flow"
+              href: ja/pdlt/02-rg-flow.qmd
+            - text: "Criticality"
+              href: ja/pdlt/03-criticality.qmd
+            - text: "Neural Tangent Kernel"
+              href: ja/pdlt/04-neural-tangent-kernel.qmd
+            - text: "Infinite Width Limit"
+              href: ja/pdlt/05-infinite-width-limit.qmd
+            - text: "Representation Learning"
+              href: ja/pdlt/06-representation-learning.qmd
+            - text: "Universality Classes"
+              href: ja/pdlt/07-universality-classes.qmd
+
 format:
   html:
     theme:

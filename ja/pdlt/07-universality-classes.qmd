@@ -1,0 +1,282 @@
+# Universality Classes
+
+## 概要
+
+**普遍性クラス（Universality Classes）**は、異なる活性化関数が深層極限において示す共通の統計的挙動を分類する概念である。PDLT の Chapter 5.2, 5.3 で詳述されており、活性化関数の選択が深層ニューラルネットワークの初期化時の挙動に与える影響を理解する上で重要である。
+
+物理学における臨界現象の理論では、異なる物理系が renormalization group (RG) flow の下で同じ fixed point に収束する場合、それらは同じ普遍性クラスに属するとされる。PDLT はこの概念を深層学習に適用し、異なる活性化関数が representation group flow（層を通る信号の伝播）において同様の挙動を示す場合、それらを同じ普遍性クラスに分類する。
+
+::: {.callout-note collapse="true"}
+## 物理学における普遍性との比較
+
+物理学では、臨界点近傍の系の挙動は microscopic な詳細に依存せず、少数の**普遍的な量（critical exponents など）**によって特徴づけられる。例えば、水の液体-気体相転移と磁性体の相転移は、異なる物理系であるにもかかわらず、同じ Ising 普遍性クラスに属する。
+
+深層学習における普遍性クラスも同様に、活性化関数の詳細によらず、深層極限での kernel の挙動や critical exponents によって特徴づけられる。この類似性により、物理学の RG flow の手法を深層学習に適用できる。
+:::
+
+## 普遍性クラスの分類
+
+PDLT では、主に以下の3つの普遍性クラスが識別されている：
+
+1. **Scale-Invariant Universality Class** (ReLU, leaky ReLU など)
+2. **K* = 0 Universality Class** (tanh, sin など)
+3. **Half-Stable Universality Classes** (SWISH, GELU など)
+
+それぞれのクラスは、臨界点における kernel の fixed point 値 $K^*_{00}$ と、その fixed point 周りでの挙動によって特徴づけられる。
+
+### 臨界性の条件
+
+すべての普遍性クラスに共通する臨界性の条件は、parallel susceptibility と perpendicular susceptibility が以下を満たすことである：
+
+$$
+\chi_\parallel(K^*_{00}) = \chi_\perp(K^*_{00}) = 1
+$$
+
+ここで、susceptibility は kernel の recursion における摂動の増幅率を表す。$\chi > 1$ なら信号が explode し、$\chi < 1$ なら vanish する。臨界点 $\chi = 1$ では、信号が深層を通じて保存される。
+
+## Scale-Invariant Universality Class
+
+### 定義と特徴
+
+**Scale-invariant activation** は、任意の正のスケーリング $\lambda > 0$ に対して以下を満たす：
+
+$$
+\sigma(\lambda z) = \lambda \sigma(z)
+$$
+
+この条件を満たす活性化関数は、以下の piecewise linear 形式をとる：
+
+$$
+\sigma(z) = \begin{cases}
+a_+ z, & z \geq 0 \\
+a_- z, & z < 0
+\end{cases}
+$$
+
+代表的な例：
+
+- **Linear activation**: $a_+ = a_- = 1$
+- **ReLU**: $a_+ = 1, a_- = 0$
+- **Leaky ReLU**: $a_+ = 1, a_- = 0.01$ (など)
+
+### 臨界性解析
+
+Scale-invariant activation の場合、susceptibility は kernel 値によらず一定となる：
+
+$$
+\chi_\parallel(K) = \chi_\perp(K) = A^2 C_W \equiv \chi
+$$
+
+ここで、$A^2 = (a_+^2 + a_-^2)/2$ は活性化関数依存の定数、$C_W$ は weight variance の初期化 hyperparameter である。
+
+**臨界的な初期化**は以下で与えられる：
+
+$$
+(C_b, C_W)_{\text{critical}} = \left(0, \frac{1}{A^2}\right)
+$$
+
+ReLU の場合（$A^2 = 1/2$）、これは **Kaiming initialization** $(C_b, C_W) = (0, 2)$ に対応する。
+
+### Kernel の挙動
+
+臨界初期化において、kernel recursion は以下のように単純化される：
+
+$$
+K^{(\ell+1)}_{00} = C_b + \chi K^{(\ell)}_{00}
+$$
+
+$\chi = 1$ かつ $C_b = 0$ のとき、$K^{(\ell)}_{00}$ は一定に保たれる（line of fixed points）。ただし、非線形 scale-invariant activation の場合、perpendicular perturbations は power law で減衰する（$\sim 1/\ell^2$）。
+
+::: {.callout-important}
+## 実践的な意味
+
+Scale-invariant universality class に属する活性化関数は、深層ネットワークで最も安定した挙動を示す。特に ReLU は、実装の単純さと臨界性の保ちやすさから、深層学習で広く採用されている。
+:::
+
+## K* = 0 Universality Class
+
+### 定義と特徴
+
+このクラスに属する活性化関数は、原点で zero を通り、非ゼロの微分を持つ：
+
+$$
+\sigma(0) = 0, \quad \sigma'(0) \neq 0
+$$
+
+Taylor 展開係数を $\sigma(z) = \sum_{p=0}^\infty \frac{\sigma_p}{p!} z^p$ とすると、条件は $\sigma_0 = 0, \sigma_1 \neq 0$ となる。
+
+代表的な例：
+
+- **tanh**
+- **sin**
+- その他、原点で線形な奇関数
+
+### 臨界性解析
+
+このクラスの臨界的な初期化は以下で与えられる：
+
+$$
+(C_b, C_W)_{\text{critical}} = \left(0, \frac{1}{\sigma_1^2}\right)
+$$
+
+nontrivial fixed point は $K^*_{00} = 0$ にあり、kernel は power law で減衰する：
+
+$$
+\Delta K^{(\ell)}_{00} = K^{(\ell)}_{00} - K^*_{00} \sim \frac{1}{(-a_1)} \frac{1}{\ell}
+$$
+
+ここで、$a_1 = \sigma_3/\sigma_1 + \frac{3}{4}(\sigma_2/\sigma_1)^2$ は活性化関数の Taylor 係数から決まる定数である。安定性のためには $(-a_1) > 0$ が必要。
+
+### Critical Exponents
+
+K* = 0 universality class は、以下の **universal critical exponents** によって特徴づけられる：
+
+- **Midpoint kernel**: $p_0 = 1$ （$\Delta K^{(\ell)}_{00} \sim 1/\ell$）
+- **Parallel perturbations**: $p_\parallel = 2$ （$\delta K^{(\ell)}_{[1]} \sim 1/\ell^2$）
+- **Perpendicular perturbations**: $p_\perp = b_1/a_1$ （活性化関数依存）
+
+奇関数の場合、$a_1 = b_1$ となり、$p_\perp = 1$ となる。これは、入力間の角度が深層を通じて保存されることを意味する。
+
+::: {.callout-tip}
+## 実践的な意味
+
+tanh などの K* = 0 class の活性化関数は、深層極限で kernel が power law で減衰するため、ReLU よりも signal の保存性が劣る。ただし、指数減衰よりは遥かに穏やかであり、中程度の深さのネットワークでは実用的である。
+:::
+
+## Half-Stable Universality Classes
+
+### SWISH
+
+**SWISH** は以下で定義される：
+
+$$
+\sigma(z) = \frac{z}{1 + e^{-z}}
+$$
+
+SWISH は、ReLU の smooth approximation として設計されたが、2つの nontrivial fixed point を持つ：
+
+1. $K^*_{00} = 0$ with $(C_b, C_W) = (0, 4)$ → **不安定** (unstable)
+2. $K^*_{00} \approx 14.32$ with $(C_b, C_W) \approx (0.555, 1.988)$ → **半安定** (half-stable)
+
+半安定 fixed point では：
+
+- $K^{(\ell)}_{00} < K^*_{00}$ のとき、kernel は fixed point に引き寄せられる
+- $K^{(\ell)}_{00} > K^*_{00}$ のとき、kernel は fixed point から反発される
+
+$K^*_{00} \approx 14.3$ 周りで、SWISH はほぼ scale-invariant に振る舞う。
+
+### GELU
+
+**GELU (Gaussian Error Linear Unit)** は以下で定義される：
+
+$$
+\sigma(z) = \frac{z}{2}\left(1 + \text{erf}\left(\frac{z}{\sqrt{2}}\right)\right)
+$$
+
+GELU も2つの nontrivial fixed point を持つ：
+
+1. $K^*_{00} = 0$ with $(C_b, C_W) = (0, 4)$ → **不安定**
+2. $K^*_{00} = \frac{3 + \sqrt{17}}{2}$ with $(C_b, C_W) \approx (0.173, 1.983)$ → **半安定**
+
+ただし、SWISH とは逆の安定性を示す：
+
+- $K^{(\ell)}_{00} > K^*_{00}$ のとき、kernel は fixed point に引き寄せられる
+- $K^{(\ell)}_{00} < K^*_{00}$ のとき、kernel は fixed point から反発される
+
+::: {.callout-warning}
+## 実践的な意味
+
+SWISH と GELU は、ReLU の smooth 版として人気があるが、理論的には ReLU より劣る。半安定 fixed point の存在は、scale invariance の破れを示唆しており、特定の kernel 値に依存する振る舞いをもたらす。
+
+もし smooth activation を使いたい場合、**tanh** の方が理論的に健全である（K* = 0 class の安定な fixed point を持つ）。
+:::
+
+## 使うべきでない活性化関数
+
+以下の活性化関数は、nontrivial critical fixed point を持たないため、深層ネットワークには不適切である：
+
+### Sigmoid
+
+$$
+\sigma(z) = \frac{1}{1 + e^{-z}}
+$$
+
+$\sigma(0) = 0.5 \neq 0$ であるため、$K^*_{00} = 0$ での criticality 条件を満たすには $C_b < 0$ が必要となり、物理的に不可能。
+
+### Softplus
+
+$$
+\sigma(z) = \log(1 + e^z)
+$$
+
+criticality 条件 $\chi_\perp(K^*_{00})/\chi_\parallel(K^*_{00}) = 1$ をどの $K^*_{00} \geq 0$ でも満たせない。
+
+### 非線形 Monomial
+
+$$
+\sigma(z) = z^p, \quad p = 2, 3, 4, \ldots
+$$
+
+criticality 条件は $p/(2p-1) = 1$ となり、$p = 1$（線形）以外では満たせない。
+
+::: {.callout-caution}
+## 深層ネットワークでの影響
+
+これらの活性化関数を使うと、kernel が exponentially explode または vanish し、gradient の exploding/vanishing problem を引き起こす。浅いネットワークでは問題が顕在化しにくいが、深層化するほど致命的となる。
+:::
+
+## 普遍性クラスの比較表
+
+| 普遍性クラス | 代表例 | Fixed Point | Critical Exponent $p_0$ | 臨界初期化 | 実用性 |
+|------------|--------|-------------|------------------------|-----------|-------|
+| Scale-Invariant | ReLU, Leaky ReLU | Line of fixed points | N/A (constant) | $(0, 1/A^2)$ | 最高 |
+| K* = 0 | tanh, sin | $K^*_{00} = 0$ | $p_0 = 1$ | $(0, 1/\sigma_1^2)$ | 良好 |
+| Half-Stable (SWISH) | SWISH | $K^*_{00} \approx 14.3$ | $p_0 = 1$ | $(0.555, 1.988)$ | やや劣る |
+| Half-Stable (GELU) | GELU | $K^*_{00} = (3+\sqrt{17})/2$ | $p_0 = 1$ | $(0.173, 1.983)$ | やや劣る |
+| No Criticality | sigmoid, softplus, $z^p$ | なし | N/A | N/A | 不適切 |
+
+: 主要な活性化関数の普遍性クラス {#tbl-universality}
+
+## 実践的な指針
+
+### 活性化関数の選択
+
+1. **深層ネットワーク（50層以上）**: ReLU またはその variants（Leaky ReLU, PReLU）
+   - Scale invariance による安定性
+   - 計算効率の高さ
+
+2. **中程度の深さ（10-50層）**: tanh も選択肢
+   - K* = 0 class の power law 減衰は実用的
+   - Smooth な微分が必要な場合に有用
+
+3. **避けるべき**: sigmoid, softplus
+   - Criticality を達成できない
+   - 深層化で exponential behavior を引き起こす
+
+4. **SWISH/GELU の利用**: 注意が必要
+   - 実践では良好な性能を示すこともある
+   - 理論的には ReLU/tanh に劣る
+   - 特定のタスクで実験的に検証する価値はある
+
+### 初期化の重要性
+
+普遍性クラスの理論は、適切な初期化の重要性を強調している：
+
+- **ReLU**: He initialization $(C_b, C_W) = (0, 2)$
+- **tanh**: Xavier/Glorot initialization に近い $(C_b, C_W) = (0, 1)$
+
+これらの初期化により、訓練開始時に kernel が critical fixed point に保たれる。
+
+## まとめ
+
+普遍性クラスの理論により、以下が明らかになった：
+
+1. **活性化関数の選択は深層極限で重要**: 浅いネットワークでは差が小さいが、深層化すると普遍性クラスの違いが顕著になる
+
+2. **Scale-invariant class が最も安定**: ReLU が深層学習で支配的な理由の理論的根拠
+
+3. **Criticality は必須**: 適切な初期化により、signal の exploding/vanishing を防ぐ
+
+4. **Universality の力**: 異なる活性化関数が深層極限で同様の挙動を示すことで、理論的予測が可能になる
+
+PDLT の普遍性クラスの分析は、活性化関数とアーキテクチャ設計の理論的基盤を提供し、経験的知見（ReLU の優位性など）に物理学的な説明を与えている。
