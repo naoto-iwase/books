@@ -54,6 +54,7 @@ $$
 
 有限幅ニューラルネットワークは、神経連想（neural association）に対する帰納的バイアスを自動的に持つ。これは Donald Hebb の古典的原理に基づく。
 
+
 > Any two cells or systems of cells that are repeatedly active at the same time will tend to become "associated," so that activity in one facilitates activity in the other.
 >
 > — Donald Hebb, *The Organization of Behavior* (1949)

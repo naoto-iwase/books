@@ -59,19 +59,23 @@ Olmo 3 の開発は、**Base Model Training**（基盤モデル訓練）と **Po
 
 Olmo 3 Base は、**Dolma 3 Mix** と呼ばれる 5.9 兆トークンの多様なデータで事前学習される。
 
+
 > 詳細: [Dolma 3 データセット](01-dolma3-dataset.qmd)
 
 **主な革新点**:
 
 1. **高速でスケーラブルなグローバル重複排除**: 兆トークンスケールでの新しいツール
 
+
    > 詳細: [Deduplication（重複排除）](05-deduplication.qmd)
 
 2. **olmOCR science PDFs**: 学術 PDF を線形化プレーンテキストに変換した新しいデータソース
 
+
    > 詳細: [olmOCR science PDFs](06-olmocr-science-pdfs.qmd)
 
 3. **データミキシングの新手法**: Token-constrained mixing と Quality-aware upsampling
+
 
    > 詳細: [Data Mixing 手法](07-data-mixing.qmd)
 
@@ -87,6 +91,7 @@ Olmo 3 Base は、**Dolma 3 Mix** と呼ばれる 5.9 兆トークンの多様�
 
 100 億トークンの **Dolma 3 Dolmino Mix** で中間訓練を実施する。このステージの目的は、コード、数学、一般知識 QA などの重要な能力を強化することである。
 
+
 > 詳細: [Midtraining（中間訓練）](03-midtraining.qmd)
 
 **革新的な手法**:
@@ -99,11 +104,13 @@ Olmo 3 Base は、**Dolma 3 Mix** と呼ばれる 5.9 兆トークンの多様�
 
 **評価スイート**: OlmoBaseEval
 
+
 > 詳細: [OlmoBaseEval（評価スイート）](02-olmobaseeval.qmd)
 
 ### Stage 3: Long-context Extension
 
 Olmo 3 は、最大 **65K トークン**のコンテキストをサポートする長文脈能力を持つ。7B モデルは 50B トークン、32B モデルは 100B トークンの **Dolma 3 Longmino Mix** で拡張訓練される。
+
 
 > 詳細: [Long-context Extension（長文脈拡張）](04-long-context-extension.qmd)
 
@@ -142,9 +149,11 @@ Olmo 3 Think は、最終回答を生成する前に**段階的推論**を行い
 1. **SFT (Supervised Finetuning)**: Dolci Think SFT で思考トレースを学習
 2. **DPO (Direct Preference Optimization)**: Delta Learning による選好調整
 
+
    > 詳細: [Delta Learning](09-delta-learning.qmd)
 
 3. **RLVR (Reinforcement Learning with Verifiable Rewards)**: OlmoRL による強化学習
+
 
    > 詳細: [OlmoRL / GRPO](10-olmorl-grpo.qmd)
 
