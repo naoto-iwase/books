@@ -7,9 +7,9 @@ categories: [VLM, Multimodal]
 image: "images/molmo2.png"
 ---
 
-Molmo2 (Multimodal Open Language Model 2) は、Allen Institute for AI (AI2) とワシントン大学が開発した完全オープンな Vision-Language Model (VLM) ファミリーです。最大の特徴は、**ビデオグラウンディング（video grounding）** 機能を備え、動画内の「いつ、どこで」特定のイベントや物体が発生したかを正確に指し示すことができる点です。
+Molmo2 (Multimodal Open Language Model 2) は、Allen Institute for AI (AI2) とワシントン大学が開発した完全オープンな Vision-Language Model (VLM) ファミリーである。最大の特徴は、**ビデオグラウンディング（video grounding）** 機能を備え、動画内の「いつ、どこで」特定のイベントや物体が発生したかを正確に指し示すことができる点である。
 
-9つの新規データセット（完全にプロプライエタリモデルに依存せず構築）を使用し、オープンソースモデルの中で最高水準の性能を達成しています。特に、ビデオポインティングとトラッキングでは、Gemini 3 Pro などのプロプライエタリモデルを上回る性能を示しています。
+9つの新規データセット（完全にプロプライエタリモデルに依存せず構築）を使用し、オープンソースモデルの中で最高水準の性能を達成している。特に、ビデオポインティングとトラッキングでは、Gemini 3 Pro などのプロプライエタリモデルを上回る性能を示している。
 
 **論文**: [arXiv:2601.10611](https://arxiv.org/abs/2601.10611)
 
