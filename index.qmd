@@ -23,6 +23,8 @@ listing:
     page-size: 25
 ---
 
+Machine learning research notes.
+
 ::: {.panel-tabset}
 
 ## 日本語 (Japanese)
