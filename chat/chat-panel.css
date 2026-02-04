@@ -581,6 +581,10 @@ body:not(.quarto-dark) {
   background: var(--chat-bg-secondary);
 }
 
+.chat-setup-wrapper.hidden {
+  display: none;
+}
+
 .chat-setup-text {
   font-size: 0.9rem;
   margin: 10px 0;

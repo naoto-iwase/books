@@ -22,6 +22,9 @@
 (function() {
   // Configuration constants
   const CONFIG = {
+    // Language
+    DEFAULT_LANGUAGE: 'en',
+
     // Text length limits
     SESSION_TITLE_MAX_LENGTH: 30,
     SESSION_TITLE_DISPLAY_LENGTH: 20,
@@ -48,7 +51,7 @@
   let messages = [];
   let currentContent = '';
   let isOpen = false;
-  let currentLanguage = 'ja';
+  let currentLanguage = CONFIG.DEFAULT_LANGUAGE;
   let sessions = [];
   let currentSessionId = null;
 
@@ -84,7 +87,8 @@
       siteStructure: "**サイト全体の構成 (Recent 5 books per language):**",
       contentLoadError: "このページの内容を読み込めませんでした。一般的な質問には答えられます。",
       removeApiKeyConfirm: "API Keyを削除しますか？チャット履歴は保持されます。",
-      deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？"
+      deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？",
+      securityWarning: "⚠️ **セキュリティ上の注意**: API KeyはブラウザのlocalStorageに平文で保存されます。共有端末では使用後に必ず削除してください。"
     },
     en: {
       title: "💬 AI Chat",
@@ -116,7 +120,8 @@
       siteStructure: "**Site Structure (Recent 5 books per language):**",
       contentLoadError: "Failed to load page content. General questions can still be answered.",
       removeApiKeyConfirm: "Remove API Key? Chat history will be preserved.",
-      deleteAllSessionsConfirm: "Delete all chat history?"
+      deleteAllSessionsConfirm: "Delete all chat history?",
+      securityWarning: "⚠️ **Security Notice**: API Key is stored in plain text in browser's localStorage. Always remove it after use on shared devices."
     }
   };
 
@@ -125,8 +130,7 @@
     const path = window.location.pathname;
     if (path.includes('/ja/')) return 'ja';
     if (path.includes('/en/')) return 'en';
-    // Default to English for top page
-    return 'en';
+    return CONFIG.DEFAULT_LANGUAGE;
   }
 
   // Initialize when DOM is ready
@@ -149,7 +153,7 @@
     if (savedKey) {
       document.getElementById('chat-api-key').value = savedKey;
       document.getElementById('chat-settings').classList.add('hidden');
-      document.getElementById('chat-setup-wrapper').style.display = 'none';
+      document.getElementById('chat-setup-wrapper').classList.add('hidden');
       document.getElementById('chat-user-input').disabled = false;
       document.getElementById('chat-send-btn').disabled = false;
       document.getElementById('chat-settings-remove').style.display = 'block';
@@ -355,17 +359,17 @@
             <button class="chat-settings-save" id="chat-settings-save-btn" onclick="window.saveChatSettings()">Save Settings</button>
             <button class="chat-settings-remove" id="chat-settings-remove" onclick="window.removeApiKey()" style="display: none;">Remove API Key</button>
           </div>
+          <div class="chat-setup-wrapper" id="chat-setup-wrapper">
+            <p class="chat-setup-text">
+              <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a> <span id="chat-setup-msg"></span>
+            </p>
+            <div class="chat-info">
+              <strong id="chat-info-title"></strong><br>
+              <span id="chat-info-bullets"></span>
+            </div>
+            <div class="chat-resize-hint" id="chat-resize-hint"></div>
+          </div>
         </div>
-      </div>
-      <div class="chat-setup-wrapper" id="chat-setup-wrapper">
-        <p class="chat-setup-text">
-          <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a> <span id="chat-setup-msg"></span>
-        </p>
-        <div class="chat-info">
-          <strong id="chat-info-title"></strong><br>
-          <span id="chat-info-bullets"></span>
-        </div>
-        <div class="chat-resize-hint" id="chat-resize-hint"></div>
       </div>
       <div class="chat-messages" id="chat-messages">
       </div>
@@ -670,6 +674,9 @@ ${content}
       return;
     }
 
+    // Check if this is a new API key registration
+    const hadApiKey = !!localStorage.getItem('openrouter-api-key');
+
     // Disable button and show validating state
     const originalText = saveBtn.textContent;
     saveBtn.disabled = true;
@@ -700,13 +707,17 @@ ${content}
       // Show remove button
       document.getElementById('chat-settings-remove').style.display = 'block';
 
-      // Enable chat
-      document.getElementById('chat-setup-wrapper').style.display = 'none';
+      // Hide welcome message and enable chat
+      document.getElementById('chat-setup-wrapper').classList.add('hidden');
       document.getElementById('chat-settings').classList.add('hidden');
       document.getElementById('chat-user-input').disabled = false;
       document.getElementById('chat-send-btn').disabled = false;
 
+      // Show messages for initial setup only
       if (messages.length === 0) {
+        if (!hadApiKey) {
+          addChatMessage('assistant', i18n[currentLanguage].securityWarning);
+        }
         addChatMessage('assistant', i18n[currentLanguage].ready);
       }
     } catch (error) {
@@ -726,8 +737,8 @@ ${content}
 
     // Reset UI to initial state (but keep chat history)
     document.getElementById('chat-api-key').value = '';
-    document.getElementById('chat-setup-wrapper').style.display = 'block';
     document.getElementById('chat-settings').classList.remove('hidden');
+    document.getElementById('chat-setup-wrapper').classList.remove('hidden');
     document.getElementById('chat-settings-remove').style.display = 'none';
     document.getElementById('chat-user-input').disabled = true;
     document.getElementById('chat-send-btn').disabled = true;
