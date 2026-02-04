@@ -1,5 +1,49 @@
-// AI Chat Panel functionality
+/**
+ * AI Chat Panel - OpenRouter Integration
+ *
+ * Design Principles:
+ * - KISS: Keep it simple - favor clarity over cleverness
+ * - YAGNI: Build only what's needed, when it's needed
+ * - Vanilla JS: No frameworks - easy to understand and maintain
+ * - Beginner-friendly: Clear naming, consistent patterns, minimal abstractions
+ *
+ * Features:
+ * - Multi-language support (Japanese/English)
+ * - Session management with localStorage persistence
+ * - Streaming responses with markdown rendering
+ * - Responsive design with resizable panel
+ * - Dark mode support (Quarto theme integration)
+ *
+ * External Dependencies:
+ * - marked.js: Markdown parsing
+ * - highlight.js: Code syntax highlighting
+ * - OpenRouter API: LLM inference
+ */
 (function() {
+  // Configuration constants
+  const CONFIG = {
+    // Text length limits
+    SESSION_TITLE_MAX_LENGTH: 30,
+    SESSION_TITLE_DISPLAY_LENGTH: 20,
+    SESSION_LIST_TITLE_MAX: 40,
+    SESSION_PAGE_DISPLAY_MAX: 60,
+
+    // Panel dimensions
+    PANEL_MIN_WIDTH: 300,
+    PANEL_MAX_WIDTH_RATIO: 0.9,
+
+    // UI limits
+    TEXTAREA_MAX_HEIGHT: 150,
+    SESSION_LIST_MAX_HEIGHT: 300,
+
+    // Timing
+    MODEL_LOAD_DELAY: 500,
+
+    // Model sorting
+    DEFAULT_PRIORITY_INDEX: 999,
+    PRICING_DISPLAY_MULTIPLIER: 1000000,
+  };
+
   let models = [];
   let messages = [];
   let currentContent = '';
@@ -114,7 +158,7 @@
             select.value = savedModel;
             updateCurrentModelDisplay();
           }
-        }, 500);
+        }, CONFIG.MODEL_LOAD_DELAY);
       }
 
     }
@@ -222,7 +266,7 @@
     if (session.title === i18n.ja.newSession || session.title === i18n.en.newSession) {
       const firstUserMsg = messages.find(m => m.role === 'user');
       if (firstUserMsg) {
-        session.title = firstUserMsg.content.substring(0, 30).trim();
+        session.title = firstUserMsg.content.trim().replace(/\s+/g, ' ').substring(0, CONFIG.SESSION_TITLE_MAX_LENGTH);
       }
     }
 
@@ -234,20 +278,20 @@
     const session = sessions.find(s => s.id === currentSessionId);
     if (!session) return;
 
-    const nameEl = document.getElementById('chat-current-session-name');
-    if (nameEl) {
+    const currentSessionName = document.getElementById('chat-current-session-name');
+    if (currentSessionName) {
       const title = session.title || i18n[currentLanguage].newSession;
-      nameEl.textContent = title.substring(0, 20);
+      currentSessionName.textContent = title.substring(0, CONFIG.SESSION_TITLE_DISPLAY_LENGTH);
     }
 
     renderSessionList();
   }
 
   function renderSessionList() {
-    const listEl = document.getElementById('chat-session-list');
-    if (!listEl) return;
+    const sessionList = document.getElementById('chat-session-list');
+    if (!sessionList) return;
 
-    listEl.innerHTML = '';
+    sessionList.innerHTML = '';
 
     sessions.sort((a, b) => b.updated - a.updated).forEach(session => {
       const item = document.createElement('div');
@@ -255,8 +299,8 @@
 
       const date = new Date(session.updated);
       const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
-      const title = (session.title || i18n[currentLanguage].newSession).substring(0, 40);
-      const page = session.page ? session.page.substring(0, 60) : '';
+      const title = (session.title || i18n[currentLanguage].newSession).substring(0, CONFIG.SESSION_LIST_TITLE_MAX);
+      const page = session.page ? session.page.substring(0, CONFIG.SESSION_PAGE_DISPLAY_MAX) : '';
 
       item.innerHTML = `
         <div class="chat-session-info" onclick="window.switchSession('${session.id}')">
@@ -267,7 +311,7 @@
         <button class="chat-session-delete" onclick="window.deleteSession(event, '${session.id}')" title="Delete">×</button>
       `;
 
-      listEl.appendChild(item);
+      sessionList.appendChild(item);
     });
   }
 
@@ -346,7 +390,7 @@
     // Auto-resize textarea based on content
     userInput.addEventListener('input', function() {
       this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+      this.style.height = Math.min(this.scrollHeight, CONFIG.TEXTAREA_MAX_HEIGHT) + 'px';
     });
 
     // Close dropdown when clicking outside
@@ -387,7 +431,7 @@
       if (!isResizing) return;
 
       const deltaX = startX - e.clientX; // Inverted because panel grows left
-      const newWidth = Math.min(Math.max(300, startWidth + deltaX), window.innerWidth * 0.9);
+      const newWidth = Math.min(Math.max(CONFIG.PANEL_MIN_WIDTH, startWidth + deltaX), window.innerWidth * CONFIG.PANEL_MAX_WIDTH_RATIO);
       panel.style.width = newWidth + 'px';
     });
 
@@ -450,7 +494,7 @@
         const getPriority = (name) => {
           const provider = name.match(/^([^:]+):/)?.[1].trim() || '';
           const index = priorityProviders.indexOf(provider);
-          return index === -1 ? 999 : index;
+          return index === -1 ? CONFIG.DEFAULT_PRIORITY_INDEX : index;
         };
         const diff = getPriority(a.name) - getPriority(b.name);
         if (diff !== 0) return diff;
@@ -465,7 +509,7 @@
         const isFree = model.id.includes(':free');
         const modelName = model.name.replace(/\s*\(free\)\s*/gi, '').trim();
         const pricing = !isFree && model.pricing?.prompt
-          ? ` ($${(parseFloat(model.pricing.prompt) * 1000000).toFixed(2)}/1M)`
+          ? ` ($${(parseFloat(model.pricing.prompt) * CONFIG.PRICING_DISPLAY_MULTIPLIER).toFixed(2)}/1M)`
           : '';
         const free = isFree ? ' 🆓' : '';
         option.textContent = `${modelName}${free}${pricing}`;
@@ -542,6 +586,51 @@
     }
   }
 
+
+  // Build system prompt for Japanese
+  function buildJapaneseSystemPrompt(content) {
+    return `あなたは技術書の内容に基づいて質問に答えるアシスタントです。
+
+**サイト情報:**
+- サイト名: Naoto's Books
+- サイトURL: https://naoto-iwase.github.io/books
+- 著者: Naoto Iwase
+- 内容: 機械学習・深層学習に関する技術的なまとめ集
+
+**現在のページの内容:**
+
+${content}
+
+**回答時の注意:**
+- 上記の内容に基づいて、正確かつ分かりやすく回答してください
+- 専門用語は適切に説明し、必要に応じて数式や図の説明も含めてください
+- リンクを提示する際は以下の形式を使用してください：
+  - 言語別の一覧ページ: https://naoto-iwase.github.io/books/#{lang}（例: https://naoto-iwase.github.io/books/#ja）
+  - 個別ページ: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html（例: https://naoto-iwase.github.io/books/ja/olmo-3/03-midtraining.html）`;
+  }
+
+  // Build system prompt for English
+  function buildEnglishSystemPrompt(content) {
+    return `You are an assistant that answers questions based on technical documentation.
+
+**Site Information:**
+- Site: Naoto's Books
+- Site URL: https://naoto-iwase.github.io/books
+- Author: Naoto Iwase
+- Content: Technical summaries on machine learning and deep learning
+
+**Current Page Content:**
+
+${content}
+
+**Response Guidelines:**
+- Provide accurate and clear answers based on the above content
+- Explain technical terms appropriately and include explanations of formulas and figures when necessary
+- When providing links, use the following formats:
+  - Book listing by language: https://naoto-iwase.github.io/books/#{lang} (e.g., https://naoto-iwase.github.io/books/#en)
+  - Individual pages: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html (e.g., https://naoto-iwase.github.io/books/en/pdlt/04-neural-tangent-kernel.html)`;
+  }
+
   function updateLanguage(lang) {
     currentLanguage = lang;
     const t = i18n[lang];
@@ -603,24 +692,21 @@
       // Show delete button
       document.getElementById('chat-settings-delete').style.display = 'block';
 
-      enableChat();
+      // Enable chat
+      document.getElementById('chat-setup-wrapper').style.display = 'none';
+      document.getElementById('chat-settings').classList.add('hidden');
+      document.getElementById('chat-user-input').disabled = false;
+      document.getElementById('chat-send-btn').disabled = false;
+
+      if (messages.length === 0) {
+        addChatMessage('assistant', i18n[currentLanguage].ready);
+      }
     } catch (error) {
       alert(t.error + ' ' + error.message);
       saveBtn.disabled = false;
       saveBtn.textContent = originalText;
     }
   };
-
-  function enableChat() {
-    document.getElementById('chat-setup-wrapper').style.display = 'none';
-    document.getElementById('chat-settings').classList.add('hidden');
-    document.getElementById('chat-user-input').disabled = false;
-    document.getElementById('chat-send-btn').disabled = false;
-
-    if (messages.length === 0) {
-      addChatMessage('assistant', i18n[currentLanguage].ready);
-    }
-  }
 
   window.deleteChatSettings = function() {
     const t = i18n[currentLanguage];
@@ -659,8 +745,7 @@
   };
 
   window.toggleSessionDropdown = function() {
-    const dropdown = document.getElementById('chat-session-dropdown');
-    dropdown.classList.toggle('hidden');
+    document.getElementById('chat-session-dropdown').classList.toggle('hidden');
   };
 
   window.createNewSession = function() {
@@ -680,12 +765,14 @@
     updateSessionDisplay();
 
     // Close dropdown
-    document.getElementById('chat-session-dropdown')?.classList.add('hidden');
+    const dropdown = document.getElementById('chat-session-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
   };
 
   window.switchSession = function(sessionId) {
+    const dropdown = document.getElementById('chat-session-dropdown');
     if (sessionId === currentSessionId) {
-      document.getElementById('chat-session-dropdown')?.classList.add('hidden');
+      if (dropdown) dropdown.classList.add('hidden');
       return;
     }
 
@@ -694,7 +781,7 @@
     saveSessions();
 
     // Close dropdown
-    document.getElementById('chat-session-dropdown')?.classList.add('hidden');
+    if (dropdown) dropdown.classList.add('hidden');
   };
 
   window.deleteSession = function(event, sessionId) {
@@ -714,32 +801,21 @@
     renderSessionList();
   };
 
-  function generateSessionTitle(firstUserMessage) {
-    // Generate title from first user message (simple truncation)
-    const session = sessions.find(s => s.id === currentSessionId);
-    if (!session) return;
-
-    // Remove extra whitespace and take first 30 characters
-    const title = firstUserMessage.trim().replace(/\s+/g, ' ').substring(0, 30);
-    session.title = title;
-    saveSessions();
-    updateSessionDisplay();
-  }
-
   window.sendChatMessage = async function() {
-    const input = document.getElementById('chat-user-input');
-    const userMessage = input.value.trim();
+    const userInput = document.getElementById('chat-user-input');
+    const userMessage = userInput.value.trim();
 
     if (!userMessage) return;
 
     messages.push({ role: 'user', content: userMessage });
     addChatMessage('user', userMessage);
     saveCurrentSession();
-    input.value = '';
-    input.style.height = 'auto';
+    userInput.value = '';
+    userInput.style.height = 'auto';
 
-    document.getElementById('chat-send-btn').disabled = true;
-    document.getElementById('chat-user-input').disabled = true;
+    const sendBtn = document.getElementById('chat-send-btn');
+    sendBtn.disabled = true;
+    userInput.disabled = true;
 
     const loadingId = addChatMessage('assistant', i18n[currentLanguage].thinking, true);
     const contentDiv = document.getElementById(loadingId)?.querySelector('.chat-message-content');
@@ -752,44 +828,10 @@
       const apiKey = localStorage.getItem('openrouter-api-key');
       const model = document.getElementById('chat-model-select').value;
 
-      // System prompt in appropriate language
+      // Build system prompt in appropriate language
       const systemPrompt = currentLanguage === 'ja'
-        ? `あなたは技術書の内容に基づいて質問に答えるアシスタントです。
-
-**サイト情報:**
-- サイト名: Naoto's Books
-- サイトURL: https://naoto-iwase.github.io/books
-- 著者: Naoto Iwase
-- 内容: 機械学習・深層学習に関する技術的なまとめ集
-
-**現在のページの内容:**
-
-${currentContent}
-
-**回答時の注意:**
-- 上記の内容に基づいて、正確かつ分かりやすく回答してください
-- 専門用語は適切に説明し、必要に応じて数式や図の説明も含めてください
-- リンクを提示する際は以下の形式を使用してください：
-  - 言語別の一覧ページ: https://naoto-iwase.github.io/books/#{lang}（例: https://naoto-iwase.github.io/books/#ja）
-  - 個別ページ: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html（例: https://naoto-iwase.github.io/books/ja/olmo-3/03-midtraining.html）`
-        : `You are an assistant that answers questions based on technical documentation.
-
-**Site Information:**
-- Site: Naoto's Books
-- Site URL: https://naoto-iwase.github.io/books
-- Author: Naoto Iwase
-- Content: Technical summaries on machine learning and deep learning
-
-**Current Page Content:**
-
-${currentContent}
-
-**Response Guidelines:**
-- Provide accurate and clear answers based on the above content
-- Explain technical terms appropriately and include explanations of formulas and figures when necessary
-- When providing links, use the following formats:
-  - Book listing by language: https://naoto-iwase.github.io/books/#{lang} (e.g., https://naoto-iwase.github.io/books/#en)
-  - Individual pages: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html (e.g., https://naoto-iwase.github.io/books/en/pdlt/04-neural-tangent-kernel.html)`;
+        ? buildJapaneseSystemPrompt(currentContent)
+        : buildEnglishSystemPrompt(currentContent);
 
       const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -866,21 +908,15 @@ ${currentContent}
       messages.push({ role: 'assistant', content: assistantMessage });
       saveCurrentSession();
 
-      // Generate session title if not yet generated
-      const session = sessions.find(s => s.id === currentSessionId);
-      if (session && session.title === i18n[currentLanguage].newSession) {
-        generateSessionTitle(messages[0].content);
-      }
-
     } catch (error) {
       console.error('Error:', error);
       const loadingEl = document.getElementById(loadingId);
       if (loadingEl) loadingEl.remove();
       addChatMessage('error', `${i18n[currentLanguage].error} ${error.message}`);
     } finally {
-      document.getElementById('chat-send-btn').disabled = false;
-      document.getElementById('chat-user-input').disabled = false;
-      document.getElementById('chat-user-input').focus();
+      sendBtn.disabled = false;
+      userInput.disabled = false;
+      userInput.focus();
     }
   };
 
