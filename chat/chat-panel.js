@@ -77,12 +77,14 @@
       newSession: "新しいチャット",
       sessionHistory: "履歴",
       saveSettings: "設定を保存",
-      deleteApiKey: "API Keyを削除",
+      removeApiKey: "API Keyを削除",
+      deleteAllSessions: "全履歴を削除",
       validating: "確認中...",
       invalidApiKey: "API Keyが無効です。正しいキーを入力してください。",
       siteStructure: "**サイト全体の構成 (Recent 5 books per language):**",
       contentLoadError: "このページの内容を読み込めませんでした。一般的な質問には答えられます。",
-      deleteConfirm: "API Keyを削除しますか？チャット履歴も全て削除されます。"
+      removeApiKeyConfirm: "API Keyを削除しますか？チャット履歴は保持されます。",
+      deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？"
     },
     en: {
       title: "💬 AI Chat",
@@ -107,12 +109,14 @@
       newSession: "New Chat",
       sessionHistory: "History",
       saveSettings: "Save Settings",
-      deleteApiKey: "Delete API Key",
+      removeApiKey: "Remove API Key",
+      deleteAllSessions: "Delete All History",
       validating: "Validating...",
       invalidApiKey: "Invalid API Key. Please enter a valid key.",
       siteStructure: "**Site Structure (Recent 5 books per language):**",
       contentLoadError: "Failed to load page content. General questions can still be answered.",
-      deleteConfirm: "Delete API Key? All chat history will also be deleted."
+      removeApiKeyConfirm: "Remove API Key? Chat history will be preserved.",
+      deleteAllSessionsConfirm: "Delete all chat history?"
     }
   };
 
@@ -148,7 +152,7 @@
       document.getElementById('chat-setup-wrapper').style.display = 'none';
       document.getElementById('chat-user-input').disabled = false;
       document.getElementById('chat-send-btn').disabled = false;
-      document.getElementById('chat-settings-delete').style.display = 'block';
+      document.getElementById('chat-settings-remove').style.display = 'block';
 
       const savedModel = localStorage.getItem('openrouter-model');
       if (savedModel) {
@@ -330,6 +334,9 @@
             </button>
             <div class="chat-session-dropdown hidden" id="chat-session-dropdown">
               <div class="chat-session-list" id="chat-session-list"></div>
+              <div class="chat-session-delete-all-wrapper">
+                <button class="chat-session-delete-all-btn" id="chat-session-delete-all-btn" onclick="window.deleteAllSessions()">🗑️ Delete All History</button>
+              </div>
             </div>
           </div>
           <div class="chat-header-buttons">
@@ -346,7 +353,7 @@
           <input type="password" id="chat-api-key" placeholder="sk-or-v1-...">
           <div class="chat-settings-buttons">
             <button class="chat-settings-save" id="chat-settings-save-btn" onclick="window.saveChatSettings()">Save Settings</button>
-            <button class="chat-settings-delete" id="chat-settings-delete" onclick="window.deleteChatSettings()" style="display: none;">Delete API Key</button>
+            <button class="chat-settings-remove" id="chat-settings-remove" onclick="window.removeApiKey()" style="display: none;">Remove API Key</button>
           </div>
         </div>
       </div>
@@ -646,7 +653,8 @@ ${content}
     $('chat-info-bullets', 'innerHTML', t.infoBullets.map(b => '• ' + b).join('<br>'));
     $('chat-resize-hint', 'textContent', t.resizeHint);
     $('chat-settings-save-btn', 'textContent', t.saveSettings);
-    $('chat-settings-delete', 'textContent', t.deleteApiKey);
+    $('chat-settings-remove', 'textContent', t.removeApiKey);
+    $('chat-session-delete-all-btn', 'textContent', '🗑️ ' + t.deleteAllSessions);
 
     const btn = document.querySelector('.chat-toggle-btn');
     if (btn) btn.textContent = isOpen ? t.closeBtn : t.openBtn;
@@ -689,8 +697,8 @@ ${content}
       saveBtn.disabled = false;
       saveBtn.textContent = originalText;
 
-      // Show delete button
-      document.getElementById('chat-settings-delete').style.display = 'block';
+      // Show remove button
+      document.getElementById('chat-settings-remove').style.display = 'block';
 
       // Enable chat
       document.getElementById('chat-setup-wrapper').style.display = 'none';
@@ -708,23 +716,32 @@ ${content}
     }
   };
 
-  window.deleteChatSettings = function() {
+  window.removeApiKey = function() {
     const t = i18n[currentLanguage];
-    if (!confirm(t.deleteConfirm)) return;
+    if (!confirm(t.removeApiKeyConfirm)) return;
 
-    // Clear localStorage
+    // Clear only API Key and model settings
     localStorage.removeItem('openrouter-api-key');
     localStorage.removeItem('openrouter-model');
-    localStorage.removeItem('chat-sessions');
-    localStorage.removeItem('current-session-id');
 
-    // Reset UI to initial state
+    // Reset UI to initial state (but keep chat history)
     document.getElementById('chat-api-key').value = '';
     document.getElementById('chat-setup-wrapper').style.display = 'block';
     document.getElementById('chat-settings').classList.remove('hidden');
-    document.getElementById('chat-settings-delete').style.display = 'none';
+    document.getElementById('chat-settings-remove').style.display = 'none';
     document.getElementById('chat-user-input').disabled = true;
     document.getElementById('chat-send-btn').disabled = true;
+
+    // Keep messages and sessions intact
+  };
+
+  window.deleteAllSessions = function() {
+    const t = i18n[currentLanguage];
+    if (!confirm(t.deleteAllSessionsConfirm)) return;
+
+    // Clear only chat history (keep API key)
+    localStorage.removeItem('chat-sessions');
+    localStorage.removeItem('current-session-id');
 
     // Clear messages
     messages = [];
@@ -738,6 +755,13 @@ ${content}
     currentSessionId = newSession.id;
     saveSessions();
     updateSessionDisplay();
+
+    // Close dropdown
+    const dropdown = document.getElementById('chat-session-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+
+    // Show ready message
+    addChatMessage('assistant', i18n[currentLanguage].ready);
   };
 
   window.toggleChatSettings = function() {
