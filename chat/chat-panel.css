@@ -483,6 +483,36 @@ body:not(.quarto-dark) {
   margin: 6px 0;
 }
 
+.chat-message-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+  font-size: 0.85rem;
+  overflow-x: auto;
+  display: block;
+}
+
+.chat-message-content th,
+.chat-message-content td {
+  padding: 8px 12px;
+  border: 1px solid var(--chat-border-light);
+  text-align: left;
+}
+
+.chat-message-content th {
+  font-weight: 600;
+  color: var(--chat-text);
+  background: var(--chat-bg-secondary);
+}
+
+.chat-message-content td {
+  color: var(--chat-text);
+}
+
+.chat-message-content tbody tr:hover {
+  background: var(--chat-hover-light);
+}
+
 .chat-input-area {
   padding: 12px;
   border-top: 1px solid var(--chat-border);
