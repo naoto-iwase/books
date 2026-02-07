@@ -35,6 +35,15 @@
     // Language
     DEFAULT_LANGUAGE: 'en',
 
+    // localStorage keys
+    STORAGE_KEYS: {
+      SESSIONS: 'chat-sessions',
+      CURRENT_SESSION_ID: 'current-session-id',
+      PANEL_WIDTH: 'chat-panel-width',
+      API_KEY: 'openrouter-api-key',
+      MODEL: 'openrouter-model'
+    },
+
     // Text length limits
     SESSION_TITLE_MAX_LENGTH: 30,
     SESSION_TITLE_DISPLAY_LENGTH: 20,
@@ -57,7 +66,6 @@
   };
 
   // State
-  let models = [];
   let messages = [];
   let currentContent = '';
   let isOpen = false;
@@ -68,7 +76,6 @@
   // i18n definitions
   const i18n = {
     ja: {
-      title: "💬 AIチャット",
       closeBtn: "✕ 閉じる",
       openBtn: "💬 AIチャット",
       inputPlaceholder: "質問を入力... (Shift+Enter で改行)",
@@ -86,13 +93,12 @@
       apiKeyRequired: "API Keyを入力してください",
       thinking: "考え中",
       newSession: "新しいチャット",
+      settingsBtn: "設定",
       saveSettings: "設定を保存",
       removeApiKey: "API Keyを削除",
       deleteAllSessions: "全履歴を削除",
       validating: "確認中...",
       invalidApiKey: "API Keyが無効です。正しいキーを入力してください。",
-      siteStructure: "**サイト全体の構成 (Recent 5 books per language):**",
-      bookStructure: "**この本の章立て:**",
       contentLoadError: "このページの内容を読み込めませんでした。一般的な質問には答えられます。",
       removeApiKeyConfirm: "API Keyを削除しますか？チャット履歴は保持されます。",
       deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？",
@@ -101,7 +107,6 @@
       noResponse: "回答を生成できませんでした。別のモデルをお試しください。"
     },
     en: {
-      title: "💬 AI Chat",
       closeBtn: "✕ Close",
       openBtn: "💬 AI Chat",
       inputPlaceholder: "Ask a question... (Shift+Enter for new line)",
@@ -119,13 +124,12 @@
       apiKeyRequired: "API Key is required",
       thinking: "Thinking",
       newSession: "New Chat",
+      settingsBtn: "Settings",
       saveSettings: "Save Settings",
       removeApiKey: "Remove API Key",
       deleteAllSessions: "Delete All History",
       validating: "Validating...",
       invalidApiKey: "Invalid API Key. Please enter a valid key.",
-      siteStructure: "**Site Structure (Recent 5 books per language):**",
-      bookStructure: "**Book Structure:**",
       contentLoadError: "Failed to load page content. General questions can still be answered.",
       removeApiKeyConfirm: "Remove API Key? Chat history will be preserved.",
       deleteAllSessionsConfirm: "Delete all chat history?",
@@ -156,8 +160,11 @@
       .replace(/(?<!\\)\\\)/g, '$');
   }
 
-  function formatDateTime(date) {
+  function formatDateTime(date, short = false) {
     const pad = n => String(n).padStart(2, '0');
+    if (short) {
+      return `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${pad(date.getMinutes())}`;
+    }
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 
@@ -192,6 +199,18 @@
     if (dropdown) dropdown.classList.add('hidden');
   }
 
+  function generateUniqueId(prefix) {
+    return prefix + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
+  }
+
+  function setChatEnabled(enabled) {
+    document.getElementById('chat-settings').classList.toggle('hidden', enabled);
+    document.getElementById('chat-setup-wrapper').classList.toggle('hidden', enabled);
+    document.getElementById('chat-settings-remove').style.display = enabled ? 'block' : 'none';
+    document.getElementById('chat-user-input').disabled = !enabled;
+    document.getElementById('chat-send-btn').disabled = !enabled;
+  }
+
   // ============================================================
   // API / EXTERNAL - Data Fetching & External Communication
   // ============================================================
@@ -200,7 +219,7 @@
     try {
       const response = await fetch('https://openrouter.ai/api/v1/models');
       const data = await response.json();
-      models = data.data;
+      const models = data.data;
 
       const select = document.getElementById('chat-model-select');
       select.innerHTML = '';
@@ -240,9 +259,7 @@
       });
 
       select.disabled = false;
-
-      // Update current model display when selection changes
-      select.addEventListener('change', updateCurrentModelDisplay);
+      select.onchange = updateCurrentModelDisplay;
       updateCurrentModelDisplay();
     } catch (error) {
       console.error('Failed to load models:', error);
@@ -278,7 +295,7 @@
       const bookStructure = getBookStructureFromSidebar();
       if (bookStructure) {
         // Book page with sidebar: include chapter structure
-        currentContent += '\n\n' + i18n[currentLanguage].bookStructure + '\n' + bookStructure;
+        currentContent += '\n\n**Book Structure:**\n' + bookStructure;
       } else {
         // No sidebar (root page, etc.): include site-wide navigation
         try {
@@ -286,17 +303,13 @@
           if (searchRes.ok) {
             const searchData = await searchRes.json();
 
-            const jaIndexPages = searchData
-              .filter(item => item.href && /^ja\/[^\/]+\/index\.html$/.test(item.href))
+            const getIndexPages = (lang) => searchData
+              .filter(item => item.href && new RegExp(`^${lang}/[^/]+/index\\.html$`).test(item.href))
               .slice(0, 5)
               .map(item => ({ title: item.title, href: item.href, categories: item.categories }));
 
-            const enIndexPages = searchData
-              .filter(item => item.href && /^en\/[^\/]+\/index\.html$/.test(item.href))
-              .slice(0, 5)
-              .map(item => ({ title: item.title, href: item.href, categories: item.categories }));
-
-            currentContent += '\n\n' + i18n[currentLanguage].siteStructure + '\n' + JSON.stringify({ ja: jaIndexPages, en: enIndexPages }, null, 2);
+            currentContent += '\n\n**Site Structure (Recent 5 books per language):**\n' +
+              JSON.stringify({ ja: getIndexPages('ja'), en: getIndexPages('en') }, null, 2);
           }
         } catch (e) {
           // search.json is optional, continue without it
@@ -312,10 +325,10 @@
     const sidebar = document.querySelector('.sidebar-navigation');
     if (!sidebar) return null;
 
-    const items = sidebar.querySelectorAll('.sidebar-item');
-    if (items.length === 0) return null;
+    const ul = sidebar.querySelector('ul');
+    if (!ul) return null;
 
-    return formatSidebarItems(sidebar.querySelector('ul'), 0);
+    return formatSidebarItems(ul, 0);
   }
 
   function formatSidebarItems(ul, indent) {
@@ -345,6 +358,43 @@
       const nestedUl = item.querySelector(':scope > ul');
       if (nestedUl) {
         result += formatSidebarItems(nestedUl, indent + 1);
+      }
+    }
+
+    return result;
+  }
+
+  async function parseSSEStream(response, onContent) {
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let result = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split('\n');
+      buffer = parts.pop();
+
+      for (const line of parts) {
+        const trimmed = line.trim();
+        if (!trimmed || !trimmed.startsWith('data: ')) continue;
+
+        const data = trimmed.substring(6).trim();
+        if (data === '[DONE]' || data === '' || !data.startsWith('{')) continue;
+
+        try {
+          const parsed = JSON.parse(data);
+          const content = parsed.choices?.[0]?.delta?.content;
+          if (content) {
+            result += content;
+            onContent(result);
+          }
+        } catch (e) {
+          // Skip invalid JSON
+        }
       }
     }
 
@@ -382,7 +432,7 @@ ${content}
 
   function createSession() {
     return {
-      id: 'session-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11),
+      id: generateUniqueId('session-'),
       url: window.location.pathname,
       title: i18n[currentLanguage].newSession,
       page: getPageDisplay(),
@@ -392,7 +442,7 @@ ${content}
   }
 
   function loadSessions() {
-    const saved = localStorage.getItem('chat-sessions');
+    const saved = localStorage.getItem(CONFIG.STORAGE_KEYS.SESSIONS);
     if (saved) {
       try {
         sessions = JSON.parse(saved);
@@ -402,7 +452,7 @@ ${content}
       }
     }
 
-    const savedSessionId = localStorage.getItem('current-session-id');
+    const savedSessionId = localStorage.getItem(CONFIG.STORAGE_KEYS.CURRENT_SESSION_ID);
     if (savedSessionId && sessions.find(s => s.id === savedSessionId)) {
       currentSessionId = savedSessionId;
     } else if (sessions.length > 0) {
@@ -420,9 +470,9 @@ ${content}
   }
 
   function saveSessions() {
-    localStorage.setItem('chat-sessions', JSON.stringify(sessions));
+    localStorage.setItem(CONFIG.STORAGE_KEYS.SESSIONS, JSON.stringify(sessions));
     if (currentSessionId) {
-      localStorage.setItem('current-session-id', currentSessionId);
+      localStorage.setItem(CONFIG.STORAGE_KEYS.CURRENT_SESSION_ID, currentSessionId);
     }
   }
 
@@ -488,8 +538,7 @@ ${content}
       const item = document.createElement('div');
       item.className = 'chat-session-item' + (session.id === currentSessionId ? ' active' : '');
 
-      const date = new Date(session.updated);
-      const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+      const dateStr = formatDateTime(new Date(session.updated), true);
       const title = (session.title || i18n[currentLanguage].newSession).substring(0, CONFIG.SESSION_LIST_TITLE_MAX);
       const page = session.page ? session.page.substring(0, CONFIG.SESSION_PAGE_DISPLAY_MAX) : '';
 
@@ -533,7 +582,7 @@ ${content}
           <div class="chat-header-buttons">
             <button class="chat-new-btn" id="chat-new-btn" onclick="window.createNewSession()" title="New chat">＋</button>
             <button class="chat-export-btn" id="chat-export-btn" onclick="window.exportChatAsMarkdown()" title="Export">⤓</button>
-            <button class="chat-settings-toggle" onclick="window.toggleChatSettings()" title="Settings">⚙️</button>
+            <button class="chat-settings-toggle" id="chat-settings-toggle" onclick="window.toggleChatSettings()" title="Settings">⚙️</button>
           </div>
         </div>
         <div class="chat-settings" id="chat-settings">
@@ -605,7 +654,7 @@ ${content}
     setupResizeHandle();
 
     // Restore saved width
-    const savedWidth = localStorage.getItem('chat-panel-width');
+    const savedWidth = localStorage.getItem(CONFIG.STORAGE_KEYS.PANEL_WIDTH);
     if (savedWidth) {
       panel.style.width = savedWidth + 'px';
     }
@@ -639,7 +688,7 @@ ${content}
         isResizing = false;
         panel.classList.remove('resizing');
         // Save width to localStorage
-        localStorage.setItem('chat-panel-width', panel.offsetWidth);
+        localStorage.setItem(CONFIG.STORAGE_KEYS.PANEL_WIDTH, panel.offsetWidth);
       }
     });
   }
@@ -683,7 +732,6 @@ ${content}
     // Update text content for each element
     const updates = {
       'chat-user-input': { placeholder: t.inputPlaceholder },
-      'chat-send-btn': { textContent: 'Enter' },
       'chat-setup-msg': { textContent: t.setupMessage },
       'chat-info-title': { textContent: t.infoTitle },
       'chat-info-bullets': { innerHTML: t.infoBullets.map(b => '• ' + b).join('<br>') },
@@ -691,7 +739,9 @@ ${content}
       'chat-settings-save-btn': { textContent: t.saveSettings },
       'chat-settings-remove': { textContent: t.removeApiKey },
       'chat-session-delete-all-btn': { textContent: '🗑️ ' + t.deleteAllSessions },
-      'chat-export-btn': { title: t.exportChat }
+      'chat-new-btn': { title: t.newSession },
+      'chat-export-btn': { title: t.exportChat },
+      'chat-settings-toggle': { title: t.settingsBtn }
     };
 
     for (const [id, props] of Object.entries(updates)) {
@@ -710,7 +760,7 @@ ${content}
   function addChatMessage(role, content) {
     const messagesDiv = document.getElementById('chat-messages');
     const messageDiv = document.createElement('div');
-    const messageId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
+    const messageId = generateUniqueId('msg-');
     messageDiv.id = messageId;
     messageDiv.className = `chat-message ${role}`;
 
@@ -776,7 +826,7 @@ ${content}
     }
 
     try {
-      const apiKey = localStorage.getItem('openrouter-api-key');
+      const apiKey = localStorage.getItem(CONFIG.STORAGE_KEYS.API_KEY);
       const model = document.getElementById('chat-model-select').value;
 
       const systemPrompt = buildSystemPrompt(currentContent);
@@ -814,47 +864,15 @@ ${content}
         throw new Error(errorMessage);
       }
 
-      // Stream response with SSE parsing
-      let assistantMessage = '';
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const parts = buffer.split('\n');
-        buffer = parts.pop(); // Keep incomplete last line
-
-        for (const line of parts) {
-          const trimmed = line.trim();
-          if (!trimmed || !trimmed.startsWith('data: ')) continue;
-
-          const data = trimmed.substring(6).trim();
-          if (data === '[DONE]' || data === '') continue;
-
-          // Skip non-JSON data
-          if (!data.startsWith('{')) continue;
-
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) {
-              assistantMessage += content;
-              updateChatMessage(loadingId, assistantMessage);
-            }
-          } catch (e) {
-            // Skip invalid JSON (likely chunk boundary issues)
-          }
+      // Stream response with debounced UI updates
+      let lastUpdate = 0;
+      const assistantMessage = await parseSSEStream(response, (content) => {
+        const now = Date.now();
+        if (now - lastUpdate > 50) {
+          updateChatMessage(loadingId, content);
+          lastUpdate = now;
         }
-      }
-
-      // If no content, show error message
-      if (!assistantMessage) {
-        assistantMessage = i18n[currentLanguage].noResponse;
-      }
+      }) || i18n[currentLanguage].noResponse;
 
       updateChatMessage(loadingId, assistantMessage);
       messages.push({ role: 'assistant', content: assistantMessage });
@@ -883,7 +901,7 @@ ${content}
     }
 
     // Check if this is a new API key registration
-    const hadApiKey = !!localStorage.getItem('openrouter-api-key');
+    const hadApiKey = !!localStorage.getItem(CONFIG.STORAGE_KEYS.API_KEY);
 
     // Disable button and show validating state
     const originalText = saveBtn.textContent;
@@ -904,22 +922,15 @@ ${content}
       }
 
       // Key is valid, save it
-      localStorage.setItem('openrouter-api-key', apiKey);
-      localStorage.setItem('openrouter-model', document.getElementById('chat-model-select').value);
+      localStorage.setItem(CONFIG.STORAGE_KEYS.API_KEY, apiKey);
+      localStorage.setItem(CONFIG.STORAGE_KEYS.MODEL, document.getElementById('chat-model-select').value);
       updateCurrentModelDisplay();
 
       // Reset button state before hiding
       saveBtn.disabled = false;
       saveBtn.textContent = originalText;
 
-      // Show remove button
-      document.getElementById('chat-settings-remove').style.display = 'block';
-
-      // Hide welcome message and enable chat
-      document.getElementById('chat-setup-wrapper').classList.add('hidden');
-      document.getElementById('chat-settings').classList.add('hidden');
-      document.getElementById('chat-user-input').disabled = false;
-      document.getElementById('chat-send-btn').disabled = false;
+      setChatEnabled(true);
 
       // Show messages for initial setup only
       if (messages.length === 0) {
@@ -940,18 +951,12 @@ ${content}
     if (!confirm(t.removeApiKeyConfirm)) return;
 
     // Clear only API Key and model settings
-    localStorage.removeItem('openrouter-api-key');
-    localStorage.removeItem('openrouter-model');
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.API_KEY);
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.MODEL);
 
     // Reset UI to initial state (but keep chat history)
     document.getElementById('chat-api-key').value = '';
-    document.getElementById('chat-settings').classList.remove('hidden');
-    document.getElementById('chat-setup-wrapper').classList.remove('hidden');
-    document.getElementById('chat-settings-remove').style.display = 'none';
-    document.getElementById('chat-user-input').disabled = true;
-    document.getElementById('chat-send-btn').disabled = true;
-
-    // Keep messages and sessions intact
+    setChatEnabled(false);
   }
 
   function deleteAllSessions() {
@@ -959,8 +964,8 @@ ${content}
     if (!confirm(t.deleteAllSessionsConfirm)) return;
 
     // Clear only chat history (keep API key)
-    localStorage.removeItem('chat-sessions');
-    localStorage.removeItem('current-session-id');
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.SESSIONS);
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.CURRENT_SESSION_ID);
 
     // Clear messages
     messages = [];
@@ -1007,14 +1012,11 @@ ${content}
   }
 
   function switchSession(sessionId) {
-    if (sessionId === currentSessionId) {
-      closeSessionDropdown();
-      return;
+    if (sessionId !== currentSessionId) {
+      currentSessionId = sessionId;
+      loadCurrentSession();
+      saveSessions();
     }
-
-    currentSessionId = sessionId;
-    loadCurrentSession();
-    saveSessions();
     closeSessionDropdown();
   }
 
@@ -1039,9 +1041,8 @@ ${content}
     if (messages.length === 0) return;
 
     const model = document.getElementById('chat-model-select')?.value || 'Unknown';
-    const now = new Date();
-    const dateDisplay = formatDateTime(now);
-    const dateFilename = formatDateTime(now).replace(' ', '-').replace(':', '');
+    const dateDisplay = formatDateTime(new Date());
+    const dateFilename = dateDisplay.replace(' ', '-').replace(':', '');
 
     let md = `# Chat Export\n\n`;
     md += `- **Date**: ${dateDisplay}\n`;
@@ -1086,16 +1087,12 @@ ${content}
     loadModels();
     loadPageContent();
 
-    const savedKey = localStorage.getItem('openrouter-api-key');
+    const savedKey = localStorage.getItem(CONFIG.STORAGE_KEYS.API_KEY);
     if (savedKey) {
       document.getElementById('chat-api-key').value = savedKey;
-      document.getElementById('chat-settings').classList.add('hidden');
-      document.getElementById('chat-setup-wrapper').classList.add('hidden');
-      document.getElementById('chat-user-input').disabled = false;
-      document.getElementById('chat-send-btn').disabled = false;
-      document.getElementById('chat-settings-remove').style.display = 'block';
+      setChatEnabled(true);
 
-      const savedModel = localStorage.getItem('openrouter-model');
+      const savedModel = localStorage.getItem(CONFIG.STORAGE_KEYS.MODEL);
       if (savedModel) {
         setTimeout(() => {
           const select = document.getElementById('chat-model-select');
@@ -1105,7 +1102,6 @@ ${content}
           }
         }, CONFIG.MODEL_LOAD_DELAY);
       }
-
     }
 
     // Set initial language
