@@ -27,6 +27,11 @@
   --chat-success: #28a745;
   --chat-success-hover: #218838;
   --chat-secondary: #6c757d;
+
+  /* Toggle button - muted gray for both themes */
+  --chat-toggle-bg: #6c757d;
+  --chat-toggle-bg-rgb: 108, 117, 125;
+  --chat-toggle-hover: #5a6268;
 }
 
 /* Light mode variables */
@@ -114,7 +119,6 @@ body:not(.quarto-dark) {
   bottom: 80px;  /* Reserve space for button height + margin */
   width: 500px;
   max-width: 90vw;  /* Don't exceed 90% of screen width */
-  height: auto;
   background: var(--chat-bg);
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease;
@@ -155,28 +159,28 @@ body:not(.quarto-dark) {
   bottom: 20px;
   z-index: 1001;
   padding: 12px 20px;
-  background: var(--chat-primary);
+  background: var(--chat-toggle-bg);
   color: white;
   border: none;
   border-radius: 50px;
   cursor: pointer;
   font-size: 0.95rem;
-  box-shadow: 0 4px 12px rgba(var(--chat-primary-rgb), 0.3);
+  box-shadow: 0 4px 12px rgba(var(--chat-toggle-bg-rgb), 0.3);
   transition: all 0.2s;
 }
 
 .chat-toggle-btn:hover {
-  box-shadow: 0 6px 16px rgba(var(--chat-primary-rgb), 0.4);
+  background: var(--chat-toggle-hover);
+  box-shadow: 0 6px 16px rgba(var(--chat-toggle-bg-rgb), 0.4);
   transform: translateY(-2px);
 }
 
 .chat-toggle-btn.open {
-  background: var(--chat-danger);
-  box-shadow: 0 4px 12px rgba(var(--chat-danger-rgb), 0.3);
+  background: var(--chat-toggle-hover);
 }
 
 .chat-toggle-btn.open:hover {
-  box-shadow: 0 6px 16px rgba(var(--chat-danger-rgb), 0.4);
+  background: var(--chat-toggle-bg);
 }
 
 .chat-header {
@@ -195,10 +199,6 @@ body:not(.quarto-dark) {
 
 .chat-icon {
   font-size: 1.2rem;
-}
-
-.chat-session-dropdown-wrapper {
-  position: static;
 }
 
 .chat-session-dropdown-btn {

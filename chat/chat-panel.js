@@ -789,21 +789,25 @@ ${content}
   function updateLanguage(lang) {
     currentLanguage = lang;
     const t = i18n[lang];
-    const $ = (id, prop, val) => {
-      const el = document.getElementById(id);
-      if (el) el[prop] = val;
+
+    // Update text content for each element
+    const updates = {
+      'chat-user-input': { placeholder: t.inputPlaceholder },
+      'chat-send-btn': { textContent: 'Enter' },
+      'chat-setup-msg': { textContent: t.setupMessage },
+      'chat-info-title': { textContent: t.infoTitle },
+      'chat-info-bullets': { innerHTML: t.infoBullets.map(b => '• ' + b).join('<br>') },
+      'chat-resize-hint': { textContent: t.resizeHint },
+      'chat-settings-save-btn': { textContent: t.saveSettings },
+      'chat-settings-remove': { textContent: t.removeApiKey },
+      'chat-session-delete-all-btn': { textContent: '🗑️ ' + t.deleteAllSessions },
+      'chat-export-btn': { title: t.exportChat }
     };
 
-    $('chat-user-input', 'placeholder', t.inputPlaceholder);
-    $('chat-send-btn', 'textContent', 'Enter');
-    $('chat-setup-msg', 'textContent', t.setupMessage);
-    $('chat-info-title', 'textContent', t.infoTitle);
-    $('chat-info-bullets', 'innerHTML', t.infoBullets.map(b => '• ' + b).join('<br>'));
-    $('chat-resize-hint', 'textContent', t.resizeHint);
-    $('chat-settings-save-btn', 'textContent', t.saveSettings);
-    $('chat-settings-remove', 'textContent', t.removeApiKey);
-    $('chat-session-delete-all-btn', 'textContent', '🗑️ ' + t.deleteAllSessions);
-    $('chat-export-btn', 'title', t.exportChat);
+    for (const [id, props] of Object.entries(updates)) {
+      const el = document.getElementById(id);
+      if (el) Object.assign(el, props);
+    }
 
     const btn = document.querySelector('.chat-toggle-btn');
     if (btn) btn.textContent = isOpen ? t.closeBtn : t.openBtn;
@@ -981,15 +985,22 @@ ${content}
     renderSessionList();
   };
 
+  // Format date as YYYY-MM-DD HH:MM
+  function formatDateTime(date) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  }
+
   window.exportChatAsMarkdown = function() {
     if (messages.length === 0) return;
 
     const model = document.getElementById('chat-model-select')?.value || 'Unknown';
     const now = new Date();
-    const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const dateDisplay = formatDateTime(now);
+    const dateFilename = formatDateTime(now).replace(' ', '-').replace(':', '');
 
     let md = `# Chat Export\n\n`;
-    md += `- **Date**: ${date}\n`;
+    md += `- **Date**: ${dateDisplay}\n`;
     md += `- **Model**: ${model}\n`;
     md += `- **Page**: ${window.location.href}\n\n---\n\n`;
 
@@ -1005,8 +1016,7 @@ ${content}
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    const filename = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
-    a.download = `chat-export-${filename}.md`;
+    a.download = `chat-export-${dateFilename}.md`;
     a.click();
     URL.revokeObjectURL(url);
   };
