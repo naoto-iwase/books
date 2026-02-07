@@ -25,7 +25,10 @@
  * - OpenRouter API: LLM inference
  */
 (function() {
-  // Configuration constants
+  // ============================================================
+  // DEFINITIONS - Constants, State, Static Data
+  // ============================================================
+
   const CONFIG = {
     // Language
     DEFAULT_LANGUAGE: 'en',
@@ -52,6 +55,7 @@
     PRICING_DISPLAY_MULTIPLIER: 1000000,
   };
 
+  // State
   let models = [];
   let messages = [];
   let currentContent = '';
@@ -59,6 +63,7 @@
   let currentLanguage = CONFIG.DEFAULT_LANGUAGE;
   let sessions = [];
   let currentSessionId = null;
+  let searchIndex = null;
 
   // i18n definitions
   const i18n = {
@@ -140,9 +145,7 @@
     }
   };
 
-  // Tool calling support
-  let searchIndex = null;
-
+  // Tool definition for site search
   const SEARCH_TOOL = {
     type: 'function',
     function: {
@@ -161,95 +164,10 @@
     }
   };
 
-  function isToolCallingSupported(modelId) {
-    const model = models.find(m => m.id === modelId);
-    return model?.supported_parameters?.includes('tools') ?? false;
-  }
+  // ============================================================
+  // UTILITIES - Pure Helper Functions
+  // ============================================================
 
-  async function loadSearchIndex() {
-    if (searchIndex) return searchIndex;
-    const basePath = window.location.pathname.startsWith('/books/') ? '/books' : '';
-    const url = `${basePath}/search.json`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) return [];
-      searchIndex = await response.json();
-      return searchIndex;
-    } catch (e) {
-      return [];
-    }
-  }
-
-  async function searchSite(query) {
-    const index = await loadSearchIndex();
-    const queryLower = query.toLowerCase();
-    // Allow single-character terms for Japanese (e.g., "木", "AI")
-    const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 0);
-
-    const scored = index
-      .map(item => {
-        let score = 0;
-        const titleLower = (item.title || '').toLowerCase();
-        const textLower = (item.text || '').toLowerCase();
-        const sectionLower = (item.section || '').toLowerCase();
-
-        for (const term of queryTerms) {
-          if (titleLower.includes(term)) score += 10;
-          if (sectionLower.includes(term)) score += 5;
-          if (textLower.includes(term)) score += 1;
-        }
-        return { ...item, score };
-      })
-      .filter(item => item.score > 0)
-      .sort((a, b) => b.score - a.score);
-
-    // Deduplicate by href (keep highest scoring entry per page)
-    const seenHrefs = new Set();
-    const results = [];
-    for (const item of scored) {
-      if (seenHrefs.has(item.href)) continue;
-      seenHrefs.add(item.href);
-      results.push({
-        title: item.title,
-        section: item.section,
-        href: item.href,
-        snippet: (item.text || '').substring(0, 200) + (item.text?.length > 200 ? '...' : '')
-      });
-      if (results.length >= 5) break;
-    }
-
-    return results;
-  }
-
-  async function executeToolCall(toolCall) {
-    try {
-      if (!toolCall?.function?.name || !toolCall?.function?.arguments) {
-        return JSON.stringify({ error: 'Invalid tool call structure' });
-      }
-
-      const { name, arguments: argsStr } = toolCall.function;
-      let args;
-      try {
-        args = JSON.parse(argsStr);
-      } catch (e) {
-        return JSON.stringify({ error: 'Failed to parse tool arguments' });
-      }
-
-      if (name === 'search_site') {
-        const results = await searchSite(args.query);
-        if (results.length === 0) {
-          return i18n[currentLanguage].noSearchResults;
-        }
-        return JSON.stringify(results, null, 2);
-      }
-      return JSON.stringify({ error: 'Unknown tool: ' + name });
-    } catch (e) {
-      return JSON.stringify({ error: e.message });
-    }
-  }
-
-  // Detect language from URL path
   function detectLanguage() {
     const path = window.location.pathname;
     if (path.includes('/ja/')) return 'ja';
@@ -257,107 +175,19 @@
     return CONFIG.DEFAULT_LANGUAGE;
   }
 
-  // Initialize when DOM is ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
   // Convert \[...\] and \(...\) to $$...$$ and $...$ for marked-katex-extension
+  // Use negative lookbehind to avoid converting \\[ (LaTeX line break with spacing)
   function normalizeLatexDelimiters(text) {
     return text
-      .replace(/\\\[/g, '$$')
-      .replace(/\\\]/g, '$$')
-      .replace(/\\\(/g, '$')
-      .replace(/\\\)/g, '$');
+      .replace(/(?<!\\)\\\[/g, '$$')
+      .replace(/(?<!\\)\\\]/g, '$$')
+      .replace(/(?<!\\)\\\(/g, '$')
+      .replace(/(?<!\\)\\\)/g, '$');
   }
 
-  function init() {
-    // Configure marked with KaTeX extension for math rendering
-    if (window.markedKatex) {
-      marked.use(markedKatex({
-        throwOnError: false,
-        nonStandard: true  // Allow $x$ without spaces
-      }));
-    }
-
-    // Always prioritize auto-detection from URL
-    // Manual language selection is temporary and doesn't persist across page navigation
-    currentLanguage = detectLanguage();
-
-    createChatPanel();
-    loadModels();
-    loadPageContent();
-
-    const savedKey = localStorage.getItem('openrouter-api-key');
-    if (savedKey) {
-      document.getElementById('chat-api-key').value = savedKey;
-      document.getElementById('chat-settings').classList.add('hidden');
-      document.getElementById('chat-setup-wrapper').classList.add('hidden');
-      document.getElementById('chat-user-input').disabled = false;
-      document.getElementById('chat-send-btn').disabled = false;
-      document.getElementById('chat-settings-remove').style.display = 'block';
-
-      const savedModel = localStorage.getItem('openrouter-model');
-      if (savedModel) {
-        setTimeout(() => {
-          const select = document.getElementById('chat-model-select');
-          if (select) {
-            select.value = savedModel;
-            updateCurrentModelDisplay();
-          }
-        }, CONFIG.MODEL_LOAD_DELAY);
-      }
-
-    }
-
-    // Set initial language
-    updateLanguage(currentLanguage);
-
-    // Load sessions
-    loadSessions();
-
-    // Show ready message if no history and API key is set
-    if (savedKey && messages.length === 0) {
-      addChatMessage('assistant', i18n[currentLanguage].ready);
-    }
-  }
-
-  // Session management functions
-  function loadSessions() {
-    const saved = localStorage.getItem('chat-sessions');
-    if (saved) {
-      try {
-        sessions = JSON.parse(saved);
-      } catch (e) {
-        console.error('Failed to load sessions:', e);
-        sessions = [];
-      }
-    }
-
-    const savedSessionId = localStorage.getItem('current-session-id');
-    if (savedSessionId && sessions.find(s => s.id === savedSessionId)) {
-      currentSessionId = savedSessionId;
-    } else if (sessions.length > 0) {
-      currentSessionId = sessions[0].id;
-    } else {
-      // Create initial session
-      const newSession = createSession();
-      sessions.push(newSession);
-      currentSessionId = newSession.id;
-      saveSessions();
-      return;
-    }
-
-    loadCurrentSession();
-  }
-
-  function saveSessions() {
-    localStorage.setItem('chat-sessions', JSON.stringify(sessions));
-    if (currentSessionId) {
-      localStorage.setItem('current-session-id', currentSessionId);
-    }
+  function formatDateTime(date) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 
   function getPageDisplay() {
@@ -373,258 +203,9 @@
     return document.title.replace(/ [–-] Naoto's Books/g, '').replace(/^Books [–-] /, '');
   }
 
-  function createSession() {
-    return {
-      id: 'session-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11),
-      url: window.location.pathname,
-      title: i18n[currentLanguage].newSession,
-      page: getPageDisplay(),
-      updated: Date.now(),
-      messages: []
-    };
-  }
-
-  function loadCurrentSession() {
-    const session = sessions.find(s => s.id === currentSessionId);
-    if (!session) return;
-
-    messages = session.messages || [];
-
-    // Clear and reload messages
-    const messagesDiv = document.getElementById('chat-messages');
-    if (messagesDiv) {
-      messagesDiv.innerHTML = '';
-      messages.forEach(msg => {
-        addChatMessage(msg.role, msg.content);
-      });
-    }
-
-    updateSessionDisplay();
-  }
-
-  function saveCurrentSession() {
-    const session = sessions.find(s => s.id === currentSessionId);
-    if (!session) return;
-
-    session.messages = messages;
-    session.url = window.location.pathname;
-    session.page = getPageDisplay();
-    session.updated = Date.now();
-
-    // Update title from first user message if still using default title
-    if (session.title === i18n.ja.newSession || session.title === i18n.en.newSession) {
-      const firstUserMsg = messages.find(m => m.role === 'user');
-      if (firstUserMsg) {
-        session.title = firstUserMsg.content.trim().replace(/\s+/g, ' ').substring(0, CONFIG.SESSION_TITLE_MAX_LENGTH);
-      }
-    }
-
-    saveSessions();
-    updateSessionDisplay();
-  }
-
-  function updateSessionDisplay() {
-    const session = sessions.find(s => s.id === currentSessionId);
-    if (!session) return;
-
-    const currentSessionName = document.getElementById('chat-current-session-name');
-    if (currentSessionName) {
-      const title = session.title || i18n[currentLanguage].newSession;
-      currentSessionName.textContent = title.substring(0, CONFIG.SESSION_TITLE_DISPLAY_LENGTH);
-    }
-
-    renderSessionList();
-  }
-
-  function renderSessionList() {
-    const sessionList = document.getElementById('chat-session-list');
-    if (!sessionList) return;
-
-    sessionList.innerHTML = '';
-
-    sessions.sort((a, b) => b.updated - a.updated).forEach(session => {
-      const item = document.createElement('div');
-      item.className = 'chat-session-item' + (session.id === currentSessionId ? ' active' : '');
-
-      const date = new Date(session.updated);
-      const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
-      const title = (session.title || i18n[currentLanguage].newSession).substring(0, CONFIG.SESSION_LIST_TITLE_MAX);
-      const page = session.page ? session.page.substring(0, CONFIG.SESSION_PAGE_DISPLAY_MAX) : '';
-
-      item.innerHTML = `
-        <div class="chat-session-info" onclick="window.switchSession('${session.id}')">
-          <div class="chat-session-date">${dateStr}</div>
-          <div class="chat-session-title">${title}</div>
-          ${page ? `<div class="chat-session-page">@ ${page}</div>` : ''}
-        </div>
-        <button class="chat-session-delete" onclick="window.deleteSession(event, '${session.id}')" title="Delete">×</button>
-      `;
-
-      sessionList.appendChild(item);
-    });
-  }
-
-  function createChatPanel() {
-    const panel = document.createElement('div');
-    panel.id = 'chat-panel';
-    panel.innerHTML = `
-      <div class="chat-resize-handle" id="chat-resize-handle"></div>
-      <div class="chat-header">
-        <div class="chat-header-top">
-          <span class="chat-icon">💬</span>
-          <span id="chat-current-model" class="chat-current-model"></span>
-          <div class="chat-session-dropdown-wrapper">
-            <button class="chat-session-dropdown-btn" id="chat-session-dropdown-btn" onclick="window.toggleSessionDropdown()">
-              <span id="chat-current-session-name">New Chat</span> ▼
-            </button>
-            <div class="chat-session-dropdown hidden" id="chat-session-dropdown">
-              <div class="chat-session-list" id="chat-session-list"></div>
-              <div class="chat-session-delete-all-wrapper">
-                <button class="chat-session-delete-all-btn" id="chat-session-delete-all-btn" onclick="window.deleteAllSessions()">🗑️ Delete All History</button>
-              </div>
-            </div>
-          </div>
-          <div class="chat-header-buttons">
-            <button class="chat-new-btn" id="chat-new-btn" onclick="window.createNewSession()" title="New chat">＋</button>
-            <button class="chat-export-btn" id="chat-export-btn" onclick="window.exportChatAsMarkdown()" title="Export">⤓</button>
-            <button class="chat-settings-toggle" onclick="window.toggleChatSettings()" title="Settings">⚙️</button>
-          </div>
-        </div>
-        <div class="chat-settings" id="chat-settings">
-          <label>Model:</label>
-          <select id="chat-model-select" disabled>
-            <option>Loading models...</option>
-          </select>
-          <label>API Key:</label>
-          <input type="password" id="chat-api-key" placeholder="sk-or-v1-...">
-          <div class="chat-settings-buttons">
-            <button class="chat-settings-save" id="chat-settings-save-btn" onclick="window.saveChatSettings()">Save Settings</button>
-            <button class="chat-settings-remove" id="chat-settings-remove" onclick="window.removeApiKey()" style="display: none;">Remove API Key</button>
-          </div>
-          <div class="chat-setup-wrapper" id="chat-setup-wrapper">
-            <p class="chat-setup-text">
-              <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a> <span id="chat-setup-msg"></span>
-            </p>
-            <div class="chat-info">
-              <strong id="chat-info-title"></strong><br>
-              <span id="chat-info-bullets"></span>
-            </div>
-            <div class="chat-resize-hint" id="chat-resize-hint"></div>
-          </div>
-        </div>
-      </div>
-      <div class="chat-messages" id="chat-messages">
-      </div>
-      <div class="chat-input-area">
-        <div class="chat-input-group">
-          <textarea id="chat-user-input" placeholder="" disabled rows="1"></textarea>
-          <button id="chat-send-btn" onclick="window.sendChatMessage()"></button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(panel);
-
-    // Create toggle button
-    const toggleBtn = document.createElement('button');
-    toggleBtn.className = 'chat-toggle-btn';
-    toggleBtn.textContent = '💬 AI Chat';
-    toggleBtn.onclick = toggleChat;
-    document.body.appendChild(toggleBtn);
-
-    // Enter key to send
-    const userInput = document.getElementById('chat-user-input');
-    userInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        window.sendChatMessage();
-      }
-    });
-
-    // Auto-resize textarea based on content
-    userInput.addEventListener('input', function() {
-      this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, CONFIG.TEXTAREA_MAX_HEIGHT) + 'px';
-    });
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-      const dropdown = document.getElementById('chat-session-dropdown');
-      const dropdownBtn = document.getElementById('chat-session-dropdown-btn');
-      if (dropdown && dropdownBtn && !dropdown.contains(e.target) && !dropdownBtn.contains(e.target)) {
-        dropdown.classList.add('hidden');
-      }
-    });
-
-    // Setup resize handle
-    setupResizeHandle();
-
-    // Restore saved width
-    const savedWidth = localStorage.getItem('chat-panel-width');
-    if (savedWidth) {
-      panel.style.width = savedWidth + 'px';
-    }
-  }
-
-  function setupResizeHandle() {
-    const handle = document.getElementById('chat-resize-handle');
-    const panel = document.getElementById('chat-panel');
-    let isResizing = false;
-    let startX = 0;
-    let startWidth = 0;
-
-    handle.addEventListener('mousedown', (e) => {
-      isResizing = true;
-      startX = e.clientX;
-      startWidth = panel.offsetWidth;
-      panel.classList.add('resizing');
-      e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isResizing) return;
-
-      const deltaX = startX - e.clientX; // Inverted because panel grows left
-      const newWidth = Math.min(Math.max(CONFIG.PANEL_MIN_WIDTH, startWidth + deltaX), window.innerWidth * CONFIG.PANEL_MAX_WIDTH_RATIO);
-      panel.style.width = newWidth + 'px';
-    });
-
-    document.addEventListener('mouseup', () => {
-      if (isResizing) {
-        isResizing = false;
-        panel.classList.remove('resizing');
-        // Save width to localStorage
-        localStorage.setItem('chat-panel-width', panel.offsetWidth);
-      }
-    });
-  }
-
-  function toggleChat() {
-    isOpen = !isOpen;
-    const panel = document.getElementById('chat-panel');
-    const btn = document.querySelector('.chat-toggle-btn');
-    const t = i18n[currentLanguage];
-
-    if (isOpen) {
-      panel.classList.add('open');
-      btn.classList.add('open');
-      btn.textContent = t.closeBtn;
-    } else {
-      panel.classList.remove('open');
-      btn.classList.remove('open');
-      btn.textContent = t.openBtn;
-    }
-  }
-
-  function updateCurrentModelDisplay() {
-    const select = document.getElementById('chat-model-select');
-    const display = document.getElementById('chat-current-model');
-    if (!select || !display) return;
-
-    const selectedOption = select.options[select.selectedIndex];
-    if (selectedOption) {
-      display.textContent = selectedOption.textContent;
-    }
-  }
+  // ============================================================
+  // API / EXTERNAL - Data Fetching & External Communication
+  // ============================================================
 
   async function loadModels() {
     try {
@@ -739,8 +320,95 @@
     }
   }
 
+  async function loadSearchIndex() {
+    if (searchIndex) return searchIndex;
+    const basePath = window.location.pathname.startsWith('/books/') ? '/books' : '';
+    const url = `${basePath}/search.json`;
 
-  // Build system prompt for Japanese
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return [];
+      searchIndex = await response.json();
+      return searchIndex;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async function searchSite(query) {
+    const index = await loadSearchIndex();
+    const queryLower = query.toLowerCase();
+    // Allow single-character terms for Japanese (e.g., "木", "AI")
+    const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 0);
+
+    const scored = index
+      .map(item => {
+        let score = 0;
+        const titleLower = (item.title || '').toLowerCase();
+        const textLower = (item.text || '').toLowerCase();
+        const sectionLower = (item.section || '').toLowerCase();
+
+        for (const term of queryTerms) {
+          if (titleLower.includes(term)) score += 10;
+          if (sectionLower.includes(term)) score += 5;
+          if (textLower.includes(term)) score += 1;
+        }
+        return { ...item, score };
+      })
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    // Deduplicate by href (keep highest scoring entry per page)
+    const seenHrefs = new Set();
+    const results = [];
+    for (const item of scored) {
+      if (seenHrefs.has(item.href)) continue;
+      seenHrefs.add(item.href);
+      results.push({
+        title: item.title,
+        section: item.section,
+        href: item.href,
+        snippet: (item.text || '').substring(0, 200) + (item.text?.length > 200 ? '...' : '')
+      });
+      if (results.length >= 5) break;
+    }
+
+    return results;
+  }
+
+  async function executeToolCall(toolCall) {
+    try {
+      if (!toolCall?.function?.name || !toolCall?.function?.arguments) {
+        return JSON.stringify({ error: 'Invalid tool call structure' });
+      }
+
+      const { name, arguments: argsStr } = toolCall.function;
+      let args;
+      try {
+        args = JSON.parse(argsStr);
+      } catch (e) {
+        return JSON.stringify({ error: 'Failed to parse tool arguments' });
+      }
+
+      if (name === 'search_site') {
+        const results = await searchSite(args.query);
+        if (results.length === 0) {
+          return i18n[currentLanguage].noSearchResults;
+        }
+        return JSON.stringify(results, null, 2);
+      }
+      return JSON.stringify({ error: 'Unknown tool: ' + name });
+    } catch (e) {
+      return JSON.stringify({ error: e.message });
+    }
+  }
+
+  function isToolCallingSupported(modelId) {
+    const model = models.find(m => m.id === modelId);
+    return model?.supported_parameters?.includes('tools') ?? false;
+  }
+
+  // System prompts
   function buildJapaneseSystemPrompt(content) {
     return `あなたは技術書の内容に基づいて質問に答えるアシスタントです。
 
@@ -763,7 +431,6 @@ ${content}
   - 個別ページ: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html（例: https://naoto-iwase.github.io/books/ja/olmo-3/03-midtraining.html）`;
   }
 
-  // Build system prompt for English
   function buildEnglishSystemPrompt(content) {
     return `You are an assistant that answers questions based on technical documentation.
 
@@ -784,6 +451,306 @@ ${content}
 - When providing links, use the following formats:
   - Book listing by language: https://naoto-iwase.github.io/books/#{lang} (e.g., https://naoto-iwase.github.io/books/#en)
   - Individual pages: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html (e.g., https://naoto-iwase.github.io/books/en/pdlt/04-neural-tangent-kernel.html)`;
+  }
+
+  // ============================================================
+  // SESSION MANAGEMENT - Persistence & History
+  // ============================================================
+
+  function createSession() {
+    return {
+      id: 'session-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11),
+      url: window.location.pathname,
+      title: i18n[currentLanguage].newSession,
+      page: getPageDisplay(),
+      updated: Date.now(),
+      messages: []
+    };
+  }
+
+  function loadSessions() {
+    const saved = localStorage.getItem('chat-sessions');
+    if (saved) {
+      try {
+        sessions = JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to load sessions:', e);
+        sessions = [];
+      }
+    }
+
+    const savedSessionId = localStorage.getItem('current-session-id');
+    if (savedSessionId && sessions.find(s => s.id === savedSessionId)) {
+      currentSessionId = savedSessionId;
+    } else if (sessions.length > 0) {
+      currentSessionId = sessions[0].id;
+    } else {
+      // Create initial session
+      const newSession = createSession();
+      sessions.push(newSession);
+      currentSessionId = newSession.id;
+      saveSessions();
+      return;
+    }
+
+    loadCurrentSession();
+  }
+
+  function saveSessions() {
+    localStorage.setItem('chat-sessions', JSON.stringify(sessions));
+    if (currentSessionId) {
+      localStorage.setItem('current-session-id', currentSessionId);
+    }
+  }
+
+  function loadCurrentSession() {
+    const session = sessions.find(s => s.id === currentSessionId);
+    if (!session) return;
+
+    messages = session.messages || [];
+
+    // Clear and reload messages
+    const messagesDiv = document.getElementById('chat-messages');
+    if (messagesDiv) {
+      messagesDiv.innerHTML = '';
+      messages.forEach(msg => {
+        addChatMessage(msg.role, msg.content);
+      });
+    }
+
+    updateSessionDisplay();
+  }
+
+  function saveCurrentSession() {
+    const session = sessions.find(s => s.id === currentSessionId);
+    if (!session) return;
+
+    session.messages = messages;
+    session.url = window.location.pathname;
+    session.page = getPageDisplay();
+    session.updated = Date.now();
+
+    // Update title from first user message if still using default title
+    if (session.title === i18n.ja.newSession || session.title === i18n.en.newSession) {
+      const firstUserMsg = messages.find(m => m.role === 'user');
+      if (firstUserMsg) {
+        session.title = firstUserMsg.content.trim().replace(/\s+/g, ' ').substring(0, CONFIG.SESSION_TITLE_MAX_LENGTH);
+      }
+    }
+
+    saveSessions();
+    updateSessionDisplay();
+  }
+
+  function updateSessionDisplay() {
+    const session = sessions.find(s => s.id === currentSessionId);
+    if (!session) return;
+
+    const currentSessionName = document.getElementById('chat-current-session-name');
+    if (currentSessionName) {
+      const title = session.title || i18n[currentLanguage].newSession;
+      currentSessionName.textContent = title.substring(0, CONFIG.SESSION_TITLE_DISPLAY_LENGTH);
+    }
+
+    renderSessionList();
+  }
+
+  function renderSessionList() {
+    const sessionList = document.getElementById('chat-session-list');
+    if (!sessionList) return;
+
+    sessionList.innerHTML = '';
+
+    sessions.sort((a, b) => b.updated - a.updated).forEach(session => {
+      const item = document.createElement('div');
+      item.className = 'chat-session-item' + (session.id === currentSessionId ? ' active' : '');
+
+      const date = new Date(session.updated);
+      const dateStr = `${date.getMonth() + 1}/${date.getDate()} ${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
+      const title = (session.title || i18n[currentLanguage].newSession).substring(0, CONFIG.SESSION_LIST_TITLE_MAX);
+      const page = session.page ? session.page.substring(0, CONFIG.SESSION_PAGE_DISPLAY_MAX) : '';
+
+      item.innerHTML = `
+        <div class="chat-session-info" onclick="window.switchSession('${session.id}')">
+          <div class="chat-session-date">${dateStr}</div>
+          <div class="chat-session-title">${title}</div>
+          ${page ? `<div class="chat-session-page">@ ${page}</div>` : ''}
+        </div>
+        <button class="chat-session-delete" onclick="window.deleteSession(event, '${session.id}')" title="Delete">×</button>
+      `;
+
+      sessionList.appendChild(item);
+    });
+  }
+
+  // ============================================================
+  // UI CONSTRUCTION - DOM Building
+  // ============================================================
+
+  function createChatPanel() {
+    const panel = document.createElement('div');
+    panel.id = 'chat-panel';
+    panel.innerHTML = `
+      <div class="chat-resize-handle" id="chat-resize-handle"></div>
+      <div class="chat-header">
+        <div class="chat-header-top">
+          <span class="chat-icon">💬</span>
+          <span id="chat-current-model" class="chat-current-model"></span>
+          <div class="chat-session-dropdown-wrapper">
+            <button class="chat-session-dropdown-btn" id="chat-session-dropdown-btn" onclick="window.toggleSessionDropdown()">
+              <span id="chat-current-session-name">New Chat</span> ▼
+            </button>
+            <div class="chat-session-dropdown hidden" id="chat-session-dropdown">
+              <div class="chat-session-list" id="chat-session-list"></div>
+              <div class="chat-session-delete-all-wrapper">
+                <button class="chat-session-delete-all-btn" id="chat-session-delete-all-btn" onclick="window.deleteAllSessions()">🗑️ Delete All History</button>
+              </div>
+            </div>
+          </div>
+          <div class="chat-header-buttons">
+            <button class="chat-new-btn" id="chat-new-btn" onclick="window.createNewSession()" title="New chat">＋</button>
+            <button class="chat-export-btn" id="chat-export-btn" onclick="window.exportChatAsMarkdown()" title="Export">⤓</button>
+            <button class="chat-settings-toggle" onclick="window.toggleChatSettings()" title="Settings">⚙️</button>
+          </div>
+        </div>
+        <div class="chat-settings" id="chat-settings">
+          <label>Model:</label>
+          <select id="chat-model-select" disabled>
+            <option>Loading models...</option>
+          </select>
+          <label>API Key:</label>
+          <input type="password" id="chat-api-key" placeholder="sk-or-v1-...">
+          <div class="chat-settings-buttons">
+            <button class="chat-settings-save" id="chat-settings-save-btn" onclick="window.saveChatSettings()">Save Settings</button>
+            <button class="chat-settings-remove" id="chat-settings-remove" onclick="window.removeApiKey()" style="display: none;">Remove API Key</button>
+          </div>
+          <div class="chat-setup-wrapper" id="chat-setup-wrapper">
+            <p class="chat-setup-text">
+              <a href="https://openrouter.ai/keys" target="_blank">OpenRouter</a> <span id="chat-setup-msg"></span>
+            </p>
+            <div class="chat-info">
+              <strong id="chat-info-title"></strong><br>
+              <span id="chat-info-bullets"></span>
+            </div>
+            <div class="chat-resize-hint" id="chat-resize-hint"></div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+      </div>
+      <div class="chat-input-area">
+        <div class="chat-input-group">
+          <textarea id="chat-user-input" placeholder="" disabled rows="1"></textarea>
+          <button id="chat-send-btn" onclick="window.sendChatMessage()"></button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(panel);
+
+    // Create toggle button
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'chat-toggle-btn';
+    toggleBtn.textContent = '💬 AI Chat';
+    toggleBtn.onclick = toggleChat;
+    document.body.appendChild(toggleBtn);
+
+    // Enter key to send
+    const userInput = document.getElementById('chat-user-input');
+    userInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendChatMessage();
+      }
+    });
+
+    // Auto-resize textarea based on content
+    userInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, CONFIG.TEXTAREA_MAX_HEIGHT) + 'px';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('chat-session-dropdown');
+      const dropdownBtn = document.getElementById('chat-session-dropdown-btn');
+      if (dropdown && dropdownBtn && !dropdown.contains(e.target) && !dropdownBtn.contains(e.target)) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
+    // Setup resize handle
+    setupResizeHandle();
+
+    // Restore saved width
+    const savedWidth = localStorage.getItem('chat-panel-width');
+    if (savedWidth) {
+      panel.style.width = savedWidth + 'px';
+    }
+  }
+
+  function setupResizeHandle() {
+    const handle = document.getElementById('chat-resize-handle');
+    const panel = document.getElementById('chat-panel');
+    let isResizing = false;
+    let startX = 0;
+    let startWidth = 0;
+
+    handle.addEventListener('mousedown', (e) => {
+      isResizing = true;
+      startX = e.clientX;
+      startWidth = panel.offsetWidth;
+      panel.classList.add('resizing');
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isResizing) return;
+
+      const deltaX = startX - e.clientX; // Inverted because panel grows left
+      const newWidth = Math.min(Math.max(CONFIG.PANEL_MIN_WIDTH, startWidth + deltaX), window.innerWidth * CONFIG.PANEL_MAX_WIDTH_RATIO);
+      panel.style.width = newWidth + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (isResizing) {
+        isResizing = false;
+        panel.classList.remove('resizing');
+        // Save width to localStorage
+        localStorage.setItem('chat-panel-width', panel.offsetWidth);
+      }
+    });
+  }
+
+  // ============================================================
+  // UI STATE - Display State Management
+  // ============================================================
+
+  function toggleChat() {
+    isOpen = !isOpen;
+    const panel = document.getElementById('chat-panel');
+    const btn = document.querySelector('.chat-toggle-btn');
+    const t = i18n[currentLanguage];
+
+    if (isOpen) {
+      panel.classList.add('open');
+      btn.classList.add('open');
+      btn.textContent = t.closeBtn;
+    } else {
+      panel.classList.remove('open');
+      btn.classList.remove('open');
+      btn.textContent = t.openBtn;
+    }
+  }
+
+  function updateCurrentModelDisplay() {
+    const select = document.getElementById('chat-model-select');
+    const display = document.getElementById('chat-current-model');
+    if (!select || !display) return;
+
+    const selectedOption = select.options[select.selectedIndex];
+    if (selectedOption) {
+      display.textContent = selectedOption.textContent;
+    }
   }
 
   function updateLanguage(lang) {
@@ -813,215 +780,56 @@ ${content}
     if (btn) btn.textContent = isOpen ? t.closeBtn : t.openBtn;
   }
 
-  window.saveChatSettings = async function() {
-    const apiKey = document.getElementById('chat-api-key').value.trim();
-    const t = i18n[currentLanguage];
-    const saveBtn = document.querySelector('.chat-settings-save');
+  // ============================================================
+  // MESSAGES - Display & Update
+  // ============================================================
 
-    if (!apiKey) {
-      alert(t.apiKeyRequired);
-      return;
-    }
-
-    // Check if this is a new API key registration
-    const hadApiKey = !!localStorage.getItem('openrouter-api-key');
-
-    // Disable button and show validating state
-    const originalText = saveBtn.textContent;
-    saveBtn.disabled = true;
-    saveBtn.textContent = t.validating;
-
-    try {
-      // Test API key with a simple request
-      const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error(t.invalidApiKey);
-      }
-
-      // Key is valid, save it
-      localStorage.setItem('openrouter-api-key', apiKey);
-      localStorage.setItem('openrouter-model', document.getElementById('chat-model-select').value);
-      updateCurrentModelDisplay();
-
-      // Reset button state before hiding
-      saveBtn.disabled = false;
-      saveBtn.textContent = originalText;
-
-      // Show remove button
-      document.getElementById('chat-settings-remove').style.display = 'block';
-
-      // Hide welcome message and enable chat
-      document.getElementById('chat-setup-wrapper').classList.add('hidden');
-      document.getElementById('chat-settings').classList.add('hidden');
-      document.getElementById('chat-user-input').disabled = false;
-      document.getElementById('chat-send-btn').disabled = false;
-
-      // Show messages for initial setup only
-      if (messages.length === 0) {
-        if (!hadApiKey) {
-          addChatMessage('assistant', i18n[currentLanguage].securityWarning);
-        }
-        addChatMessage('assistant', i18n[currentLanguage].ready);
-      }
-    } catch (error) {
-      alert(t.error + ' ' + error.message);
-      saveBtn.disabled = false;
-      saveBtn.textContent = originalText;
-    }
-  };
-
-  window.removeApiKey = function() {
-    const t = i18n[currentLanguage];
-    if (!confirm(t.removeApiKeyConfirm)) return;
-
-    // Clear only API Key and model settings
-    localStorage.removeItem('openrouter-api-key');
-    localStorage.removeItem('openrouter-model');
-
-    // Reset UI to initial state (but keep chat history)
-    document.getElementById('chat-api-key').value = '';
-    document.getElementById('chat-settings').classList.remove('hidden');
-    document.getElementById('chat-setup-wrapper').classList.remove('hidden');
-    document.getElementById('chat-settings-remove').style.display = 'none';
-    document.getElementById('chat-user-input').disabled = true;
-    document.getElementById('chat-send-btn').disabled = true;
-
-    // Keep messages and sessions intact
-  };
-
-  window.deleteAllSessions = function() {
-    const t = i18n[currentLanguage];
-    if (!confirm(t.deleteAllSessionsConfirm)) return;
-
-    // Clear only chat history (keep API key)
-    localStorage.removeItem('chat-sessions');
-    localStorage.removeItem('current-session-id');
-
-    // Clear messages
-    messages = [];
-    document.getElementById('chat-messages').innerHTML = '';
-
-    // Reset sessions
-    sessions = [];
-    currentSessionId = null;
-    const newSession = createSession();
-    sessions.push(newSession);
-    currentSessionId = newSession.id;
-    saveSessions();
-    updateSessionDisplay();
-
-    // Close dropdown
-    const dropdown = document.getElementById('chat-session-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
-
-    // Show ready message
-    addChatMessage('assistant', i18n[currentLanguage].ready);
-  };
-
-  window.toggleChatSettings = function() {
-    document.getElementById('chat-settings').classList.toggle('hidden');
-  };
-
-  window.toggleSessionDropdown = function() {
-    document.getElementById('chat-session-dropdown').classList.toggle('hidden');
-  };
-
-  window.createNewSession = function() {
-    const newSession = createSession();
-    sessions.push(newSession);
-    currentSessionId = newSession.id;
-    messages = [];
-
-    saveSessions();
-
+  function addChatMessage(role, content) {
     const messagesDiv = document.getElementById('chat-messages');
-    if (messagesDiv) {
-      messagesDiv.innerHTML = '';
-      addChatMessage('assistant', i18n[currentLanguage].ready);
+    const messageDiv = document.createElement('div');
+    const messageId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
+    messageDiv.id = messageId;
+    messageDiv.className = `chat-message ${role}`;
+
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'chat-message-content';
+
+    if (role === 'error') {
+      contentDiv.className = 'chat-error';
+      contentDiv.textContent = content;
+    } else if (role === 'assistant') {
+      contentDiv.innerHTML = marked.parse(normalizeLatexDelimiters(content || ''));
+      contentDiv.querySelectorAll('pre code').forEach((block) => {
+        hljs.highlightElement(block);
+      });
+    } else {
+      contentDiv.textContent = content;
     }
 
-    updateSessionDisplay();
+    messageDiv.appendChild(contentDiv);
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
 
-    // Close dropdown
-    const dropdown = document.getElementById('chat-session-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
-  };
-
-  window.switchSession = function(sessionId) {
-    const dropdown = document.getElementById('chat-session-dropdown');
-    if (sessionId === currentSessionId) {
-      if (dropdown) dropdown.classList.add('hidden');
-      return;
-    }
-
-    currentSessionId = sessionId;
-    loadCurrentSession();
-    saveSessions();
-
-    // Close dropdown
-    if (dropdown) dropdown.classList.add('hidden');
-  };
-
-  window.deleteSession = function(event, sessionId) {
-    event.stopPropagation();
-    sessions = sessions.filter(s => s.id !== sessionId);
-
-    if (sessionId === currentSessionId) {
-      if (sessions.length > 0) {
-        currentSessionId = sessions[0].id;
-        loadCurrentSession();
-      } else {
-        window.createNewSession();
-      }
-    }
-
-    saveSessions();
-    renderSessionList();
-  };
-
-  // Format date as YYYY-MM-DD HH:MM
-  function formatDateTime(date) {
-    const pad = n => String(n).padStart(2, '0');
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    return messageId;
   }
 
-  window.exportChatAsMarkdown = function() {
-    if (messages.length === 0) return;
+  function updateChatMessage(messageId, content) {
+    const contentDiv = document.getElementById(messageId)?.querySelector('.chat-message-content');
+    if (!contentDiv) return;
 
-    const model = document.getElementById('chat-model-select')?.value || 'Unknown';
-    const now = new Date();
-    const dateDisplay = formatDateTime(now);
-    const dateFilename = formatDateTime(now).replace(' ', '-').replace(':', '');
+    contentDiv.classList.remove('chat-loading-dots');
+    contentDiv.innerHTML = marked.parse(normalizeLatexDelimiters(content));
+    contentDiv.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
 
-    let md = `# Chat Export\n\n`;
-    md += `- **Date**: ${dateDisplay}\n`;
-    md += `- **Model**: ${model}\n`;
-    md += `- **Page**: ${window.location.href}\n\n---\n\n`;
+    const messagesDiv = document.getElementById('chat-messages');
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
 
-    for (const msg of messages) {
-      if (msg.role === 'user') {
-        md += `## User\n\n${msg.content}\n\n`;
-      } else if (msg.role === 'assistant') {
-        md += `## Assistant\n\n${msg.content}\n\n`;
-      }
-    }
+  // ============================================================
+  // CORE FEATURES - Main Functionality
+  // ============================================================
 
-    const blob = new Blob([md], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `chat-export-${dateFilename}.md`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  window.sendChatMessage = async function() {
+  async function sendChatMessage() {
     const userInput = document.getElementById('chat-user-input');
     const userMessage = userInput.value.trim();
 
@@ -1278,49 +1086,287 @@ ${content}
       userInput.disabled = false;
       userInput.focus();
     }
-  };
+  }
 
-  function addChatMessage(role, content) {
-    const messagesDiv = document.getElementById('chat-messages');
-    const messageDiv = document.createElement('div');
-    const messageId = 'msg-' + Date.now() + '-' + Math.random().toString(36).substring(2, 11);
-    messageDiv.id = messageId;
-    messageDiv.className = `chat-message ${role}`;
+  async function saveChatSettings() {
+    const apiKey = document.getElementById('chat-api-key').value.trim();
+    const t = i18n[currentLanguage];
+    const saveBtn = document.querySelector('.chat-settings-save');
 
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'chat-message-content';
-
-    if (role === 'error') {
-      contentDiv.className = 'chat-error';
-      contentDiv.textContent = content;
-    } else if (role === 'assistant') {
-      contentDiv.innerHTML = marked.parse(normalizeLatexDelimiters(content || ''));
-      contentDiv.querySelectorAll('pre code').forEach((block) => {
-        hljs.highlightElement(block);
-      });
-    } else {
-      contentDiv.textContent = content;
+    if (!apiKey) {
+      alert(t.apiKeyRequired);
+      return;
     }
 
-    messageDiv.appendChild(contentDiv);
-    messagesDiv.appendChild(messageDiv);
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    // Check if this is a new API key registration
+    const hadApiKey = !!localStorage.getItem('openrouter-api-key');
 
-    return messageId;
+    // Disable button and show validating state
+    const originalText = saveBtn.textContent;
+    saveBtn.disabled = true;
+    saveBtn.textContent = t.validating;
+
+    try {
+      // Test API key with a simple request
+      const response = await fetch('https://openrouter.ai/api/v1/auth/key', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(t.invalidApiKey);
+      }
+
+      // Key is valid, save it
+      localStorage.setItem('openrouter-api-key', apiKey);
+      localStorage.setItem('openrouter-model', document.getElementById('chat-model-select').value);
+      updateCurrentModelDisplay();
+
+      // Reset button state before hiding
+      saveBtn.disabled = false;
+      saveBtn.textContent = originalText;
+
+      // Show remove button
+      document.getElementById('chat-settings-remove').style.display = 'block';
+
+      // Hide welcome message and enable chat
+      document.getElementById('chat-setup-wrapper').classList.add('hidden');
+      document.getElementById('chat-settings').classList.add('hidden');
+      document.getElementById('chat-user-input').disabled = false;
+      document.getElementById('chat-send-btn').disabled = false;
+
+      // Show messages for initial setup only
+      if (messages.length === 0) {
+        if (!hadApiKey) {
+          addChatMessage('assistant', i18n[currentLanguage].securityWarning);
+        }
+        addChatMessage('assistant', i18n[currentLanguage].ready);
+      }
+    } catch (error) {
+      alert(t.error + ' ' + error.message);
+      saveBtn.disabled = false;
+      saveBtn.textContent = originalText;
+    }
   }
 
-  function updateChatMessage(messageId, content) {
-    const contentDiv = document.getElementById(messageId)?.querySelector('.chat-message-content');
-    if (!contentDiv) return;
+  function removeApiKey() {
+    const t = i18n[currentLanguage];
+    if (!confirm(t.removeApiKeyConfirm)) return;
 
-    contentDiv.classList.remove('chat-loading-dots');
-    contentDiv.innerHTML = marked.parse(normalizeLatexDelimiters(content));
-    contentDiv.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
+    // Clear only API Key and model settings
+    localStorage.removeItem('openrouter-api-key');
+    localStorage.removeItem('openrouter-model');
+
+    // Reset UI to initial state (but keep chat history)
+    document.getElementById('chat-api-key').value = '';
+    document.getElementById('chat-settings').classList.remove('hidden');
+    document.getElementById('chat-setup-wrapper').classList.remove('hidden');
+    document.getElementById('chat-settings-remove').style.display = 'none';
+    document.getElementById('chat-user-input').disabled = true;
+    document.getElementById('chat-send-btn').disabled = true;
+
+    // Keep messages and sessions intact
+  }
+
+  function deleteAllSessions() {
+    const t = i18n[currentLanguage];
+    if (!confirm(t.deleteAllSessionsConfirm)) return;
+
+    // Clear only chat history (keep API key)
+    localStorage.removeItem('chat-sessions');
+    localStorage.removeItem('current-session-id');
+
+    // Clear messages
+    messages = [];
+    document.getElementById('chat-messages').innerHTML = '';
+
+    // Reset sessions
+    sessions = [];
+    currentSessionId = null;
+    const newSession = createSession();
+    sessions.push(newSession);
+    currentSessionId = newSession.id;
+    saveSessions();
+    updateSessionDisplay();
+
+    // Close dropdown
+    const dropdown = document.getElementById('chat-session-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
+
+    // Show ready message
+    addChatMessage('assistant', i18n[currentLanguage].ready);
+  }
+
+  function toggleChatSettings() {
+    document.getElementById('chat-settings').classList.toggle('hidden');
+  }
+
+  function toggleSessionDropdown() {
+    document.getElementById('chat-session-dropdown').classList.toggle('hidden');
+  }
+
+  function createNewSession() {
+    const newSession = createSession();
+    sessions.push(newSession);
+    currentSessionId = newSession.id;
+    messages = [];
+
+    saveSessions();
 
     const messagesDiv = document.getElementById('chat-messages');
-    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    if (messagesDiv) {
+      messagesDiv.innerHTML = '';
+      addChatMessage('assistant', i18n[currentLanguage].ready);
+    }
+
+    updateSessionDisplay();
+
+    // Close dropdown
+    const dropdown = document.getElementById('chat-session-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
   }
 
-  // Expose toggle function globally
-  window.toggleChat = toggleChat;
+  function switchSession(sessionId) {
+    const dropdown = document.getElementById('chat-session-dropdown');
+    if (sessionId === currentSessionId) {
+      if (dropdown) dropdown.classList.add('hidden');
+      return;
+    }
+
+    currentSessionId = sessionId;
+    loadCurrentSession();
+    saveSessions();
+
+    // Close dropdown
+    if (dropdown) dropdown.classList.add('hidden');
+  }
+
+  function deleteSession(event, sessionId) {
+    event.stopPropagation();
+    sessions = sessions.filter(s => s.id !== sessionId);
+
+    if (sessionId === currentSessionId) {
+      if (sessions.length > 0) {
+        currentSessionId = sessions[0].id;
+        loadCurrentSession();
+      } else {
+        createNewSession();
+      }
+    }
+
+    saveSessions();
+    renderSessionList();
+  }
+
+  function exportChatAsMarkdown() {
+    if (messages.length === 0) return;
+
+    const model = document.getElementById('chat-model-select')?.value || 'Unknown';
+    const now = new Date();
+    const dateDisplay = formatDateTime(now);
+    const dateFilename = formatDateTime(now).replace(' ', '-').replace(':', '');
+
+    let md = `# Chat Export\n\n`;
+    md += `- **Date**: ${dateDisplay}\n`;
+    md += `- **Model**: ${model}\n`;
+    md += `- **Page**: ${window.location.href}\n\n---\n\n`;
+
+    for (const msg of messages) {
+      if (msg.role === 'user') {
+        md += `## User\n\n${msg.content}\n\n`;
+      } else if (msg.role === 'assistant') {
+        md += `## Assistant\n\n${msg.content}\n\n`;
+      }
+    }
+
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `chat-export-${dateFilename}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ============================================================
+  // INITIALIZATION
+  // ============================================================
+
+  function init() {
+    // Configure marked with KaTeX extension for math rendering
+    if (window.markedKatex) {
+      marked.use(markedKatex({
+        throwOnError: false,
+        nonStandard: true  // Allow $x$ without spaces
+      }));
+    }
+
+    // Always prioritize auto-detection from URL
+    // Manual language selection is temporary and doesn't persist across page navigation
+    currentLanguage = detectLanguage();
+
+    createChatPanel();
+    loadModels();
+    loadPageContent();
+
+    const savedKey = localStorage.getItem('openrouter-api-key');
+    if (savedKey) {
+      document.getElementById('chat-api-key').value = savedKey;
+      document.getElementById('chat-settings').classList.add('hidden');
+      document.getElementById('chat-setup-wrapper').classList.add('hidden');
+      document.getElementById('chat-user-input').disabled = false;
+      document.getElementById('chat-send-btn').disabled = false;
+      document.getElementById('chat-settings-remove').style.display = 'block';
+
+      const savedModel = localStorage.getItem('openrouter-model');
+      if (savedModel) {
+        setTimeout(() => {
+          const select = document.getElementById('chat-model-select');
+          if (select) {
+            select.value = savedModel;
+            updateCurrentModelDisplay();
+          }
+        }, CONFIG.MODEL_LOAD_DELAY);
+      }
+
+    }
+
+    // Set initial language
+    updateLanguage(currentLanguage);
+
+    // Load sessions
+    loadSessions();
+
+    // Show ready message if no history and API key is set
+    if (savedKey && messages.length === 0) {
+      addChatMessage('assistant', i18n[currentLanguage].ready);
+    }
+  }
+
+  // DOM Ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  // ============================================================
+  // GLOBAL EXPORTS - Expose functions to window
+  // ============================================================
+
+  Object.assign(window, {
+    toggleChat,
+    sendChatMessage,
+    saveChatSettings,
+    removeApiKey,
+    deleteAllSessions,
+    toggleChatSettings,
+    toggleSessionDropdown,
+    createNewSession,
+    switchSession,
+    deleteSession,
+    exportChatAsMarkdown
+  });
 })();
