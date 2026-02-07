@@ -88,7 +88,12 @@
       contentLoadError: "このページの内容を読み込めませんでした。一般的な質問には答えられます。",
       removeApiKeyConfirm: "API Keyを削除しますか？チャット履歴は保持されます。",
       deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？",
-      securityWarning: "⚠️ **セキュリティ上の注意**: API KeyはブラウザのlocalStorageに平文で保存されます。共有端末では使用後に必ず削除してください。"
+      securityWarning: "⚠️ **セキュリティ上の注意**: API KeyはブラウザのlocalStorageに平文で保存されます。共有端末では使用後に必ず削除してください。",
+      searching: "検索中...",
+      searchResults: "検索結果",
+      exportChat: "エクスポート",
+      noSearchResults: "該当する記事が見つかりませんでした。",
+      noResponse: "回答を生成できませんでした。別のモデルをお試しください。"
     },
     en: {
       title: "💬 AI Chat",
@@ -121,9 +126,123 @@
       contentLoadError: "Failed to load page content. General questions can still be answered.",
       removeApiKeyConfirm: "Remove API Key? Chat history will be preserved.",
       deleteAllSessionsConfirm: "Delete all chat history?",
-      securityWarning: "⚠️ **Security Notice**: API Key is stored in plain text in browser's localStorage. Always remove it after use on shared devices."
+      securityWarning: "⚠️ **Security Notice**: API Key is stored in plain text in browser's localStorage. Always remove it after use on shared devices.",
+      searching: "Searching...",
+      searchResults: "Search Results",
+      exportChat: "Export",
+      noSearchResults: "No matching articles found.",
+      noResponse: "Failed to generate a response. Please try a different model."
     }
   };
+
+  // Tool calling support
+  let searchIndex = null;
+
+  const SEARCH_TOOL = {
+    type: 'function',
+    function: {
+      name: 'search_site',
+      description: 'Search across all pages on this technical books site. Use this to find related content, other chapters, or specific topics mentioned elsewhere on the site.',
+      parameters: {
+        type: 'object',
+        properties: {
+          query: {
+            type: 'string',
+            description: 'Search query in Japanese or English'
+          }
+        },
+        required: ['query']
+      }
+    }
+  };
+
+  function isToolCallingSupported(modelId) {
+    const model = models.find(m => m.id === modelId);
+    return model?.supported_parameters?.includes('tools') ?? false;
+  }
+
+  async function loadSearchIndex() {
+    if (searchIndex) return searchIndex;
+    const basePath = window.location.pathname.startsWith('/books/') ? '/books' : '';
+    const url = `${basePath}/search.json`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) return [];
+      searchIndex = await response.json();
+      return searchIndex;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async function searchSite(query) {
+    const index = await loadSearchIndex();
+    const queryLower = query.toLowerCase();
+    // Allow single-character terms for Japanese (e.g., "木", "AI")
+    const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 0);
+
+    const scored = index
+      .map(item => {
+        let score = 0;
+        const titleLower = (item.title || '').toLowerCase();
+        const textLower = (item.text || '').toLowerCase();
+        const sectionLower = (item.section || '').toLowerCase();
+
+        for (const term of queryTerms) {
+          if (titleLower.includes(term)) score += 10;
+          if (sectionLower.includes(term)) score += 5;
+          if (textLower.includes(term)) score += 1;
+        }
+        return { ...item, score };
+      })
+      .filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    // Deduplicate by href (keep highest scoring entry per page)
+    const seenHrefs = new Set();
+    const results = [];
+    for (const item of scored) {
+      if (seenHrefs.has(item.href)) continue;
+      seenHrefs.add(item.href);
+      results.push({
+        title: item.title,
+        section: item.section,
+        href: item.href,
+        snippet: (item.text || '').substring(0, 200) + (item.text?.length > 200 ? '...' : '')
+      });
+      if (results.length >= 5) break;
+    }
+
+    return results;
+  }
+
+  async function executeToolCall(toolCall) {
+    try {
+      if (!toolCall?.function?.name || !toolCall?.function?.arguments) {
+        return JSON.stringify({ error: 'Invalid tool call structure' });
+      }
+
+      const { name, arguments: argsStr } = toolCall.function;
+      let args;
+      try {
+        args = JSON.parse(argsStr);
+      } catch (e) {
+        return JSON.stringify({ error: 'Failed to parse tool arguments' });
+      }
+
+      if (name === 'search_site') {
+        const results = await searchSite(args.query);
+        if (results.length === 0) {
+          return i18n[currentLanguage].noSearchResults;
+        }
+        return JSON.stringify(results, null, 2);
+      }
+      return JSON.stringify({ error: 'Unknown tool: ' + name });
+    } catch (e) {
+      return JSON.stringify({ error: e.message });
+    }
+  }
 
   // Detect language from URL path
   function detectLanguage() {
@@ -344,7 +463,8 @@
             </div>
           </div>
           <div class="chat-header-buttons">
-            <button class="chat-new-btn" id="chat-new-btn" onclick="window.createNewSession()" title="New chat">📝</button>
+            <button class="chat-new-btn" id="chat-new-btn" onclick="window.createNewSession()" title="New chat">＋</button>
+            <button class="chat-export-btn" id="chat-export-btn" onclick="window.exportChatAsMarkdown()" title="Export">⤓</button>
             <button class="chat-settings-toggle" onclick="window.toggleChatSettings()" title="Settings">⚙️</button>
           </div>
         </div>
@@ -659,6 +779,7 @@ ${content}
     $('chat-settings-save-btn', 'textContent', t.saveSettings);
     $('chat-settings-remove', 'textContent', t.removeApiKey);
     $('chat-session-delete-all-btn', 'textContent', '🗑️ ' + t.deleteAllSessions);
+    $('chat-export-btn', 'title', t.exportChat);
 
     const btn = document.querySelector('.chat-toggle-btn');
     if (btn) btn.textContent = isOpen ? t.closeBtn : t.openBtn;
@@ -836,6 +957,36 @@ ${content}
     renderSessionList();
   };
 
+  window.exportChatAsMarkdown = function() {
+    if (messages.length === 0) return;
+
+    const model = document.getElementById('chat-model-select')?.value || 'Unknown';
+    const now = new Date();
+    const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+    let md = `# Chat Export\n\n`;
+    md += `- **Date**: ${date}\n`;
+    md += `- **Model**: ${model}\n`;
+    md += `- **Page**: ${window.location.href}\n\n---\n\n`;
+
+    for (const msg of messages) {
+      if (msg.role === 'user') {
+        md += `## User\n\n${msg.content}\n\n`;
+      } else if (msg.role === 'assistant') {
+        md += `## Assistant\n\n${msg.content}\n\n`;
+      }
+    }
+
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const filename = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+    a.download = `chat-export-${filename}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   window.sendChatMessage = async function() {
     const userInput = document.getElementById('chat-user-input');
     const userMessage = userInput.value.trim();
@@ -862,84 +1013,224 @@ ${content}
     try {
       const apiKey = localStorage.getItem('openrouter-api-key');
       const model = document.getElementById('chat-model-select').value;
+      const supportsTools = isToolCallingSupported(model);
 
       // Build system prompt in appropriate language
       const systemPrompt = currentLanguage === 'ja'
         ? buildJapaneseSystemPrompt(currentContent)
         : buildEnglishSystemPrompt(currentContent);
 
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': window.location.href,
-          'X-Title': 'Books Chat'
-        },
-        body: JSON.stringify({
+      // Conversation messages for API (separate from display messages)
+      const apiMessages = [
+        { role: 'system', content: systemPrompt },
+        ...messages
+      ];
+
+      let assistantMessage = '';
+      let toolCallLoop = 0;
+      const maxToolCalls = 2;  // Reduced to prevent slow loops
+      let lastSearchResults = null;  // Store for fallback display
+      const executedQueries = new Set();  // Prevent duplicate tool calls
+
+      // Tool calling loop
+      while (toolCallLoop < maxToolCalls) {
+        toolCallLoop++;
+
+        const requestBody = {
           model: model,
           stream: true,
-          messages: [
-            {
-              role: 'system',
-              content: systemPrompt
-            },
-            ...messages
-          ]
-        })
-      });
+          messages: apiMessages
+        };
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        let errorMessage = 'API request failed';
-        try {
-          const errorJson = JSON.parse(errorText);
-          errorMessage = errorJson.error?.message || errorMessage;
-        } catch (e) {
-          errorMessage = errorText || errorMessage;
+        // Add tools only if model supports them AND not on last iteration
+        // On last iteration, force model to generate final answer by not providing tools
+        const isLastIteration = toolCallLoop >= maxToolCalls;
+        if (supportsTools && !isLastIteration) {
+          requestBody.tools = [SEARCH_TOOL];
+          requestBody.tool_choice = 'auto';
         }
-        throw new Error(errorMessage);
-      }
 
-      // Stream response - keep loading message until first content arrives
-      let assistantMessage = '';
-      let firstContentReceived = false;
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json',
+            'HTTP-Referer': window.location.href,
+            'X-Title': 'Books Chat'
+          },
+          body: JSON.stringify(requestBody)
+        });
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(line => line.trim());
-
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-
-          const data = line.substring(6);
-          if (data === '[DONE]') break;
-
+        if (!response.ok) {
+          const errorText = await response.text();
+          let errorMessage = 'API request failed';
           try {
-            const parsed = JSON.parse(data);
-            const content = parsed.choices[0]?.delta?.content;
-            if (content) {
-              assistantMessage += content;
+            const errorJson = JSON.parse(errorText);
+            errorMessage = errorJson.error?.message || errorMessage;
+          } catch (e) {
+            errorMessage = errorText || errorMessage;
+          }
+          throw new Error(errorMessage);
+        }
 
-              // Replace loading message with actual content on first chunk
-              if (!firstContentReceived) {
-                firstContentReceived = true;
+        // Stream response with SSE parsing
+        assistantMessage = '';
+        let firstContentReceived = false;
+        let toolCalls = [];
+        let finishReason = null;
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          buffer += decoder.decode(value, { stream: true });
+          const parts = buffer.split('\n');
+          buffer = parts.pop(); // Keep incomplete last line
+
+          for (const line of parts) {
+            const trimmed = line.trim();
+            if (!trimmed || !trimmed.startsWith('data: ')) continue;
+
+            const data = trimmed.substring(6).trim();
+            if (data === '[DONE]' || data === '') continue;
+
+            // Skip non-JSON data
+            if (!data.startsWith('{')) continue;
+
+            try {
+              const parsed = JSON.parse(data);
+              const choice = parsed.choices?.[0];
+              if (!choice) continue;
+
+              if (choice.finish_reason) {
+                finishReason = choice.finish_reason;
               }
 
-              updateChatMessage(loadingId, assistantMessage);
+              const content = choice.delta?.content;
+              if (content) {
+                assistantMessage += content;
+                if (!firstContentReceived) firstContentReceived = true;
+                updateChatMessage(loadingId, assistantMessage);
+              }
+
+              const deltaToolCalls = choice.delta?.tool_calls;
+              if (deltaToolCalls) {
+                for (const tc of deltaToolCalls) {
+                  const idx = tc.index ?? 0;
+                  if (!toolCalls[idx]) {
+                    toolCalls[idx] = { id: tc.id || '', function: { name: '', arguments: '' } };
+                  }
+                  if (tc.id) toolCalls[idx].id = tc.id;
+                  if (tc.function?.name) toolCalls[idx].function.name += tc.function.name;
+                  if (tc.function?.arguments) toolCalls[idx].function.arguments += tc.function.arguments;
+                }
+              }
+            } catch (e) {
+              // Skip invalid JSON (likely chunk boundary issues)
             }
-          } catch (e) {
-            // Skip invalid JSON
           }
+        }
+
+        // Check if we need to execute tools
+        const shouldExecuteTools = (finishReason === 'tool_calls' || finishReason === 'function_call')
+          && toolCalls.length > 0
+          && toolCalls.every(tc => tc.id && tc.function.name && tc.function.arguments);
+
+        if (shouldExecuteTools) {
+          updateChatMessage(loadingId, i18n[currentLanguage].searching);
+
+          const assistantToolMsg = {
+            role: 'assistant',
+            content: assistantMessage || null,
+            tool_calls: toolCalls.map(tc => ({
+              id: tc.id,
+              type: 'function',
+              function: tc.function
+            }))
+          };
+          apiMessages.push(assistantToolMsg);
+
+          // Execute each tool and add results
+          let allDuplicates = true;
+          for (const tc of toolCalls) {
+            // Check for duplicate query
+            try {
+              const args = JSON.parse(tc.function.arguments);
+              const queryKey = `${tc.function.name}:${JSON.stringify(args)}`;
+              if (executedQueries.has(queryKey)) {
+                apiMessages.push({
+                  role: 'tool',
+                  tool_call_id: tc.id,
+                  content: JSON.stringify({ note: 'Already searched, see previous results' })
+                });
+                continue;
+              }
+              executedQueries.add(queryKey);
+              allDuplicates = false;
+            } catch (e) {
+              allDuplicates = false;
+            }
+
+            const result = await executeToolCall(tc);
+            lastSearchResults = result;
+
+            // Show search results to user in real-time
+            try {
+              const resultData = JSON.parse(result);
+              if (Array.isArray(resultData) && resultData.length > 0) {
+                const resultPreview = resultData.map(r =>
+                  `- [${r.title}](${r.href})${r.section ? ` (${r.section})` : ''}`
+                ).join('\n');
+                updateChatMessage(loadingId, `🔍 **${i18n[currentLanguage].searching}**\n\n${resultPreview}\n\n---\n\n`);
+              }
+            } catch (e) {
+              updateChatMessage(loadingId, `🔍 ${result}`);
+            }
+
+            apiMessages.push({
+              role: 'tool',
+              tool_call_id: tc.id,
+              content: result
+            });
+          }
+
+          if (allDuplicates) break;
+          continue;
+        }
+
+        // No more tool calls, exit loop
+        break;
+      }
+
+      // If no content was generated but we had search results, show them
+      const t = i18n[currentLanguage];
+      if (!assistantMessage && lastSearchResults) {
+        try {
+          const resultData = JSON.parse(lastSearchResults);
+          if (Array.isArray(resultData) && resultData.length > 0) {
+            assistantMessage = `🔍 **${t.searchResults}**\n\n`;
+            for (const r of resultData) {
+              assistantMessage += `### [${r.title}](${r.href})\n`;
+              if (r.section) assistantMessage += `**${r.section}**\n`;
+              if (r.snippet) assistantMessage += `${r.snippet}\n`;
+              assistantMessage += '\n';
+            }
+          }
+        } catch (e) {
+          assistantMessage = lastSearchResults;
         }
       }
 
+      // If still no content, show error message
+      if (!assistantMessage) {
+        assistantMessage = t.noResponse;
+      }
+
+      updateChatMessage(loadingId, assistantMessage);
       messages.push({ role: 'assistant', content: assistantMessage });
       saveCurrentSession();
 

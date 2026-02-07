@@ -349,6 +349,7 @@ body:not(.quarto-dark) {
 }
 
 .chat-new-btn,
+.chat-export-btn,
 .chat-settings-toggle {
   background: none;
   border: none;
@@ -357,9 +358,11 @@ body:not(.quarto-dark) {
   padding: 4px 8px;
   border-radius: 4px;
   transition: background 0.2s;
+  color: var(--chat-text);
 }
 
 .chat-new-btn:hover,
+.chat-export-btn:hover,
 .chat-settings-toggle:hover {
   background: var(--chat-hover-light);
 }
