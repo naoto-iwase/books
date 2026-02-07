@@ -11,11 +11,16 @@
  * - Multi-language support (Japanese/English)
  * - Session management with localStorage persistence
  * - Streaming responses with markdown rendering
+ * - Math rendering with KaTeX (supports $...$ and \[...\] notation)
+ * - Tool calling support (site search)
+ * - Chat export to Markdown
  * - Responsive design with resizable panel
  * - Dark mode support (Quarto theme integration)
  *
  * External Dependencies:
  * - marked.js: Markdown parsing
+ * - marked-katex-extension: Math rendering integration
+ * - KaTeX: LaTeX math rendering
  * - highlight.js: Code syntax highlighting
  * - OpenRouter API: LLM inference
  */
@@ -259,7 +264,24 @@
     init();
   }
 
+  // Convert \[...\] and \(...\) to $$...$$ and $...$ for marked-katex-extension
+  function normalizeLatexDelimiters(text) {
+    return text
+      .replace(/\\\[/g, '$$')
+      .replace(/\\\]/g, '$$')
+      .replace(/\\\(/g, '$')
+      .replace(/\\\)/g, '$');
+  }
+
   function init() {
+    // Configure marked with KaTeX extension for math rendering
+    if (window.markedKatex) {
+      marked.use(markedKatex({
+        throwOnError: false,
+        nonStandard: true  // Allow $x$ without spaces
+      }));
+    }
+
     // Always prioritize auto-detection from URL
     // Manual language selection is temporary and doesn't persist across page navigation
     currentLanguage = detectLanguage();
@@ -735,6 +757,7 @@ ${content}
 **回答時の注意:**
 - 上記の内容に基づいて、正確かつ分かりやすく回答してください
 - 専門用語は適切に説明し、必要に応じて数式や図の説明も含めてください
+- 数式はLaTeX形式で記述してください
 - リンクを提示する際は以下の形式を使用してください：
   - 言語別の一覧ページ: https://naoto-iwase.github.io/books/#{lang}（例: https://naoto-iwase.github.io/books/#ja）
   - 個別ページ: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html（例: https://naoto-iwase.github.io/books/ja/olmo-3/03-midtraining.html）`;
@@ -757,6 +780,7 @@ ${content}
 **Response Guidelines:**
 - Provide accurate and clear answers based on the above content
 - Explain technical terms appropriately and include explanations of formulas and figures when necessary
+- Use LaTeX for math expressions
 - When providing links, use the following formats:
   - Book listing by language: https://naoto-iwase.github.io/books/#{lang} (e.g., https://naoto-iwase.github.io/books/#en)
   - Individual pages: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html (e.g., https://naoto-iwase.github.io/books/en/pdlt/04-neural-tangent-kernel.html)`;
@@ -1260,7 +1284,7 @@ ${content}
       contentDiv.className = 'chat-error';
       contentDiv.textContent = content;
     } else if (role === 'assistant') {
-      contentDiv.innerHTML = marked.parse(content || '');
+      contentDiv.innerHTML = marked.parse(normalizeLatexDelimiters(content || ''));
       contentDiv.querySelectorAll('pre code').forEach((block) => {
         hljs.highlightElement(block);
       });
@@ -1280,7 +1304,7 @@ ${content}
     if (!contentDiv) return;
 
     contentDiv.classList.remove('chat-loading-dots');
-    contentDiv.innerHTML = marked.parse(content);
+    contentDiv.innerHTML = marked.parse(normalizeLatexDelimiters(content));
     contentDiv.querySelectorAll('pre code').forEach(block => hljs.highlightElement(block));
 
     const messagesDiv = document.getElementById('chat-messages');
