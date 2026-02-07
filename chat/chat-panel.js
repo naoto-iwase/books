@@ -265,12 +265,13 @@
   }
 
   // Convert \[...\] and \(...\) to $$...$$ and $...$ for marked-katex-extension
+  // Use negative lookbehind to avoid converting \\[ (LaTeX line break with spacing)
   function normalizeLatexDelimiters(text) {
     return text
-      .replace(/\\\[/g, '$$')
-      .replace(/\\\]/g, '$$')
-      .replace(/\\\(/g, '$')
-      .replace(/\\\)/g, '$');
+      .replace(/(?<!\\)\\\[/g, '$$')
+      .replace(/(?<!\\)\\\]/g, '$$')
+      .replace(/(?<!\\)\\\(/g, '$')
+      .replace(/(?<!\\)\\\)/g, '$');
   }
 
   function init() {
