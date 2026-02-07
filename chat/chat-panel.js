@@ -872,6 +872,7 @@ ${content}
       let toolCallLoop = 0;
       const maxToolCalls = 2;  // Reduced to prevent slow loops
       let lastSearchResults = null;  // Store for fallback display
+      let lastSearchQuery = null;    // Store query for fallback display
       const executedQueries = new Set();  // Prevent duplicate tool calls
 
       // Tool calling loop
@@ -1013,6 +1014,11 @@ ${content}
               }
               executedQueries.add(queryKey);
               allDuplicates = false;
+
+              // Save query for fallback display
+              if (tc.function.name === 'search_site' && args.query) {
+                lastSearchQuery = args.query;
+              }
             } catch (e) {
               allDuplicates = false;
             }
@@ -1054,7 +1060,9 @@ ${content}
         try {
           const resultData = JSON.parse(lastSearchResults);
           if (Array.isArray(resultData) && resultData.length > 0) {
-            assistantMessage = `🔍 **${t.searchResults}**\n\n`;
+            assistantMessage = lastSearchQuery
+              ? `🔍 **${t.searchResults}**（「${lastSearchQuery}」）\n\n`
+              : `🔍 **${t.searchResults}**\n\n`;
             for (const r of resultData) {
               assistantMessage += `### [${r.title}](${r.href})\n`;
               if (r.section) assistantMessage += `**${r.section}**\n`;
