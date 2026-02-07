@@ -30,6 +30,9 @@
   // ============================================================
 
   const CONFIG = {
+    // Site
+    GITHUB_PAGES_PATH: '/books',  // GitHub Pages project path (empty string for user sites)
+
     // Language
     DEFAULT_LANGUAGE: 'en',
 
@@ -190,6 +193,15 @@
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 
+  function getBasePath() {
+    const ghPath = CONFIG.GITHUB_PAGES_PATH;
+    return window.location.pathname.startsWith(ghPath + '/') ? ghPath : '';
+  }
+
+  function getSiteBaseUrl() {
+    return `${window.location.origin}${getBasePath()}`;
+  }
+
   function getPageDisplay() {
     // Extract path including language: /ja/molmo2/dense-video-captioning.html → ja/molmo2/dense-video-captioning
     const path = window.location.pathname;
@@ -263,7 +275,7 @@
   async function loadPageContent() {
     try {
       const path = window.location.pathname;
-      const basePath = path.startsWith('/books/') ? '/books' : '';
+      const basePath = getBasePath();
 
       // Convert URL to .qmd path: /books/ja/olmo-3/index.html → ja/olmo-3/index.qmd
       let qmdPath = path
@@ -322,7 +334,7 @@
 
   async function loadSearchIndex() {
     if (searchIndex) return searchIndex;
-    const basePath = window.location.pathname.startsWith('/books/') ? '/books' : '';
+    const basePath = getBasePath();
     const url = `${basePath}/search.json`;
 
     try {
@@ -410,11 +422,12 @@
 
   // System prompts
   function buildJapaneseSystemPrompt(content) {
+    const baseUrl = getSiteBaseUrl();
     return `あなたは技術書の内容に基づいて質問に答えるアシスタントです。
 
 **サイト情報:**
 - サイト名: Naoto's Books
-- サイトURL: https://naoto-iwase.github.io/books
+- サイトURL: ${baseUrl}
 - 著者: Naoto Iwase
 - 内容: 機械学習・深層学習に関する技術的なまとめ集
 
@@ -427,16 +440,17 @@ ${content}
 - 専門用語は適切に説明し、必要に応じて数式や図の説明も含めてください
 - 数式はLaTeX形式で記述してください
 - リンクを提示する際は以下の形式を使用してください：
-  - 言語別の一覧ページ: https://naoto-iwase.github.io/books/#{lang}（例: https://naoto-iwase.github.io/books/#ja）
-  - 個別ページ: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html（例: https://naoto-iwase.github.io/books/ja/olmo-3/03-midtraining.html）`;
+  - 言語別の一覧ページ: ${baseUrl}/#{lang}（例: ${baseUrl}/#ja）
+  - 個別ページ: ${baseUrl}/{lang}/{book}/{page}.html（例: ${baseUrl}/ja/olmo-3/03-midtraining.html）`;
   }
 
   function buildEnglishSystemPrompt(content) {
+    const baseUrl = getSiteBaseUrl();
     return `You are an assistant that answers questions based on technical documentation.
 
 **Site Information:**
 - Site: Naoto's Books
-- Site URL: https://naoto-iwase.github.io/books
+- Site URL: ${baseUrl}
 - Author: Naoto Iwase
 - Content: Technical summaries on machine learning and deep learning
 
@@ -449,8 +463,8 @@ ${content}
 - Explain technical terms appropriately and include explanations of formulas and figures when necessary
 - Use LaTeX for math expressions
 - When providing links, use the following formats:
-  - Book listing by language: https://naoto-iwase.github.io/books/#{lang} (e.g., https://naoto-iwase.github.io/books/#en)
-  - Individual pages: https://naoto-iwase.github.io/books/{lang}/{book}/{page}.html (e.g., https://naoto-iwase.github.io/books/en/pdlt/04-neural-tangent-kernel.html)`;
+  - Book listing by language: ${baseUrl}/#{lang} (e.g., ${baseUrl}/#en)
+  - Individual pages: ${baseUrl}/{lang}/{book}/{page}.html (e.g., ${baseUrl}/en/pdlt/04-neural-tangent-kernel.html)`;
   }
 
   // ============================================================
@@ -1060,11 +1074,13 @@ ${content}
         try {
           const resultData = JSON.parse(lastSearchResults);
           if (Array.isArray(resultData) && resultData.length > 0) {
+            const baseUrl = getSiteBaseUrl();
             assistantMessage = lastSearchQuery
               ? `🔍 **${t.searchResults}**（「${lastSearchQuery}」）\n\n`
               : `🔍 **${t.searchResults}**\n\n`;
             for (const r of resultData) {
-              assistantMessage += `### [${r.title}](${r.href})\n`;
+              const fullUrl = `${baseUrl}/${r.href}`;
+              assistantMessage += `### [${r.title}](${fullUrl})\n`;
               if (r.section) assistantMessage += `**${r.section}**\n`;
               if (r.snippet) assistantMessage += `${r.snippet}\n`;
               assistantMessage += '\n';
