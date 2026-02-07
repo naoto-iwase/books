@@ -98,6 +98,7 @@
       validating: "確認中...",
       invalidApiKey: "API Keyが無効です。正しいキーを入力してください。",
       siteStructure: "**サイト全体の構成 (Recent 5 books per language):**",
+      bookStructure: "**この本の章立て:**",
       contentLoadError: "このページの内容を読み込めませんでした。一般的な質問には答えられます。",
       removeApiKeyConfirm: "API Keyを削除しますか？チャット履歴は保持されます。",
       deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？",
@@ -136,6 +137,7 @@
       validating: "Validating...",
       invalidApiKey: "Invalid API Key. Please enter a valid key.",
       siteStructure: "**Site Structure (Recent 5 books per language):**",
+      bookStructure: "**Book Structure:**",
       contentLoadError: "Failed to load page content. General questions can still be answered.",
       removeApiKeyConfirm: "Remove API Key? Chat history will be preserved.",
       deleteAllSessionsConfirm: "Delete all chat history?",
@@ -297,14 +299,18 @@
 
       currentContent = await response.text();
 
-      // Include search.json for root page to provide site-wide navigation context
-      if (qmdPath === 'index.qmd') {
+      // Include navigation context
+      const bookStructure = getBookStructureFromSidebar();
+      if (bookStructure) {
+        // Book page with sidebar: include chapter structure
+        currentContent += '\n\n' + i18n[currentLanguage].bookStructure + '\n' + bookStructure;
+      } else {
+        // No sidebar (root page, etc.): include site-wide navigation
         try {
           const searchRes = await fetch(`${basePath}/search.json`);
           if (searchRes.ok) {
             const searchData = await searchRes.json();
 
-            // Filter for index pages only (ja/*/index.html, en/*/index.html)
             const jaIndexPages = searchData
               .filter(item => item.href && /^ja\/[^\/]+\/index\.html$/.test(item.href))
               .slice(0, 5)
@@ -315,12 +321,7 @@
               .slice(0, 5)
               .map(item => ({ title: item.title, href: item.href, categories: item.categories }));
 
-            const summary = {
-              ja: jaIndexPages,
-              en: enIndexPages
-            };
-
-            currentContent += '\n\n' + i18n[currentLanguage].siteStructure + '\n' + JSON.stringify(summary, null, 2);
+            currentContent += '\n\n' + i18n[currentLanguage].siteStructure + '\n' + JSON.stringify({ ja: jaIndexPages, en: enIndexPages }, null, 2);
           }
         } catch (e) {
           // search.json is optional, continue without it
@@ -330,6 +331,49 @@
       console.error('Failed to load content:', error);
       currentContent = i18n[currentLanguage].contentLoadError;
     }
+  }
+
+  function getBookStructureFromSidebar() {
+    const sidebar = document.querySelector('.sidebar-navigation');
+    if (!sidebar) return null;
+
+    const items = sidebar.querySelectorAll('.sidebar-item');
+    if (items.length === 0) return null;
+
+    return formatSidebarItems(sidebar.querySelector('ul'), 0);
+  }
+
+  function formatSidebarItems(ul, indent) {
+    if (!ul) return '';
+
+    let result = '';
+    const prefix = '  '.repeat(indent);
+    const items = ul.querySelectorAll(':scope > li.sidebar-item');
+
+    for (const item of items) {
+      const link = item.querySelector(':scope > .sidebar-item-container .sidebar-link');
+      const text = link?.querySelector('.menu-text')?.textContent?.trim();
+      const href = link?.getAttribute('href');
+      const isActive = link?.classList.contains('active');
+      const isSection = item.classList.contains('sidebar-item-section');
+
+      if (text) {
+        const marker = isActive ? ' ← 現在のページ / current page' : '';
+        if (isSection) {
+          result += `${prefix}- **${text}**${href ? ` (${href})` : ''}${marker}\n`;
+        } else {
+          result += `${prefix}- ${text}${href ? ` (${href})` : ''}${marker}\n`;
+        }
+      }
+
+      // Process nested items
+      const nestedUl = item.querySelector(':scope > ul');
+      if (nestedUl) {
+        result += formatSidebarItems(nestedUl, indent + 1);
+      }
+    }
+
+    return result;
   }
 
   async function loadSearchIndex() {
