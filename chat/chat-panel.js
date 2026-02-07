@@ -732,6 +732,7 @@ ${content}
     // Update text content for each element
     const updates = {
       'chat-user-input': { placeholder: t.inputPlaceholder },
+      'chat-send-btn': { textContent: 'Enter' },
       'chat-setup-msg': { textContent: t.setupMessage },
       'chat-info-title': { textContent: t.infoTitle },
       'chat-info-bullets': { innerHTML: t.infoBullets.map(b => '• ' + b).join('<br>') },
