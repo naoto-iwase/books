@@ -4,7 +4,7 @@
  * Design Principles:
  * - KISS: Keep it simple - favor clarity over cleverness
  * - YAGNI: Build only what's needed, when it's needed
- * - Vanilla JS: No frameworks - easy to understand and maintain
+ * - No frontend frameworks (React/Vue/etc.) - just vanilla JS with utility libraries
  * - Beginner-friendly: Clear naming, consistent patterns, minimal abstractions
  *
  * Features:
@@ -12,7 +12,6 @@
  * - Session management with localStorage persistence
  * - Streaming responses with markdown rendering
  * - Math rendering with KaTeX (supports $...$ and \[...\] notation)
- * - Tool calling support (site search)
  * - Chat export to Markdown
  * - Responsive design with resizable panel
  * - Dark mode support (Quarto theme integration)
@@ -48,7 +47,6 @@
 
     // UI limits
     TEXTAREA_MAX_HEIGHT: 150,
-    SESSION_LIST_MAX_HEIGHT: 300,
 
     // Timing
     MODEL_LOAD_DELAY: 500,
@@ -66,7 +64,6 @@
   let currentLanguage = CONFIG.DEFAULT_LANGUAGE;
   let sessions = [];
   let currentSessionId = null;
-  let searchIndex = null;
 
   // i18n definitions
   const i18n = {
@@ -87,11 +84,8 @@
       ready: "準備完了です。このページの内容について質問してください。",
       error: "エラー:",
       apiKeyRequired: "API Keyを入力してください",
-      clearChat: "クリア",
       thinking: "考え中",
-      newChat: "新規",
       newSession: "新しいチャット",
-      sessionHistory: "履歴",
       saveSettings: "設定を保存",
       removeApiKey: "API Keyを削除",
       deleteAllSessions: "全履歴を削除",
@@ -103,10 +97,7 @@
       removeApiKeyConfirm: "API Keyを削除しますか？チャット履歴は保持されます。",
       deleteAllSessionsConfirm: "全てのチャット履歴を削除しますか？",
       securityWarning: "⚠️ **セキュリティ上の注意**: API KeyはブラウザのlocalStorageに平文で保存されます。共有端末では使用後に必ず削除してください。",
-      searching: "検索中...",
-      searchResults: "検索結果",
       exportChat: "エクスポート",
-      noSearchResults: "該当する記事が見つかりませんでした。",
       noResponse: "回答を生成できませんでした。別のモデルをお試しください。"
     },
     en: {
@@ -126,11 +117,8 @@
       ready: "Ready! Ask questions about this page.",
       error: "Error:",
       apiKeyRequired: "API Key is required",
-      clearChat: "Clear",
       thinking: "Thinking",
-      newChat: "New",
       newSession: "New Chat",
-      sessionHistory: "History",
       saveSettings: "Save Settings",
       removeApiKey: "Remove API Key",
       deleteAllSessions: "Delete All History",
@@ -142,30 +130,8 @@
       removeApiKeyConfirm: "Remove API Key? Chat history will be preserved.",
       deleteAllSessionsConfirm: "Delete all chat history?",
       securityWarning: "⚠️ **Security Notice**: API Key is stored in plain text in browser's localStorage. Always remove it after use on shared devices.",
-      searching: "Searching...",
-      searchResults: "Search Results",
       exportChat: "Export",
-      noSearchResults: "No matching articles found.",
       noResponse: "Failed to generate a response. Please try a different model."
-    }
-  };
-
-  // Tool definition for site search
-  const SEARCH_TOOL = {
-    type: 'function',
-    function: {
-      name: 'search_site',
-      description: 'Search across all pages on this technical books site. Use this to find related content, other chapters, or specific topics mentioned elsewhere on the site.',
-      parameters: {
-        type: 'object',
-        properties: {
-          query: {
-            type: 'string',
-            description: 'Search query in Japanese or English'
-          }
-        },
-        required: ['query']
-      }
     }
   };
 
@@ -215,6 +181,15 @@
 
     // Fallback to page title
     return document.title.replace(/ [–-] Naoto's Books/g, '').replace(/^Books [–-] /, '');
+  }
+
+  function getCurrentSession() {
+    return sessions.find(s => s.id === currentSessionId);
+  }
+
+  function closeSessionDropdown() {
+    const dropdown = document.getElementById('chat-session-dropdown');
+    if (dropdown) dropdown.classList.add('hidden');
   }
 
   // ============================================================
@@ -376,125 +351,14 @@
     return result;
   }
 
-  async function loadSearchIndex() {
-    if (searchIndex) return searchIndex;
-    const basePath = getBasePath();
-    const url = `${basePath}/search.json`;
-
-    try {
-      const response = await fetch(url);
-      if (!response.ok) return [];
-      searchIndex = await response.json();
-      return searchIndex;
-    } catch (e) {
-      return [];
-    }
-  }
-
-  async function searchSite(query) {
-    const index = await loadSearchIndex();
-    const queryLower = query.toLowerCase();
-    // Allow single-character terms for Japanese (e.g., "木", "AI")
-    const queryTerms = queryLower.split(/\s+/).filter(t => t.length > 0);
-
-    const scored = index
-      .map(item => {
-        let score = 0;
-        const titleLower = (item.title || '').toLowerCase();
-        const textLower = (item.text || '').toLowerCase();
-        const sectionLower = (item.section || '').toLowerCase();
-
-        for (const term of queryTerms) {
-          if (titleLower.includes(term)) score += 10;
-          if (sectionLower.includes(term)) score += 5;
-          if (textLower.includes(term)) score += 1;
-        }
-        return { ...item, score };
-      })
-      .filter(item => item.score > 0)
-      .sort((a, b) => b.score - a.score);
-
-    // Deduplicate by href (keep highest scoring entry per page)
-    const seenHrefs = new Set();
-    const results = [];
-    for (const item of scored) {
-      if (seenHrefs.has(item.href)) continue;
-      seenHrefs.add(item.href);
-      results.push({
-        title: item.title,
-        section: item.section,
-        href: item.href,
-        snippet: (item.text || '').substring(0, 200) + (item.text?.length > 200 ? '...' : '')
-      });
-      if (results.length >= 5) break;
-    }
-
-    return results;
-  }
-
-  async function executeToolCall(toolCall) {
-    try {
-      if (!toolCall?.function?.name || !toolCall?.function?.arguments) {
-        return JSON.stringify({ error: 'Invalid tool call structure' });
-      }
-
-      const { name, arguments: argsStr } = toolCall.function;
-      let args;
-      try {
-        args = JSON.parse(argsStr);
-      } catch (e) {
-        return JSON.stringify({ error: 'Failed to parse tool arguments' });
-      }
-
-      if (name === 'search_site') {
-        const results = await searchSite(args.query);
-        if (results.length === 0) {
-          return i18n[currentLanguage].noSearchResults;
-        }
-        return JSON.stringify(results, null, 2);
-      }
-      return JSON.stringify({ error: 'Unknown tool: ' + name });
-    } catch (e) {
-      return JSON.stringify({ error: e.message });
-    }
-  }
-
-  function isToolCallingSupported(modelId) {
-    const model = models.find(m => m.id === modelId);
-    return model?.supported_parameters?.includes('tools') ?? false;
-  }
-
-  // System prompts
-  function buildJapaneseSystemPrompt(content) {
+  function buildSystemPrompt(content) {
     const baseUrl = getSiteBaseUrl();
-    return `あなたは技術書の内容に基づいて質問に答えるアシスタントです。
 
-**サイト情報:**
-- サイト名: Naoto's Books
-- サイトURL: ${baseUrl}
-- 著者: Naoto Iwase
-- 内容: 機械学習・深層学習に関する技術的なまとめ集
-
-**現在のページの内容:**
-
-${content}
-
-**回答時の注意:**
-- 上記の内容に基づいて、正確かつ分かりやすく回答してください
-- 専門用語は適切に説明し、必要に応じて数式や図の説明も含めてください
-- 数式はLaTeX形式で記述してください
-- リンクを提示する際は以下の形式を使用してください：
-  - 言語別の一覧ページ: ${baseUrl}/#{lang}（例: ${baseUrl}/#ja）
-  - 個別ページ: ${baseUrl}/{lang}/{book}/{page}.html（例: ${baseUrl}/ja/olmo-3/03-midtraining.html）`;
-  }
-
-  function buildEnglishSystemPrompt(content) {
-    const baseUrl = getSiteBaseUrl();
     return `You are an assistant that answers questions based on technical documentation.
 
 **Site Information:**
 - Site: Naoto's Books
-- Site URL: ${baseUrl}
+- URL: ${baseUrl}
 - Author: Naoto Iwase
 - Content: Technical summaries on machine learning and deep learning
 
@@ -506,9 +370,10 @@ ${content}
 - Provide accurate and clear answers based on the above content
 - Explain technical terms appropriately and include explanations of formulas and figures when necessary
 - Use LaTeX for math expressions
-- When providing links, use the following formats:
-  - Book listing by language: ${baseUrl}/#{lang} (e.g., ${baseUrl}/#en)
-  - Individual pages: ${baseUrl}/{lang}/{book}/{page}.html (e.g., ${baseUrl}/en/pdlt/04-neural-tangent-kernel.html)`;
+- When providing links, use these formats:
+  - Book listing: ${baseUrl}/#{lang} (e.g., ${baseUrl}/#ja)
+  - Individual pages: ${baseUrl}/{lang}/{book}/{page}.html (e.g., ${baseUrl}/ja/olmo-3/03-midtraining.html)
+- Respond in the same language the user uses`;
   }
 
   // ============================================================
@@ -562,7 +427,7 @@ ${content}
   }
 
   function loadCurrentSession() {
-    const session = sessions.find(s => s.id === currentSessionId);
+    const session = getCurrentSession();
     if (!session) return;
 
     messages = session.messages || [];
@@ -580,7 +445,7 @@ ${content}
   }
 
   function saveCurrentSession() {
-    const session = sessions.find(s => s.id === currentSessionId);
+    const session = getCurrentSession();
     if (!session) return;
 
     session.messages = messages;
@@ -601,7 +466,7 @@ ${content}
   }
 
   function updateSessionDisplay() {
-    const session = sessions.find(s => s.id === currentSessionId);
+    const session = getCurrentSession();
     if (!session) return;
 
     const currentSessionName = document.getElementById('chat-current-session-name');
@@ -903,7 +768,7 @@ ${content}
     sendBtn.disabled = true;
     userInput.disabled = true;
 
-    const loadingId = addChatMessage('assistant', i18n[currentLanguage].thinking, true);
+    const loadingId = addChatMessage('assistant', i18n[currentLanguage].thinking);
     const contentDiv = document.getElementById(loadingId)?.querySelector('.chat-message-content');
     if (contentDiv) {
       contentDiv.classList.add('chat-loading-dots');
@@ -913,231 +778,82 @@ ${content}
     try {
       const apiKey = localStorage.getItem('openrouter-api-key');
       const model = document.getElementById('chat-model-select').value;
-      const supportsTools = isToolCallingSupported(model);
 
-      // Build system prompt in appropriate language
-      const systemPrompt = currentLanguage === 'ja'
-        ? buildJapaneseSystemPrompt(currentContent)
-        : buildEnglishSystemPrompt(currentContent);
+      const systemPrompt = buildSystemPrompt(currentContent);
 
-      // Conversation messages for API (separate from display messages)
+      // Conversation messages for API
       const apiMessages = [
         { role: 'system', content: systemPrompt },
         ...messages
       ];
 
-      let assistantMessage = '';
-      let toolCallLoop = 0;
-      const maxToolCalls = 2;  // Reduced to prevent slow loops
-      let lastSearchResults = null;  // Store for fallback display
-      let lastSearchQuery = null;    // Store query for fallback display
-      const executedQueries = new Set();  // Prevent duplicate tool calls
-
-      // Tool calling loop
-      while (toolCallLoop < maxToolCalls) {
-        toolCallLoop++;
-
-        const requestBody = {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': window.location.href,
+          'X-Title': 'Books Chat'
+        },
+        body: JSON.stringify({
           model: model,
           stream: true,
           messages: apiMessages
-        };
+        })
+      });
 
-        // Add tools only if model supports them AND not on last iteration
-        // On last iteration, force model to generate final answer by not providing tools
-        const isLastIteration = toolCallLoop >= maxToolCalls;
-        if (supportsTools && !isLastIteration) {
-          requestBody.tools = [SEARCH_TOOL];
-          requestBody.tool_choice = 'auto';
-        }
-
-        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-            'HTTP-Referer': window.location.href,
-            'X-Title': 'Books Chat'
-          },
-          body: JSON.stringify(requestBody)
-        });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          let errorMessage = 'API request failed';
-          try {
-            const errorJson = JSON.parse(errorText);
-            errorMessage = errorJson.error?.message || errorMessage;
-          } catch (e) {
-            errorMessage = errorText || errorMessage;
-          }
-          throw new Error(errorMessage);
-        }
-
-        // Stream response with SSE parsing
-        assistantMessage = '';
-        let firstContentReceived = false;
-        let toolCalls = [];
-        let finishReason = null;
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let buffer = '';
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-          const parts = buffer.split('\n');
-          buffer = parts.pop(); // Keep incomplete last line
-
-          for (const line of parts) {
-            const trimmed = line.trim();
-            if (!trimmed || !trimmed.startsWith('data: ')) continue;
-
-            const data = trimmed.substring(6).trim();
-            if (data === '[DONE]' || data === '') continue;
-
-            // Skip non-JSON data
-            if (!data.startsWith('{')) continue;
-
-            try {
-              const parsed = JSON.parse(data);
-              const choice = parsed.choices?.[0];
-              if (!choice) continue;
-
-              if (choice.finish_reason) {
-                finishReason = choice.finish_reason;
-              }
-
-              const content = choice.delta?.content;
-              if (content) {
-                assistantMessage += content;
-                if (!firstContentReceived) firstContentReceived = true;
-                updateChatMessage(loadingId, assistantMessage);
-              }
-
-              const deltaToolCalls = choice.delta?.tool_calls;
-              if (deltaToolCalls) {
-                for (const tc of deltaToolCalls) {
-                  const idx = tc.index ?? 0;
-                  if (!toolCalls[idx]) {
-                    toolCalls[idx] = { id: tc.id || '', function: { name: '', arguments: '' } };
-                  }
-                  if (tc.id) toolCalls[idx].id = tc.id;
-                  if (tc.function?.name) toolCalls[idx].function.name += tc.function.name;
-                  if (tc.function?.arguments) toolCalls[idx].function.arguments += tc.function.arguments;
-                }
-              }
-            } catch (e) {
-              // Skip invalid JSON (likely chunk boundary issues)
-            }
-          }
-        }
-
-        // Check if we need to execute tools
-        const shouldExecuteTools = (finishReason === 'tool_calls' || finishReason === 'function_call')
-          && toolCalls.length > 0
-          && toolCalls.every(tc => tc.id && tc.function.name && tc.function.arguments);
-
-        if (shouldExecuteTools) {
-          updateChatMessage(loadingId, i18n[currentLanguage].searching);
-
-          const assistantToolMsg = {
-            role: 'assistant',
-            content: assistantMessage || null,
-            tool_calls: toolCalls.map(tc => ({
-              id: tc.id,
-              type: 'function',
-              function: tc.function
-            }))
-          };
-          apiMessages.push(assistantToolMsg);
-
-          // Execute each tool and add results
-          let allDuplicates = true;
-          for (const tc of toolCalls) {
-            // Check for duplicate query
-            try {
-              const args = JSON.parse(tc.function.arguments);
-              const queryKey = `${tc.function.name}:${JSON.stringify(args)}`;
-              if (executedQueries.has(queryKey)) {
-                apiMessages.push({
-                  role: 'tool',
-                  tool_call_id: tc.id,
-                  content: JSON.stringify({ note: 'Already searched, see previous results' })
-                });
-                continue;
-              }
-              executedQueries.add(queryKey);
-              allDuplicates = false;
-
-              // Save query for fallback display
-              if (tc.function.name === 'search_site' && args.query) {
-                lastSearchQuery = args.query;
-              }
-            } catch (e) {
-              allDuplicates = false;
-            }
-
-            const result = await executeToolCall(tc);
-            lastSearchResults = result;
-
-            // Show search results to user in real-time
-            try {
-              const resultData = JSON.parse(result);
-              if (Array.isArray(resultData) && resultData.length > 0) {
-                const resultPreview = resultData.map(r =>
-                  `- [${r.title}](${r.href})${r.section ? ` (${r.section})` : ''}`
-                ).join('\n');
-                updateChatMessage(loadingId, `🔍 **${i18n[currentLanguage].searching}**\n\n${resultPreview}\n\n---\n\n`);
-              }
-            } catch (e) {
-              updateChatMessage(loadingId, `🔍 ${result}`);
-            }
-
-            apiMessages.push({
-              role: 'tool',
-              tool_call_id: tc.id,
-              content: result
-            });
-          }
-
-          if (allDuplicates) break;
-          continue;
-        }
-
-        // No more tool calls, exit loop
-        break;
-      }
-
-      // If no content was generated but we had search results, show them
-      const t = i18n[currentLanguage];
-      if (!assistantMessage && lastSearchResults) {
+      if (!response.ok) {
+        const errorText = await response.text();
+        let errorMessage = 'API request failed';
         try {
-          const resultData = JSON.parse(lastSearchResults);
-          if (Array.isArray(resultData) && resultData.length > 0) {
-            const baseUrl = getSiteBaseUrl();
-            assistantMessage = lastSearchQuery
-              ? `🔍 **${t.searchResults}**（「${lastSearchQuery}」）\n\n`
-              : `🔍 **${t.searchResults}**\n\n`;
-            for (const r of resultData) {
-              const fullUrl = `${baseUrl}/${r.href}`;
-              assistantMessage += `### [${r.title}](${fullUrl})\n`;
-              if (r.section) assistantMessage += `**${r.section}**\n`;
-              if (r.snippet) assistantMessage += `${r.snippet}\n`;
-              assistantMessage += '\n';
-            }
-          }
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.error?.message || errorMessage;
         } catch (e) {
-          assistantMessage = lastSearchResults;
+          errorMessage = errorText || errorMessage;
+        }
+        throw new Error(errorMessage);
+      }
+
+      // Stream response with SSE parsing
+      let assistantMessage = '';
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split('\n');
+        buffer = parts.pop(); // Keep incomplete last line
+
+        for (const line of parts) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith('data: ')) continue;
+
+          const data = trimmed.substring(6).trim();
+          if (data === '[DONE]' || data === '') continue;
+
+          // Skip non-JSON data
+          if (!data.startsWith('{')) continue;
+
+          try {
+            const parsed = JSON.parse(data);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              assistantMessage += content;
+              updateChatMessage(loadingId, assistantMessage);
+            }
+          } catch (e) {
+            // Skip invalid JSON (likely chunk boundary issues)
+          }
         }
       }
 
-      // If still no content, show error message
+      // If no content, show error message
       if (!assistantMessage) {
-        assistantMessage = t.noResponse;
+        assistantMessage = i18n[currentLanguage].noResponse;
       }
 
       updateChatMessage(loadingId, assistantMessage);
@@ -1258,10 +974,7 @@ ${content}
     currentSessionId = newSession.id;
     saveSessions();
     updateSessionDisplay();
-
-    // Close dropdown
-    const dropdown = document.getElementById('chat-session-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
+    closeSessionDropdown();
 
     // Show ready message
     addChatMessage('assistant', i18n[currentLanguage].ready);
@@ -1290,25 +1003,19 @@ ${content}
     }
 
     updateSessionDisplay();
-
-    // Close dropdown
-    const dropdown = document.getElementById('chat-session-dropdown');
-    if (dropdown) dropdown.classList.add('hidden');
+    closeSessionDropdown();
   }
 
   function switchSession(sessionId) {
-    const dropdown = document.getElementById('chat-session-dropdown');
     if (sessionId === currentSessionId) {
-      if (dropdown) dropdown.classList.add('hidden');
+      closeSessionDropdown();
       return;
     }
 
     currentSessionId = sessionId;
     loadCurrentSession();
     saveSessions();
-
-    // Close dropdown
-    if (dropdown) dropdown.classList.add('hidden');
+    closeSessionDropdown();
   }
 
   function deleteSession(event, sessionId) {
