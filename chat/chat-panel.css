@@ -516,6 +516,11 @@ body:not(.quarto-dark) {
   background: var(--chat-hover-light);
 }
 
+/* KaTeX math rendering */
+.chat-message-content .katex-display {
+  overflow-x: auto;
+}
+
 .chat-input-area {
   padding: 12px;
   border-top: 1px solid var(--chat-border);
